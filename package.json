@@ -1,0 +1,83 @@
+{
+	"name": "moreforless",
+	"version": "1.0.0",
+	"description": "More for less dashboard",
+	"author": "Ghyath",
+	"scripts": {
+		"dev": "nuxt",
+		"build": "nuxt build",
+		"start": "nuxt start",
+		"generate": "nuxt generate",
+		"fix": "eslint --ext .js,.vue --ignore-path .gitignore . --fix"
+	},
+	"dependencies": {
+		"@ckeditor/ckeditor5-build-classic": "^17.0.0",
+		"@ckeditor/ckeditor5-vue": "^1.0.1",
+		"nuxt": "^2.11.0",
+		"vuetify": "^2.2.14"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.10.2",
+		"@babel/preset-env": "^7.10.2",
+		"@mdi/font": "^4.9.95",
+		"@vue/eslint-config-prettier": "^6.0.0",
+		"babel-eslint": "^10.0.3",
+		"eslint": "^6.8.0",
+		"eslint-config-standard": "^14.1.0",
+		"eslint-config-vuetify": "^0.5.0",
+		"eslint-loader": "^3.0.3",
+		"eslint-plugin-html": "^6.0.0",
+		"eslint-plugin-import": "^2.20.1",
+		"eslint-plugin-node": "^11.0.0",
+		"eslint-plugin-prettier": "^3.1.2",
+		"eslint-plugin-promise": "^4.2.1",
+		"eslint-plugin-standard": "^4.0.1",
+		"eslint-plugin-vue": "^6.2.1",
+		"less": "^3.11.1",
+		"less-loader": "^5.0.0",
+		"sass": "^1.25.0",
+		"sass-loader": "^8.0.2",
+		"stylus": "^0.54.7",
+		"stylus-loader": "^3.0.2"
+	},
+	"prettier": {
+		"useTabs": true,
+		"printWidth": 120,
+		"tabWidth": 4,
+		"trailingComma": "es5",
+		"jsxBracketSameLine": false,
+		"bracketSpacing": true,
+		"semi": true,
+		"singleQuote": true,
+		"htmlWhitespaceSensitivity": "ignore"
+	},
+	"eslintConfig": {
+		"root": true,
+		"env": {
+			"node": true,
+			"browser": true,
+			"es6": true
+		},
+		"extends": [
+			"plugin:vue/essential",
+			"@vue/prettier"
+		],
+		"rules": {
+			"no-console": "off",
+			"vue/multiline-html-element-content-newline": [
+				2,
+				{
+					"ignoreWhenEmpty": true,
+					"ignores": [
+						"pre",
+						"textarea"
+					],
+					"allowEmptyLines": false
+				}
+			]
+		},
+		"parserOptions": {
+			"parser": "babel-eslint"
+		}
+	}
+}

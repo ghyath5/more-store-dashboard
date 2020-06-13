@@ -1,0 +1,9 @@
+/.settings/
+/.buildpath
+/.project
+/.idea/
+/*.iml
+/package-lock.json
+/**/node_modules/
+/**/*.map
+/.nuxt
