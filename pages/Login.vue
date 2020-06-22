@@ -34,7 +34,7 @@ export default {
 	layout: 'auth',
 	data() {
 		return {
-			email: 'ghyath@hmail.com',
+			email: 'emai@email.email',
 			password: 'ghghgh',
 		};
 	},
