@@ -1,0 +1,15 @@
+#import "../commonFieldsFragment.gql"
+fragment CategoryFiels on categories {
+    id
+    created_at
+    updated_at
+    image{
+        ...ImageFields   
+    }
+    name
+    position
+    # products{
+
+    # }
+    
+}

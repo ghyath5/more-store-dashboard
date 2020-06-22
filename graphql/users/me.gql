@@ -1,0 +1,6 @@
+#import "./fieldsFragment.gql"
+{
+    users{
+        ...usersFields
+    }
+}

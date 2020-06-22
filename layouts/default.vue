@@ -1,5 +1,5 @@
 <template>
-	<v-app light>
+	<v-app>
 		<core-app-bar />
 		<core-drawer />
 		<core-view />
@@ -9,6 +9,7 @@
 
 <script>
 export default {
+	middleware: 'isAuth',
 	data: () => ({
 		drawer: null,
 	}),

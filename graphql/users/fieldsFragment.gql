@@ -1,0 +1,15 @@
+fragment usersFields on users{
+    id
+    name
+    email
+    roles{
+        role{
+            name
+            permissions{
+                permission
+            }              
+        }
+    }
+    created_at
+    updated_at
+}
