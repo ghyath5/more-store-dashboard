@@ -30,12 +30,7 @@
 			<!-- Bug in Vuetify for first child of v-list not receiving proper border-radius -->
 			<div />
 			<template v-for="(item, i) in links">
-				<v-list-group
-					v-if="item.children"
-					:key="item.text"
-					v-model="item.model"
-					:prepend-icon="item.icon"
-				>
+				<v-list-group v-if="item.children" :key="item.text" v-model="item.model" :prepend-icon="item.icon">
 					<template v-slot:activator>
 						<v-list-item-title>
 							{{ item.text }}
@@ -105,9 +100,9 @@ export default {
 				text: 'Dashboard',
 			},
 			{
-				to: '/user-profile',
+				to: '/categories',
 				icon: 'mdi-account',
-				text: 'User Profile',
+				text: 'Categories',
 			},
 			{
 				to: '/table-list',
@@ -125,7 +120,7 @@ export default {
 				text: 'Icons',
 			},
 			{
-				icon: 'mdi-map-marker',
+				icon: 'mdi-account',
 				text: 'Users',
 				model: false,
 				children: [
