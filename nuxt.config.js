@@ -2,6 +2,7 @@ module.exports = {
 	/*
 	 ** Headers of the page
 	 */
+	mode: 'spa',
 	head: {
 		title: 'nuxt-vuetify-dashboard',
 		meta: [
@@ -25,10 +26,12 @@ module.exports = {
 		],
 	},
 	plugins: [
+		'~/plugins/functions.js',
 		'~/plugins/vuetify.js',
 		'~/plugins/base.js',
 		'~/plugins/components.js',
 		{ src: '~/plugins/ckeditor.js', mode: 'client' },
+		'~/plugins/auth.js',
 	],
 	// css: ['~/assets/less/main.less'],
 	/*
@@ -42,21 +45,33 @@ module.exports = {
 		extractCSS: true,
 		extend(config, ctx) {
 			// Run ESLint on save
-			if (ctx.isDev && ctx.isClient) {
-				config.module.rules.push({
-					enforce: 'pre',
-					test: /\.(js|vue)$/,
-					loader: 'eslint-loader',
-					exclude: /(node_modules)/,
-				});
-			}
+			// if (ctx.isDev && ctx.isClient) {
+			// 	config.module.rules.push({
+			// 		enforce: 'pre',
+			// 		test: /\.(js|vue)$/,
+			// 		loader: 'eslint-loader',
+			// 		exclude: /(node_modules)/,
+			// 	});
+			// }
 			if (ctx.isClient) {
 				config.devtool = 'source-map';
 			}
 		},
 		transpile: [/^vuetify/],
 	},
-	axios: {
-		// proxyHeaders: false
+	modules: ['@nuxtjs/apollo'],
+	apollo: {
+		errorHandler: '~/plugins/apollo/error-handler.js',
+		includeNodeModules: true,
+		clientConfigs: {
+			default: '~/plugins/apollo/config.js',
+			auth: {
+				httpEndpoint: 'https://more-store.herokuapp.com/v1/graphql',
+			},
+		},
+	},
+	buildModules: ['@nuxtjs/moment'],
+	moment: {
+		/* module options */
 	},
 };
