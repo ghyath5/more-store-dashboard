@@ -1,38 +1,45 @@
 <template>
-	<v-data-table
-		v-model="selected"
-		:headers="headers"
-		:single-select="singleSelect"
-		:server-items-length="itemsCount"
-		:sort-by.sync="queryVariables.sortBy"
-		:sort-desc.sync="queryVariables.sortDesc"
-		:items-per-page.sync="queryVariables.itemPerPage"
-		:page.sync="queryVariables.page"
-		:items="items"
-		:loading="Boolean(loading)"
-		:show-select="showSelect"
-		class="elevation-1 customDataTable"
-	>
-		<template v-slot:item="{ item, headers }">
-			<tr>
-				<td :key="column.id" v-for="column in headers">
-					<slot name="tableField"></slot>
-					<template v-if="column.viewer === 'text'">
-						<span>{{ item[column.value] }}</span>
-					</template>
-					<template v-else-if="column.viewer === 'imageViewer'">
-						<image-viewer v-model="item[column.value]" />
-					</template>
-					<template v-else-if="column.viewer === 'date'">
-						<span>{{ $moment(item[column.value]).fromNow() }}</span>
-					</template>
-					<template v-else-if="column.viewer === 'actions'">
-						<div></div>
-					</template>
-				</td>
-			</tr>
-		</template>
-	</v-data-table>
+	<div>
+		<slot name="aboveTable">
+			<slot name="createBtn">
+				<v-btn small color="info">Create</v-btn>
+			</slot>
+		</slot>
+		<v-data-table
+			v-model="selected"
+			:headers="headers"
+			:single-select="singleSelect"
+			:server-items-length="itemsCount"
+			:sort-by.sync="queryVariables.sortBy"
+			:sort-desc.sync="queryVariables.sortDesc"
+			:items-per-page.sync="queryVariables.itemPerPage"
+			:page.sync="queryVariables.page"
+			:items="items"
+			:loading="Boolean(loading)"
+			:show-select="showSelect"
+			class="elevation-1 customDataTable"
+		>
+			<template v-slot:item="{ item, headers }">
+				<tr>
+					<td :key="column.id" v-for="column in headers">
+						<slot name="tableField"></slot>
+						<template v-if="column.viewer === 'text'">
+							<span>{{ item[column.value] }}</span>
+						</template>
+						<template v-else-if="column.viewer === 'imageViewer'">
+							<image-viewer v-model="item[column.value]" />
+						</template>
+						<template v-else-if="column.viewer === 'date'">
+							<span>{{ $moment(item[column.value]).fromNow() }}</span>
+						</template>
+						<template v-else-if="column.viewer === 'actions'">
+							<div></div>
+						</template>
+					</td>
+				</tr>
+			</template>
+		</v-data-table>
+	</div>
 </template>
 <script>
 export default {
