@@ -1,0 +1,9 @@
+mutation assosiate_permissions($objects:[roles_permissions_insert_input!]!,$on_conflict:roles_permissions_on_conflict){
+    insert_roles_permissions(objects:$objects,on_conflict:$on_conflict){
+        returning{
+            id
+            permission
+            role_name
+        }
+    }
+}

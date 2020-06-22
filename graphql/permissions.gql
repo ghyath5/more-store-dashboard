@@ -1,0 +1,12 @@
+query permissions ($order_by:[permissions_order_by!], $limit:Int,$offset:Int,$where:permissions_bool_exp){
+  permissions(order_by:$order_by, limit:$limit,offset:$offset,where:$where){
+    name
+    description
+    permission_group_name
+  }
+  permissions_aggregate(where:$where){
+    aggregate{
+      count
+    }
+  }
+}
