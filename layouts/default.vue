@@ -4,6 +4,15 @@
 		<core-drawer />
 		<core-view />
 		<!-- <core-footer /> -->
+		<v-snackbar
+			v-model="$store.state.snack.active"
+			:color="$store.state.snack.color"
+			right
+			top
+			:timeout="$store.state.snack.timeout"
+		>
+			{{ $store.state.snack.text }}
+		</v-snackbar>
 	</v-app>
 </template>
 
@@ -21,3 +30,8 @@ export default {
 	},
 };
 </script>
+<style>
+.pointer {
+	cursor: pointer;
+}
+</style>
