@@ -1,8 +1,14 @@
 <template>
 	<div>
 		<slot name="aboveTable">
-			<slot name="createBtn">
-				<v-btn small color="info">Create</v-btn>
+			<slot name="createBtn" v-if="$has_permission(`create_${model.permission}`)">
+				<v-btn class="mb-2" small color="info">Create</v-btn>
+			</slot>
+			<slot name="reloadBtn">
+				<v-btn @click="fetchData" class="mb-2 float-right" small>
+					Reload Data
+					<v-icon small>mdi-refresh</v-icon>
+				</v-btn>
 			</slot>
 		</slot>
 		<v-data-table
@@ -15,26 +21,59 @@
 			:items-per-page.sync="queryVariables.itemPerPage"
 			:page.sync="queryVariables.page"
 			:items="items"
-			:loading="Boolean(loading)"
+			:loading="!!loading"
 			:show-select="showSelect"
+			item-key="name"
+			:expanded.sync="expanded"
 			class="elevation-1 customDataTable"
 		>
-			<template v-slot:item="{ item, headers }">
+			<template v-slot:expanded-item="props">
+				<slot name="expanded-item" :props="props">
+					<td :colspan="headers.length">
+						<nested-data-table
+							:parentData="{ model }"
+							:headers="headers"
+							:items="props.item[model.nestedDataKey]"
+						/>
+					</td>
+				</slot>
+			</template>
+			<template v-slot:item="props">
 				<tr>
-					<td :key="column.id" v-for="column in headers">
-						<slot name="tableField"></slot>
-						<template v-if="column.viewer === 'text'">
-							<span>{{ item[column.value] }}</span>
-						</template>
-						<template v-else-if="column.viewer === 'imageViewer'">
-							<image-viewer v-model="item[column.value]" />
-						</template>
-						<template v-else-if="column.viewer === 'date'">
-							<span>{{ $moment(item[column.value]).fromNow() }}</span>
-						</template>
-						<template v-else-if="column.viewer === 'actions'">
-							<div></div>
-						</template>
+					<td :key="column.id" v-for="column in props.headers">
+						<slot :props="props" :column="column" name="table-field">
+							<template v-if="column.viewer === 'text'">
+								<span>{{ props.item[column.value] }}</span>
+							</template>
+							<template v-else-if="column.viewer === 'imageViewer'">
+								<image-viewer v-model="props.item[column.value]" />
+							</template>
+							<template v-else-if="column.viewer === 'date'">
+								<span>{{ $moment(props.item[column.value]).fromNow() }}</span>
+							</template>
+							<template v-else-if="column.viewer === 'actions'">
+								<div class="d-flex">
+									<v-icon
+										v-if="$has_permission(`update_${model.permission}`)"
+										class="pointer"
+										:size="18"
+									>
+										mdi-square-edit-outline
+									</v-icon>
+									<v-icon
+										v-if="$has_permission(`delete_${model.permission}`)"
+										@click="deleteItem(props.item)"
+										class="pointer"
+										:size="18"
+									>
+										mdi-delete
+									</v-icon>
+								</div>
+							</template>
+							<template v-else-if="column.viewer === 'icon' && column.defaultIcon">
+								<v-icon small>{{ column.defaultIcon }}</v-icon>
+							</template>
+						</slot>
 					</td>
 				</tr>
 			</template>
@@ -42,8 +81,12 @@
 	</div>
 </template>
 <script>
+import NestedDataTable from '~/components/NestedDataTable.vue';
 export default {
 	name: 'DataTable',
+	components: {
+		NestedDataTable,
+	},
 	computed: {
 		sortDirection() {
 			if (Array.isArray(this.queryVariables.sortDesc)) {
@@ -59,6 +102,12 @@ export default {
 		},
 	},
 	props: {
+		initialWhere: {
+			default() {
+				return null;
+			},
+			type: Object,
+		},
 		model: {
 			required: true,
 			default() {
@@ -119,6 +168,7 @@ export default {
 	},
 	data() {
 		return {
+			expanded: [],
 			queryVariables: {
 				sortBy: 'updated_at',
 				sortDesc: true,
@@ -135,6 +185,7 @@ export default {
 		// Advanced query with parameters
 		// The 'variables' method is watched by vue
 		items: {
+			fetchPolicy: 'network-only',
 			query() {
 				return this.queryGql;
 			},
@@ -147,6 +198,7 @@ export default {
 					order_by: {
 						updated_at: 'desc',
 					},
+					where: this.initialWhere,
 				};
 			},
 			// Variables: deep object watch
@@ -183,6 +235,43 @@ export default {
 		},
 	},
 	methods: {
+		deleteItem(item) {
+			if (!this.$has_permission('delete_categories')) return;
+
+			const mutationOptions = {
+				mutation: this.deleteGql,
+				variables: {
+					id: item.id,
+				},
+				update: (store, { data }) => {
+					try {
+						const query = {
+							query: this.queryGql,
+							variables: {
+								limit: 10,
+								offset: 0,
+								order_by: {
+									updated_at: 'desc',
+								},
+								where: this.initialWhere,
+							},
+						};
+						// Read the cache
+						const storeData = store.readQuery(query);
+						const index = storeData[this.model.name].findIndex(
+							i => i.id === data['delete_' + this.model.name + '_by_pk'].id
+						);
+						if (index !== -1) {
+							storeData[this.model.name].splice(index, 1);
+						}
+						store.writeQuery({ ...query, data: storeData });
+					} catch (error) {
+						console.error(error);
+					}
+				},
+			};
+			this.$apollo.mutate(mutationOptions);
+		},
 		fetchData() {
 			let variables = {
 				order_by: {
