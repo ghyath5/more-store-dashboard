@@ -1,5 +1,9 @@
 import Cookies from 'js-cookie';
-export default ({ app, req, res }, inject) => {
+export default ({ app, req, res, store }, inject) => {
+	inject('has_permission', pname => {
+		if (!store.state || !store.state.permissions.length || !store.state.permissions.includes(pname)) return false;
+		return true;
+	});
 	inject('GET_COOKIE', cname => {
 		if (process.browser) {
 			return Cookies.get(cname);
