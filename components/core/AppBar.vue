@@ -1,10 +1,10 @@
 <template>
 	<v-app-bar id="core-app-bar" absolute app color="transparent" flat height="88">
 		<v-toolbar-title class="tertiary--text font-weight-light align-self-center">
-			<v-btn v-if="responsive" dark icon @click.stop="onClick">
+			<v-btn v-if="responsive" light icon @click.stop="onClick">
 				<v-icon>mdi-view-list</v-icon>
 			</v-btn>
-			{{ title }}
+			<!-- {{ title }} -->
 		</v-toolbar-title>
 
 		<v-spacer />
@@ -70,9 +70,9 @@ export default {
 	}),
 
 	watch: {
-		$route(val) {
-			this.title = val.name;
-		},
+		// $route(val) {
+		// 	this.title = val.name;
+		// },
 	},
 
 	mounted() {
