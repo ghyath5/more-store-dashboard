@@ -100,8 +100,13 @@ export default {
 				text: 'Dashboard',
 			},
 			{
+				to: '/products',
+				icon: 'mdi-storefront',
+				text: 'Products',
+			},
+			{
 				to: '/categories',
-				icon: 'mdi-account',
+				icon: 'mdi-tab',
 				text: 'Categories',
 			},
 			{
@@ -110,23 +115,13 @@ export default {
 				text: 'Table List',
 			},
 			{
-				to: '/typography',
-				icon: 'mdi-format-font',
-				text: 'Typography',
-			},
-			{
-				to: '/icons',
-				icon: 'mdi-chart-bubble',
-				text: 'Icons',
-			},
-			{
 				icon: 'mdi-account',
 				text: 'Users',
 				model: false,
 				children: [
-					{ icon: 'list', text: 'Parts', to: '/parts' },
+					{ icon: 'list', text: 'Clients', to: '/users/clients' },
 					{
-						icon: 'list',
+						icon: 'mdi-tab',
 						text: 'Categories',
 						to: '/partsCategories',
 					},
