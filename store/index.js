@@ -6,9 +6,18 @@ export const state = () => ({
 	permissions: [],
 	roles: [],
 	expireToken: 3, //in minuts
+	snack: {
+		text: '',
+		color: 'success',
+		timeout: 4000,
+		active: false,
+	},
 });
 
 export const mutations = {
+	setSnack(state, value) {
+		state.snack = value;
+	},
 	toggleSidebar(state) {
 		state.sidebar = !state.sidebar;
 	},
