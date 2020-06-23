@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import MeGql from '~/graphql/users/me.gql';
+import MeGql from '~/gql/users/all.gql';
 export default async ({ app, req, redirect }, inject) => {
 	let authClient = app.apolloProvider.clients.auth;
 	let client = app.apolloProvider.defaultClient;
@@ -24,6 +24,7 @@ export default async ({ app, req, redirect }, inject) => {
 						admin_refresh_token {
 							refresh_token
 							token
+							user_id
 						}
 					}
 				`,
@@ -59,6 +60,11 @@ export default async ({ app, req, redirect }, inject) => {
 		let userRes = await client
 			.query({
 				query: MeGql,
+				variables: {
+					where: {
+						id: { _eq: data.admin_refresh_token.user_id },
+					},
+				},
 			})
 			.catch(async e => {
 				//FIRE LOGOUT
@@ -66,8 +72,6 @@ export default async ({ app, req, redirect }, inject) => {
 
 				error = true;
 			});
-		console.log(error);
-
 		if (error) return false;
 		app.store.commit('setUser', userRes.data.users[0]);
 		return true;
