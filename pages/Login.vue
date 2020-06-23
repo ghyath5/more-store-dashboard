@@ -29,12 +29,12 @@
 	</v-row>
 </template>
 <script>
-import LoginGql from '~/graphql/auth/login.gql';
+import LoginGql from '~/gql/auth/login.gql';
 export default {
 	layout: 'auth',
 	data() {
 		return {
-			email: 'emai@email.email',
+			email: 'admin@admin.admin',
 			password: 'ghghgh',
 		};
 	},
