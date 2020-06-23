@@ -1,0 +1,5 @@
+mutation delete_permissions($where:roles_permissions_bool_exp!){
+  delete_roles_permissions(where:$where){
+    affected_rows
+  }
+}

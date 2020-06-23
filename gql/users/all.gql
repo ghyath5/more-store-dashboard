@@ -1,6 +1,6 @@
 #import "./fieldsFragment.gql"
-{
-    users{
+query users($where:users_bool_exp){
+    users(where:$where){
         ...usersFields
     }
 }

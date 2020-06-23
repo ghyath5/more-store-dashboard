@@ -1,7 +1,0 @@
-fragment ImageFields on images {
-    id
-    objectId
-    name
-    size
-    mimeType
-}
