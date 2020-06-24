@@ -109,31 +109,31 @@ export default {
 				icon: 'mdi-tab',
 				text: 'Categories',
 			},
-			{
-				to: '/table-list',
-				icon: 'mdi-clipboard-outline',
-				text: 'Table List',
-			},
-			{
-				icon: 'mdi-account',
-				text: 'Users',
-				model: false,
-				children: [
-					{ icon: 'list', text: 'Clients', to: '/users/clients' },
-					{
-						icon: 'mdi-tab',
-						text: 'Categories',
-						to: '/partsCategories',
-					},
-					{ icon: 'list', text: 'Vendors', to: '/vendors' },
-					{ icon: 'list', text: 'Recent Builds', to: '/recentBuilds' },
-				],
-			},
-			{
-				to: '/notifications',
-				icon: 'mdi-bell',
-				text: 'Notifications',
-			},
+			// {
+			// 	to: '/table-list',
+			// 	icon: 'mdi-clipboard-outline',
+			// 	text: 'Table List',
+			// },
+			// {
+			// 	icon: 'mdi-account',
+			// 	text: 'Users',
+			// 	model: false,
+			// 	children: [
+			// 		{ icon: 'list', text: 'Clients', to: '/users/clients' },
+			// 		{
+			// 			icon: 'mdi-tab',
+			// 			text: 'Categories',
+			// 			to: '/partsCategories',
+			// 		},
+			// 		{ icon: 'list', text: 'Vendors', to: '/vendors' },
+			// 		{ icon: 'list', text: 'Recent Builds', to: '/recentBuilds' },
+			// 	],
+			// },
+			// {
+			// 	to: '/notifications',
+			// 	icon: 'mdi-bell',
+			// 	text: 'Notifications',
+			// },
 		],
 	}),
 
