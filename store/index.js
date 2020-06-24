@@ -1,4 +1,77 @@
+import categoriesGql from '~/gql/categories/all.gql';
 export const state = () => ({
+	categoryHeaders: [
+		{
+			id: 1,
+			text: 'Image',
+			value: 'image',
+			viewer: 'imageViewer',
+			editor: 'imageUploader',
+			width: 120, //in px
+			sortable: false,
+		},
+		{
+			id: 100,
+			text: 'Name',
+			value: 'name',
+			viewer: 'text',
+			editor: 'textEditor',
+			settings: {
+				// fieldWidth:70 //in %
+			},
+		},
+		{
+			id: 150,
+			text: 'Position',
+			value: 'position',
+			viewer: 'text',
+			editor: 'textEditor',
+			settings: {
+				// fieldWidth:70 //in %
+			},
+		},
+		{
+			id: 190,
+			text: 'Parent',
+			value: 'parent_id',
+			editor: 'autocomplete',
+			notViewable: true,
+			settings: {
+				queryGql: categoriesGql,
+				itemValue: 'id',
+				itemText: 'name',
+				searchModel: 'categories',
+				searchOptions: {
+					key: 'name',
+					op: '_ilike',
+				},
+			},
+		},
+		{
+			id: 200,
+			text: 'Updated At',
+			value: 'updated_at',
+			viewer: 'date',
+			width: 180, //in px
+			notEditable: true,
+		},
+		{
+			id: 300,
+			text: '#',
+			viewer: 'actions',
+			width: 50,
+			sortable: false,
+			notEditable: true,
+		},
+		{
+			id: 400,
+			text: '',
+			viewer: 'icon',
+			width: 30,
+			sortable: false,
+			notEditable: true,
+		},
+	],
 	sidebar: false,
 	me: false,
 	token: '',
