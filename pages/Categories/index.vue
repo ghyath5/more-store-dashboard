@@ -1,7 +1,7 @@
 <template>
 	<v-container>
 		<data-table
-			:headers="headers"
+			:headers="$store.state.categoryHeaders"
 			:queryGql="categoriesGql"
 			:deleteGql="deleteGql"
 			:initialWhere="{
@@ -32,55 +32,6 @@ import deleteGql from '~/gql/categories/delete.gql';
 export default {
 	data() {
 		return {
-			headers: [
-				{
-					id: 1,
-					text: 'Image',
-					value: 'image',
-					viewer: 'imageViewer',
-					editor: 'imageUploader',
-					width: 120, //in px
-					sortable: false,
-				},
-				{
-					id: 100,
-					text: 'Name',
-					value: 'name',
-					viewer: 'text',
-					editor: 'textEditor',
-				},
-				{
-					id: 150,
-					text: 'Position',
-					value: 'position',
-					viewer: 'text',
-					editor: 'textEditor',
-				},
-				{
-					id: 200,
-					text: 'Updated At',
-					value: 'updated_at',
-					viewer: 'date',
-					width: 180, //in px
-					notEditable: true,
-				},
-				{
-					id: 300,
-					text: '#',
-					viewer: 'actions',
-					width: 50,
-					sortable: false,
-					notEditable: true,
-				},
-				{
-					id: 400,
-					text: '',
-					viewer: 'icon',
-					width: 30,
-					sortable: false,
-					notEditable: true,
-				},
-			],
 			categoriesGql,
 			deleteGql,
 		};
