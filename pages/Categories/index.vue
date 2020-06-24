@@ -15,7 +15,10 @@
 			}"
 		>
 			<template v-slot:table-field="{ props, column }">
-				<span v-if="column.viewer === 'icon'" @click="props.expand(!props.isExpanded)">
+				<span
+					v-if="column.viewer === 'icon' && props.item['sub_categories'].length"
+					@click="props.expand(!props.isExpanded)"
+				>
 					<v-icon v-if="!props.isExpanded">keyboard_arrow_right</v-icon>
 					<v-icon v-if="props.isExpanded">keyboard_arrow_down</v-icon>
 				</span>
