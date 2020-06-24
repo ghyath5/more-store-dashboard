@@ -2,7 +2,7 @@
 	<div>
 		<slot name="aboveTable">
 			<slot name="createBtn" v-if="$has_permission(`create_${model.permission}`)">
-				<v-btn class="mb-2" small color="info">Create</v-btn>
+				<v-btn class="mb-2" @click="$router.push(`/${model.name}/create`)" small color="info">Create</v-btn>
 			</slot>
 			<slot name="reloadBtn">
 				<v-btn @click="fetchData" class="mb-2 float-right" small>
@@ -12,7 +12,9 @@
 			</slot>
 		</slot>
 		<v-data-table
+			ref="dataTable"
 			:dark="dark"
+			fixed-header
 			dense
 			:hide-default-footer="hideFooter"
 			:hide-default-header="hideHeader"
@@ -33,7 +35,7 @@
 			class="elevation-1 customDataTable"
 		>
 			<template v-slot:expanded-item="props">
-				<td class="pt-1 pb-2" :colspan="headers.length">
+				<td class="pt-1 pb-2" style="z-index:1;position:relative" :colspan="headers.length">
 					<data-table
 						class="ml-6"
 						:headers="headers"
@@ -75,9 +77,6 @@
 <script>
 export default {
 	name: 'DataTable',
-	components: {
-		NestedDataTable,
-	},
 	computed: {
 		sortDirection() {
 			if (Array.isArray(this.queryVariables.sortDesc)) {
@@ -188,6 +187,13 @@ export default {
 			itemsCount: null,
 		};
 	},
+	watch: {
+		page() {
+			// let inside = this.$refs.dataTable.$el.children
+			// this.$vuetify.goTo(this.$refs.dataTable)
+			// this.$vuetify.goTo(inside[0].querySelector('.v-data-table-header'))
+		},
+	},
 	apollo: {
 		items: {
 			fetchPolicy: 'network-only',
@@ -291,8 +297,4 @@ export default {
 	},
 };
 </script>
-<style>
-/* .customDataTable table thead tr th {
-    min-width: 100px !important;
-  } */
-</style>
+<style></style>
