@@ -4,7 +4,7 @@ module.exports = {
 	 */
 	mode: 'spa',
 	head: {
-		title: 'nuxt-vuetify-dashboard',
+		title: 'Dashboard',
 		meta: [
 			{ charset: 'utf-8' },
 			{
@@ -14,7 +14,7 @@ module.exports = {
 			{
 				hid: 'description',
 				name: 'description',
-				content: 'Nuxt.js + Vuetify.js + Material Dashboard',
+				content: 'More store dashboard',
 			},
 		],
 		link: [
