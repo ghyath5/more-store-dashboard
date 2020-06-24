@@ -12,76 +12,67 @@
 			</slot>
 		</slot>
 		<v-data-table
+			:dark="dark"
+			dense
+			:hide-default-footer="hideFooter"
+			:hide-default-header="hideHeader"
 			v-model="selected"
 			:headers="headers"
 			:single-select="singleSelect"
 			:server-items-length="itemsCount"
 			:sort-by.sync="queryVariables.sortBy"
 			:sort-desc.sync="queryVariables.sortDesc"
-			:items-per-page.sync="queryVariables.itemPerPage"
-			:page.sync="queryVariables.page"
+			:items-per-page.sync="itemPerPage"
+			:page.sync="page"
 			:items="items"
 			:loading="!!loading"
 			:show-select="showSelect"
 			item-key="name"
 			:expanded.sync="expanded"
+			:height="height"
 			class="elevation-1 customDataTable"
 		>
 			<template v-slot:expanded-item="props">
-				<slot name="expanded-item" :props="props">
-					<td :colspan="headers.length">
-						<nested-data-table
-							:parentData="{ model }"
-							:headers="headers"
-							:items="props.item[model.nestedDataKey]"
-						/>
-					</td>
-				</slot>
+				<td class="pt-1 pb-2" :colspan="headers.length">
+					<data-table
+						class="ml-6"
+						:headers="headers"
+						:queryGql="queryGql"
+						:deleteGql="deleteGql"
+						:initialWhere="{
+							parent_id: { _eq: props.item.id },
+						}"
+						:height="null"
+						dark
+						:hideFooter="props.item[model.nestedDataKey].length <= itemPerPage"
+						:model="model"
+					>
+						<template v-slot:aboveTable>
+							<div></div>
+						</template>
+						<template v-slot:table-field="{ props, column }">
+							<span
+								v-if="column.viewer === 'icon' && props.item[model.nestedDataKey].length"
+								@click="props.expand(!props.isExpanded)"
+							>
+								<v-icon v-if="!props.isExpanded">keyboard_arrow_right</v-icon>
+								<v-icon v-if="props.isExpanded">keyboard_arrow_down</v-icon>
+							</span>
+						</template>
+					</data-table>
+				</td>
 			</template>
 			<template v-slot:item="props">
-				<tr>
-					<td :key="column.id" v-for="column in props.headers">
-						<slot :props="props" :column="column" name="table-field">
-							<template v-if="column.viewer === 'text'">
-								<span>{{ props.item[column.value] }}</span>
-							</template>
-							<template v-else-if="column.viewer === 'imageViewer'">
-								<image-viewer v-model="props.item[column.value]" />
-							</template>
-							<template v-else-if="column.viewer === 'date'">
-								<span>{{ $moment(props.item[column.value]).fromNow() }}</span>
-							</template>
-							<template v-else-if="column.viewer === 'actions'">
-								<div class="d-flex">
-									<v-icon
-										v-if="$has_permission(`update_${model.permission}`)"
-										class="pointer"
-										:size="18"
-									>
-										mdi-square-edit-outline
-									</v-icon>
-									<v-icon
-										v-if="$has_permission(`delete_${model.permission}`)"
-										@click="deleteItem(props.item)"
-										class="pointer"
-										:size="18"
-									>
-										mdi-delete
-									</v-icon>
-								</div>
-							</template>
-							<template v-else-if="column.viewer === 'icon' && column.defaultIcon">
-								<v-icon small>{{ column.defaultIcon }}</v-icon>
-							</template>
-						</slot>
-					</td>
-				</tr>
+				<table-fields @deleteItem="deleteItem" :model="model" :parentProps="props">
+					<template v-slot:table-field="fieldProps">
+						<slot :props="fieldProps.props" :column="fieldProps.column" name="table-field"></slot>
+					</template>
+				</table-fields>
 			</template>
 		</v-data-table>
 	</div>
 </template>
 <script>
-import NestedDataTable from '~/components/NestedDataTable.vue';
 export default {
 	name: 'DataTable',
 	components: {
@@ -102,6 +93,12 @@ export default {
 		},
 	},
 	props: {
+		height: {
+			default() {
+				return 400;
+			},
+			type: Number,
+		},
 		initialWhere: {
 			default() {
 				return null;
@@ -151,19 +148,29 @@ export default {
 				return false;
 			},
 		},
+		hideHeader: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+		hideFooter: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 		headers: {
 			type: Array,
 			default() {
 				return [];
 			},
 		},
-	},
-	watch: {
-		queryVariables: {
-			handler() {
-				this.fetchData();
+		dark: {
+			type: Boolean,
+			default() {
+				return false;
 			},
-			deep: true,
 		},
 	},
 	data() {
@@ -172,9 +179,9 @@ export default {
 			queryVariables: {
 				sortBy: 'updated_at',
 				sortDesc: true,
-				itemPerPage: 10,
-				page: 1,
 			},
+			itemPerPage: 10,
+			page: 1,
 			selected: [],
 			loading: 0,
 			items: [],
@@ -182,8 +189,6 @@ export default {
 		};
 	},
 	apollo: {
-		// Advanced query with parameters
-		// The 'variables' method is watched by vue
 		items: {
 			fetchPolicy: 'network-only',
 			query() {
@@ -193,10 +198,10 @@ export default {
 			variables() {
 				// Use vue reactive properties here
 				return {
-					limit: 10,
-					offset: 0,
+					limit: this.itemPerPage,
+					offset: (this.page - 1) * this.itemPerPage,
 					order_by: {
-						updated_at: 'desc',
+						[this.sortBy]: this.sortDirection,
 					},
 					where: this.initialWhere,
 				};
@@ -248,10 +253,10 @@ export default {
 						const query = {
 							query: this.queryGql,
 							variables: {
-								limit: 10,
-								offset: 0,
+								limit: this.itemPerPage,
+								offset: (this.page - 1) * this.itemPerPage,
 								order_by: {
-									updated_at: 'desc',
+									[this.sortBy]: this.sortDirection,
 								},
 								where: this.initialWhere,
 							},
@@ -273,14 +278,15 @@ export default {
 			this.$apollo.mutate(mutationOptions);
 		},
 		fetchData() {
-			let variables = {
-				order_by: {
-					[this.sortBy]: this.sortDirection,
-				},
-				limit: this.queryVariables.itemPerPage,
-				offset: (this.queryVariables.page - 1) * this.queryVariables.itemPerPage,
-			};
-			this.$apollo.queries.items.refetch(variables);
+			// let variables = {
+			// 	limit: 10,
+			// 	offset: 0,
+			// 	order_by: {
+			// 		updated_at: 'desc',
+			// 	},
+			// 	where: this.initialWhere,
+			// }
+			this.$apollo.queries.items.refetch();
 		},
 	},
 };
