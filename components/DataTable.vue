@@ -19,7 +19,7 @@
 			:hide-default-footer="hideFooter"
 			:hide-default-header="hideHeader"
 			v-model="selected"
-			:headers="headers"
+			:headers="headers.filter(h => !h.notViewable)"
 			:single-select="singleSelect"
 			:server-items-length="itemsCount"
 			:sort-by.sync="queryVariables.sortBy"
