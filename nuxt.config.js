@@ -1,8 +1,10 @@
+const env = require('dotenv').config();
 module.exports = {
 	/*
 	 ** Headers of the page
 	 */
 	mode: 'spa',
+	env: env.parsed,
 	head: {
 		title: 'Dashboard',
 		meta: [
