@@ -9,3 +9,4 @@
 /.nuxt
 .vercel
 dist
+.env
