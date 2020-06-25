@@ -34,7 +34,10 @@ export default {
 	},
 	computed: {
 		imageSrc() {
-			return this.value && this.value.objectId ? this.value.objectId : '/no_image.png';
+			let path = this.$store.state.apiUrl + this.$store.state.imagePath;
+			return this.value && this.value.objectId
+				? `${path}/${this.value.objectId}/${this.maxWidth}`
+				: '/no_image.png';
 		},
 	},
 };
