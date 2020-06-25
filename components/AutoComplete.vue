@@ -3,12 +3,16 @@
 		v-model="selected"
 		:search-input.sync="search"
 		:items="items"
-		color="blue-grey lighten-2"
+		color="blue"
 		:label="label"
 		:item-text="itemText"
 		:item-value="itemValue"
 		:multiple="multiple"
+		clearable
+		@click="getItems"
 		:return-object="returnObject"
+		:loading="searchLoading"
+		@change="selectItem"
 	>
 		<!-- <template v-slot:selection="data">
         <v-chip
@@ -96,15 +100,22 @@ export default {
 				return null;
 			},
 		},
+		multiple: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 	},
 	data: () => ({
 		items: [],
 		search: '',
 		selected: {},
+		searchLoading: false,
 	}),
 	watch: {
 		search(newVal, oldVal) {
-			if (!this.search || this.search.length < 1) return;
+			if (!this.search) return;
 			this.getItemsDebounced();
 		},
 	},
@@ -120,13 +131,18 @@ export default {
 	computed: {
 		searchValue() {
 			if (this.searchOptions.op.includes('like')) {
-				return `%${this.search}%`;
+				return this.search ? `%${this.search}%` : '%%';
 			}
-			return this.search;
+			return this.search ? this.search : '';
 		},
 	},
 	methods: {
+		selectItem(item) {
+			if (!item) return;
+			this.$emit('input', item);
+		},
 		async getItems() {
+			this.searchLoading = true;
 			await this.$apollo
 				.query({
 					query: this.queryGql,
@@ -138,10 +154,8 @@ export default {
 					},
 				})
 				.then(({ data }) => {
-					console.log(data);
-					// this.searchLoading = false
+					this.searchLoading = false;
 					this.items = data[this.searchModel];
-					console.log(this.searchModel);
 				});
 		},
 	},
