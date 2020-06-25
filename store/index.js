@@ -85,7 +85,7 @@ export const state = () => ({
 		text: '',
 		active: false,
 	},
-	apiUrl: process.env.SERVER_URL,
+	apiUrl: process.env.BASE_SERVER_URL,
 	imagePath: process.env.GET_IMAGE_PATH,
 });
 
