@@ -59,6 +59,7 @@ export default async ({ app, req, redirect }, inject) => {
 		});
 		let userRes = await client
 			.query({
+				fetchPolicy: 'network-only',
 				query: MeGql,
 				variables: {
 					where: {
