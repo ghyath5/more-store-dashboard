@@ -5,7 +5,8 @@
 		<core-view />
 		<!-- <core-footer /> -->
 		<v-snackbar
-			v-model="$store.state.snack.active"
+			v-if="$store.state.snack.active"
+			:value="true"
 			:color="$store.state.snack.color"
 			right
 			top

@@ -7,6 +7,7 @@ export const state = () => ({
 			value: 'image',
 			viewer: 'imageViewer',
 			editor: 'imageUploader',
+			connectKey: 'image_objectId',
 			width: 120, //in px
 			sortable: false,
 		},
@@ -16,6 +17,7 @@ export const state = () => ({
 			value: 'name',
 			viewer: 'text',
 			editor: 'textEditor',
+			rules: [v => !!v || 'Name is required'],
 			settings: {
 				// fieldWidth:70 //in %
 			},
@@ -25,7 +27,7 @@ export const state = () => ({
 			text: 'Position',
 			value: 'position',
 			viewer: 'text',
-			editor: 'textEditor',
+			editor: 'numberEditor',
 			settings: {
 				// fieldWidth:70 //in %
 			},
@@ -78,13 +80,13 @@ export const state = () => ({
 	isLoggedIn: false,
 	permissions: [],
 	roles: [],
-	expireToken: 3, //in minuts
+	expireToken: 2, //in minuts
 	snack: {
 		text: '',
-		color: 'success',
-		timeout: 4000,
 		active: false,
 	},
+	apiUrl: process.env.SERVER_URL,
+	imagePath: process.env.GET_IMAGE_PATH,
 });
 
 export const mutations = {

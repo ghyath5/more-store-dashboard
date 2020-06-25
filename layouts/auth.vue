@@ -6,6 +6,7 @@
 			</v-container>
 		</v-main>
 		<v-snackbar
+			v-if="$store.state.snack"
 			v-model="$store.state.snack.active"
 			:color="$store.state.snack.color"
 			right
