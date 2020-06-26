@@ -14,8 +14,10 @@
 			height="410"
 		>
 			<template v-slot:group.header="{ group }">
-				<td class="text-capitalize blue lighten-1 white--text" :colspan="headers.length">
-					{{ group }}
+				<td class="text-capitalize grey--text" :colspan="headers.length">
+					<div class="pt-4">
+						<b>{{ group }}</b>
+					</div>
 				</td>
 			</template>
 			<template v-slot:item="{ item, headers }">
@@ -27,8 +29,7 @@
 						</template>
 						<template v-else>
 							<v-checkbox
-								:readonly="column.value === 'admin'"
-								:color="column.value === 'admin' ? 'success' : ''"
+								:disabled="column.value === 'admin'"
 								@change="setRolePermission(item.name, column.value, $event)"
 								:input-value="column.permissions.includes(item.name)"
 								class="mx-2"
@@ -125,10 +126,11 @@ export default {
 	apollo: {
 		allRoles: {
 			query: rolesGql,
+			fetchPolicy: 'network-only',
 			variables() {
 				return {
 					order_by: {
-						id: 'asc',
+						place: 'asc',
 					},
 				};
 			},
