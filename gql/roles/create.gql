@@ -1,4 +1,6 @@
-#import "./fieldsFragment.gql"
-mutation createCategrory ($object:categories_insert_input!){
-    ...CategoryFiels
+#import "./rolesFieldsFragment.gql"
+mutation createRole ($object:roles_insert_input!){
+    insert_roles_one(object:$object){
+        ...RolesFields
+    }
 }

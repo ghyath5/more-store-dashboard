@@ -1,0 +1,8 @@
+fragment RolesFields on roles {
+    id
+    name
+    permissions{
+      permission
+    }
+    created_at    
+}
