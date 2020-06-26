@@ -189,9 +189,11 @@ export default {
 	},
 	watch: {
 		page() {
-			// let inside = this.$refs.dataTable.$el.children
-			// this.$vuetify.goTo(this.$refs.dataTable)
-			// this.$vuetify.goTo(inside[0].querySelector('.v-data-table-header'))
+			let table = this.$refs['dataTable'];
+			let wrapper = table.$el.querySelector('div.v-data-table__wrapper');
+
+			this.$vuetify.goTo(table); // to table
+			this.$vuetify.goTo(table, { container: wrapper }); // to header
 		},
 	},
 	apollo: {
