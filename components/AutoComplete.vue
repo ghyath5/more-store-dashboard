@@ -106,6 +106,12 @@ export default {
 				return false;
 			},
 		},
+		limit: {
+			type: Number,
+			default() {
+				return 10;
+			},
+		},
 	},
 	data: () => ({
 		items: [],
@@ -147,7 +153,7 @@ export default {
 				.query({
 					query: this.queryGql,
 					variables: {
-						limit: 10,
+						limit: this.limit,
 						where: {
 							[this.searchOptions.key]: { [this.searchOptions.op]: this.searchValue },
 						},
