@@ -8,7 +8,12 @@ Vue.use(Vuetify);
 export default ctx => {
 	const vuetify = new Vuetify({
 		theme: {
-			light: true,
+			themes: {
+				light: {
+					primary: '#000',
+					secondary: '#ed1c24',
+				},
+			},
 		},
 		icons: {
 			iconfont: 'mdi',
