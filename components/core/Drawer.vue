@@ -20,7 +20,7 @@
 			</v-list-item-avatar>
 
 			<v-list-item-title class="title">
-				VUETIFY MD
+				More for less
 			</v-list-item-title>
 		</v-list-item>
 
@@ -43,7 +43,7 @@
 							router
 							exact
 							color="black"
-							active-class="primary white--text"
+							active-class="secondary white--text"
 							class="ml-3"
 						>
 							<v-list-item-action v-if="child.icon">
@@ -55,7 +55,7 @@
 						</v-list-item>
 					</template>
 				</v-list-group>
-				<v-list-item v-else :key="i" :to="item.to" color="black" light active-class="primary white--text">
+				<v-list-item v-else :key="i" :to="item.to" color="black" light active-class="secondary white--text">
 					<v-list-item-action>
 						<v-icon>{{ item.icon }}</v-icon>
 					</v-list-item-action>
@@ -114,21 +114,20 @@ export default {
 			// 	icon: 'mdi-clipboard-outline',
 			// 	text: 'Table List',
 			// },
-			// {
-			// 	icon: 'mdi-account',
-			// 	text: 'Users',
-			// 	model: false,
-			// 	children: [
-			// 		{ icon: 'list', text: 'Clients', to: '/users/clients' },
-			// 		{
-			// 			icon: 'mdi-tab',
-			// 			text: 'Categories',
-			// 			to: '/partsCategories',
-			// 		},
-			// 		{ icon: 'list', text: 'Vendors', to: '/vendors' },
-			// 		{ icon: 'list', text: 'Recent Builds', to: '/recentBuilds' },
-			// 	],
-			// },
+			{
+				icon: 'mdi-folder-open',
+				text: 'Settings',
+				model: false,
+				children: [
+					{
+						icon: 'mdi-account-supervisor',
+						text: 'Users',
+						to: '/settings/users',
+					},
+					{ icon: 'mdi-security', text: 'Permission', to: '/settings/permissions' },
+					{ icon: 'mdi-sitemap', text: 'Roles', to: '/settings/roles' },
+				],
+			},
 			// {
 			// 	to: '/notifications',
 			// 	icon: 'mdi-bell',
