@@ -1,7 +1,10 @@
 <template>
 	<div>
 		<slot name="aboveTable">
-			<slot name="createBtn" v-if="$has_permission(`create_${model.permission}`)">
+			<slot
+				name="createBtn"
+				v-if="$has_permission(`create_${model.permission}`) || $has_permission(`manage_${model.permission}`)"
+			>
 				<v-btn class="mb-2" @click="$router.push(`/${model.name}/create`)" small color="info">Create</v-btn>
 			</slot>
 			<slot name="reloadBtn">
@@ -11,11 +14,11 @@
 				</v-btn>
 			</slot>
 		</slot>
+		<div style="clear:both"></div>
 		<v-data-table
 			ref="dataTable"
 			:dark="dark"
 			fixed-header
-			dense
 			:hide-default-footer="hideFooter"
 			:hide-default-header="hideHeader"
 			v-model="selected"
@@ -80,7 +83,7 @@ export default {
 	computed: {
 		tableHeight() {
 			let container = document.querySelector('.v-main__wrap') || { clientHeight: 700 };
-			return container.clientHeight - 150;
+			return this.height ? container.clientHeight - 200 : null;
 		},
 		sortDirection() {
 			if (Array.isArray(this.queryVariables.sortDesc)) {
@@ -90,12 +93,18 @@ export default {
 		},
 		sortBy() {
 			if (Array.isArray(this.queryVariables.sortBy)) {
-				return this.queryVariables.sortBy[0] ? this.queryVariables.sortBy[0] : 'updated_at';
+				return this.queryVariables.sortBy[0] ? this.queryVariables.sortBy[0] : this.defaultSortBy;
 			}
-			return this.queryVariables.sortBy ? this.queryVariables.sortBy : 'updated_at';
+			return this.queryVariables.sortBy ? this.queryVariables.sortBy : this.defaultSortBy;
 		},
 	},
 	props: {
+		defaultSortBy: {
+			default() {
+				return 'updated_at';
+			},
+			type: String,
+		},
 		height: {
 			default() {
 				return 480;
@@ -180,7 +189,7 @@ export default {
 		return {
 			expanded: [],
 			queryVariables: {
-				sortBy: 'updated_at',
+				sortBy: this.defaultSortBy,
 				sortDesc: true,
 			},
 			itemPerPage: 10,
@@ -253,7 +262,11 @@ export default {
 	},
 	methods: {
 		deleteItem(item) {
-			if (!this.$has_permission('delete_categories')) return;
+			if (
+				!this.$has_permission(`delete_${this.model.permission}`) &&
+				!this.$has_permission(`manage_${this.model.permission}`)
+			)
+				return;
 
 			const mutationOptions = {
 				mutation: this.deleteGql,
@@ -290,14 +303,6 @@ export default {
 			this.$apollo.mutate(mutationOptions);
 		},
 		fetchData() {
-			// let variables = {
-			// 	limit: 10,
-			// 	offset: 0,
-			// 	order_by: {
-			// 		updated_at: 'desc',
-			// 	},
-			// 	where: this.initialWhere,
-			// }
 			this.$apollo.queries.items.refetch();
 		},
 	},
