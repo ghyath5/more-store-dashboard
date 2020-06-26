@@ -32,14 +32,16 @@
 										:itemValue="header.settings.itemValue"
 										:itemText="header.settings.itemText"
 										:searchOptions="header.settings.searchOptions"
-										:searchModel="header.settings.searchModel"
+										:searchModel="header.settings.model"
+										:multiple="header.settings.multiple"
+										:limit="header.settings.limit"
 									></auto-complete>
 								</template>
 							</div>
 						</slot>
 					</template>
 					<slot name="sumbitBtn">
-						<v-btn :loading="loading" @click="action()" color="info">
+						<v-btn :disabled="!formValidat" :loading="loading" @click="action()" color="info">
 							<span>{{ mode }}</span>
 						</v-btn>
 					</slot>
@@ -81,6 +83,12 @@ export default {
 				return null;
 			},
 		},
+		customAction: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 	},
 	data() {
 		return {
@@ -91,11 +99,32 @@ export default {
 	},
 	methods: {
 		action() {
+			if (this.customAction) {
+				this.$emit('action', this.activeItem);
+				return;
+			}
 			this[this.mode]();
 		},
 		create() {
+			let object = {};
 			for (const header of this.headers) {
-				if (header.connectKey) {
+				if (header.settings && header.settings.connectItem) {
+					let data;
+					if (header.settings.many) {
+						data = [];
+						this.activeItem[header.value].map(one => {
+							data.push({
+								[header.settings.connectValue]: one,
+							});
+						});
+					} else {
+						data = {
+							[header.settings.connectValue]: this.activeItem[header.value],
+						};
+					}
+					object[header.settings.model] = { data };
+				} else {
+					object[header.value] = this.activeItem[header.value];
 				}
 			}
 			this.loading = true;
@@ -103,7 +132,7 @@ export default {
 				.mutate({
 					mutation: this.createGql,
 					variables: {
-						object: this.activeItem,
+						object,
 					},
 				})
 				.then(({ data }) => {
