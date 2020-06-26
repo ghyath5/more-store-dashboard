@@ -31,7 +31,7 @@
 			:show-select="showSelect"
 			item-key="name"
 			:expanded.sync="expanded"
-			:height="height"
+			:height="tableHeight"
 			class="elevation-1 customDataTable"
 		>
 			<template v-slot:expanded-item="props">
@@ -78,6 +78,10 @@
 export default {
 	name: 'DataTable',
 	computed: {
+		tableHeight() {
+			let container = document.querySelector('.v-main__wrap') || { clientHeight: 700 };
+			return container.clientHeight - 150;
+		},
 		sortDirection() {
 			if (Array.isArray(this.queryVariables.sortDesc)) {
 				return this.queryVariables.sortDesc[0] ? 'desc' : 'asc';
@@ -94,7 +98,7 @@ export default {
 	props: {
 		height: {
 			default() {
-				return 400;
+				return 480;
 			},
 			type: Number,
 		},
