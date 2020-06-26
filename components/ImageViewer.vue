@@ -7,6 +7,7 @@
 			:max-height="maxHeight"
 			:min-height="minHeight"
 			:src="imageSrc"
+			eager
 		/>
 	</div>
 </template>
