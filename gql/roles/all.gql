@@ -1,9 +1,11 @@
+#import "./rolesFieldsFragment.gql"
 query role_and_permissions ($order_by:[roles_order_by!], $limit:Int,$offset:Int,$where:roles_bool_exp){
   roles(order_by:$order_by, limit:$limit,offset:$offset,where:$where){
-    id
-    name
-    permissions{
-      permission
+    ...RolesFields
+  }
+  roles_aggregate(where:$where){
+    aggregate{
+      count
     }
   }
 }
