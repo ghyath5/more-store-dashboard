@@ -13,11 +13,21 @@
 				</template>
 				<template v-else-if="column.viewer === 'actions'">
 					<div class="d-flex">
-						<v-icon v-if="$has_permission(`update_${model.permission}`)" class="pointer" :size="18">
+						<v-icon
+							v-if="
+								$has_permission(`update_${model.permission}`) ||
+									$has_permission(`manage_${model.permission}`)
+							"
+							class="pointer"
+							:size="18"
+						>
 							mdi-square-edit-outline
 						</v-icon>
 						<v-icon
-							v-if="$has_permission(`delete_${model.permission}`)"
+							v-if="
+								$has_permission(`delete_${model.permission}`) ||
+									$has_permission(`manage_${model.permission}`)
+							"
 							@click="$emit('deleteItem', parentProps.item)"
 							class="pointer"
 							:size="18"
