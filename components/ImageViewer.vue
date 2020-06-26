@@ -1,6 +1,13 @@
 <template>
-	<div>
-		<v-img :max-width="maxWidth" :max-height="maxHeight" :aspect-ratio="aspectRatio" :src="imageSrc" />
+	<div class="pa-2">
+		<v-img
+			contain
+			:max-width="maxWidth"
+			:min-width="minWidth"
+			:max-height="maxHeight"
+			:min-height="minHeight"
+			:src="imageSrc"
+		/>
 	</div>
 </template>
 <script>
@@ -16,16 +23,28 @@ export default {
 		aspectRatio: {
 			type: Number,
 			default() {
-				return 1.8;
+				return 1;
 			},
 		},
 		maxWidth: {
 			type: Number,
 			default() {
-				return 80;
+				return 50;
+			},
+		},
+		minWidth: {
+			type: Number,
+			default() {
+				return 50;
 			},
 		},
 		maxHeight: {
+			type: Number,
+			default() {
+				return 50;
+			},
+		},
+		minHeight: {
 			type: Number,
 			default() {
 				return 50;
