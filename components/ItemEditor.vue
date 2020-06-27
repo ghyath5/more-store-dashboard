@@ -4,8 +4,8 @@
 			<v-col cols="10">
 				<v-form v-model="formValidat" ref="form">
 					<template v-for="header of headers">
-						<slot name="editorField" :header="header">
-							<div :key="header.id">
+						<div :key="header.id">
+							<slot name="editorField" :header="header" :activeItem.sync="activeItem">
 								<template v-if="header.editor === 'imageUploader'">
 									<image-uploader v-model="activeItem[header.connectKey]" />
 								</template>
@@ -16,11 +16,18 @@
 										:label="header.text"
 									></v-text-field>
 								</template>
+								<template v-if="header.editor === 'textareaEditor'">
+									<v-textarea
+										:rules="header.rules"
+										v-model="activeItem[header.value]"
+										:label="header.text"
+									></v-textarea>
+								</template>
 								<template v-if="header.editor === 'numberEditor'">
 									<v-text-field
 										:rules="header.rules"
 										type="number"
-										v-model="activeItem[header.value]"
+										v-model.number="activeItem[header.value]"
 										:label="header.text"
 									></v-text-field>
 								</template>
@@ -37,8 +44,8 @@
 										:limit="header.settings.limit"
 									></auto-complete>
 								</template>
-							</div>
-						</slot>
+							</slot>
+						</div>
 					</template>
 					<slot name="sumbitBtn">
 						<v-btn :disabled="!formValidat" :loading="loading" @click="action()" color="info">
@@ -123,6 +130,8 @@ export default {
 						};
 					}
 					object[header.settings.model] = { data };
+				} else if (header.connectKey) {
+					object[header.connectKey] = this.activeItem[header.connectKey];
 				} else {
 					object[header.value] = this.activeItem[header.value];
 				}
