@@ -13,19 +13,32 @@
 			sort-by="name"
 			height="410"
 		>
-			<template v-slot:group.header="{ group }">
-				<td class="text-capitalize grey--text" :colspan="headers.length">
-					<div class="pt-4">
-						<b>{{ group }}</b>
-					</div>
+			<template v-slot:group.header="{ group, items }">
+				<td :key="column.id" v-for="column of headers" class="pt-5">
+					<template v-if="column.value === 'name'">
+						<div class="text-capitalize grey--text text-left">
+							<b>{{ group }}</b>
+						</div>
+					</template>
+					<!-- <template v-else>
+							<v-checkbox class="ml-2"
+								:disabled="column.value === 'admin'"
+								:input-value="items.every(i=>column.permissions.includes(i.name))"
+								@change="setAllPermission(items, column.value, $event)"
+							></v-checkbox>
+						</template> -->
 				</td>
 			</template>
 			<template v-slot:item="{ item, headers }">
 				<tr>
 					<td :key="column.id" v-for="column of headers">
 						<template v-if="column.value === 'name'">
-							{{ item[column.value] }}
-							<span>{{ item.description }}</span>
+							<div class="text-center">
+								<div>
+									<b>{{ item[column.value] }}</b>
+								</div>
+								<span class="text-left caption" v-html="item.description"></span>
+							</div>
 						</template>
 						<template v-else>
 							<v-checkbox
@@ -59,6 +72,11 @@ export default {
 				offset: (this.queryVariables.page - 1) * this.queryVariables.itemPerPage,
 			};
 			this.$apollo.queries.allPermissions.refetch(variables);
+		},
+		setAllPermission(permissions, role_name, checked) {
+			for (let permission of permissions) {
+				this.setRolePermission(permission.name, role_name, checked);
+			}
 		},
 		setRolePermission(permission, role_name, checked) {
 			if (checked) {
@@ -169,6 +187,9 @@ export default {
 				return {
 					limit: 10,
 					offset: 0,
+					order_by: {
+						id: 'asc',
+					},
 				};
 			},
 			update(data) {
