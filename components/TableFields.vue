@@ -6,7 +6,16 @@
 					<span>{{ parentProps.item[column.value] }}</span>
 				</template>
 				<template v-else-if="column.viewer === 'imageViewer'">
-					<image-viewer v-model="parentProps.item[column.value]" />
+					<template v-if="!column.many">
+						<image-viewer v-model="parentProps.item[column.value]" />
+					</template>
+					<template v-else>
+						<image-viewer
+							v-if="parentProps.item[column.value].length"
+							v-model="parentProps.item[column.value].find(i => i.type === column.mainType)['image']"
+						/>
+						<image-viewer v-else />
+					</template>
 				</template>
 				<template v-else-if="column.viewer === 'date'">
 					<span>{{ $moment(parentProps.item[column.value]).fromNow() }}</span>
@@ -14,6 +23,7 @@
 				<template v-else-if="column.viewer === 'actions'">
 					<div class="d-flex">
 						<v-icon
+							color="blue"
 							v-if="
 								$has_permission(`update_${model.permission}`) ||
 									$has_permission(`manage_${model.permission}`)
@@ -24,6 +34,7 @@
 							mdi-square-edit-outline
 						</v-icon>
 						<v-icon
+							color="error"
 							v-if="
 								$has_permission(`delete_${model.permission}`) ||
 									$has_permission(`manage_${model.permission}`)
