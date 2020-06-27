@@ -1,0 +1,12 @@
+#import "./fieldsFragment.gql"
+mutation delete_category ($id:uuid!){
+    delete_categories_by_pk(id:$id){
+         ...CategoryFiels
+        parent_category{
+            ...CategoryFiels
+        }
+        sub_categories{
+            ...CategoryFiels
+        }
+    }
+}

@@ -1,0 +1,22 @@
+#import "../commonFieldsFragment.gql"
+fragment Fields on products {
+    id
+    created_at
+    updated_at
+    stock
+    sku
+    description
+    featured
+    images{
+      type
+      image{
+        ...ImageFields
+      }
+    }
+    name
+    saved_price
+    final_price
+    price
+    discount_percentage
+    
+}

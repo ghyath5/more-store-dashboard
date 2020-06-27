@@ -1,0 +1,6 @@
+#import "./fieldsFragment.gql"
+mutation createProduct ($object:products_insert_input!){
+    insert_products_one(object:$object){
+        ...Fields
+    }
+}
