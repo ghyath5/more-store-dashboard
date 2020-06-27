@@ -8,7 +8,7 @@ export const state = () => ({
 			value: 'image',
 			viewer: 'imageViewer',
 			editor: 'imageUploader',
-			connectKey: 'image_objectId',
+			connectKey: 'image_id',
 			width: 120, //in px
 			sortable: false,
 		},
@@ -171,6 +171,96 @@ export const state = () => ({
 			id: 800,
 			text: 'Created At',
 			value: 'created_at',
+			viewer: 'date',
+			width: 180, //in px
+			notEditable: true,
+		},
+		{
+			id: 1000,
+			text: '#',
+			viewer: 'actions',
+			width: 50,
+			sortable: false,
+			notEditable: true,
+		},
+	],
+	productHeaders: [
+		{
+			id: 1,
+			text: 'Image',
+			value: 'images',
+			viewer: 'imageViewer',
+			editor: 'imageUploader',
+			many: true,
+			mainType: 'thumbnail', //required if many
+			width: 120, //in px
+			sortable: false,
+		},
+		{
+			id: 100,
+			text: 'Name',
+			value: 'name',
+			viewer: 'text',
+			editor: 'textEditor',
+			rules: [v => !!v || 'Name is required'],
+			settings: {
+				// fieldWidth:70 //in %
+			},
+		},
+		{
+			id: 150,
+			text: 'Sku',
+			value: 'sku',
+			viewer: 'text',
+			editor: 'textEditor',
+			rules: [v => !!v || 'Sku is required'],
+			settings: {
+				// fieldWidth:70 //in %
+			},
+		},
+		{
+			id: 200,
+			text: 'Description',
+			value: 'description',
+			viewer: 'text',
+			editor: 'textareaEditor',
+		},
+		{
+			id: 300,
+			text: 'Regular Price',
+			value: 'price',
+			viewer: 'text',
+			editor: 'numberEditor',
+			rules: [v => !!v || 'Price is required'],
+		},
+		{
+			id: 320,
+			text: 'Discount %',
+			value: 'discount_percentage',
+			viewer: 'text',
+			editor: 'numberEditor',
+		},
+		{
+			id: 340,
+			text: 'Final Price',
+			value: 'final_price',
+			viewer: 'text',
+			editor: 'numberEditor',
+			sortable: false,
+			notEditable: true,
+		},
+		{
+			id: 350,
+			text: 'In Stock',
+			value: 'stock',
+			viewer: 'text',
+			editor: 'numberEditor',
+			defaultValue: 1,
+		},
+		{
+			id: 800,
+			text: 'Updated At',
+			value: 'updated_at',
 			viewer: 'date',
 			width: 180, //in px
 			notEditable: true,
