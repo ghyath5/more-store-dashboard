@@ -38,7 +38,7 @@ export default {
 	name: 'image-uploader',
 	props: {
 		value: {
-			type: Object,
+			type: null,
 			default() {
 				return null;
 			},
@@ -71,7 +71,7 @@ export default {
 		processFile() {
 			const file = this.$refs.pond.getFile();
 			if (file && file.serverId) {
-				this.$emit('input', JSON.parse(this.$refs.pond.getFile().serverId).objectId);
+				this.$emit('input', JSON.parse(this.$refs.pond.getFile().serverId).id);
 			}
 		},
 		handleFilePondInit: function() {
