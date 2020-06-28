@@ -43,7 +43,7 @@ export const state = () => ({
 				queryGql: categoriesGql,
 				itemValue: 'id',
 				itemText: 'name',
-				searchModel: 'categories',
+				model: 'categories',
 				searchOptions: {
 					key: 'name',
 					op: '_ilike',
