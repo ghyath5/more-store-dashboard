@@ -94,6 +94,14 @@ export default {
 				};
 			},
 		},
+		initialOrderBy: {
+			type: Object,
+			default() {
+				return {
+					id: 'asc',
+				};
+			},
+		},
 		searchModel: {
 			type: String,
 			default() {
@@ -154,6 +162,7 @@ export default {
 					query: this.queryGql,
 					variables: {
 						limit: this.limit,
+						order_by: this.initialOrderBy,
 						where: {
 							[this.searchOptions.key]: { [this.searchOptions.op]: this.searchValue },
 						},

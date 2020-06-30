@@ -16,14 +16,23 @@
 								</div>
 							</v-col>
 						</v-row>
-						<v-row>
-							<v-col sm="2">
-								<div class="text-center">
-									<image-uploader v-model="activeItem[header.connectKey]" />
-								</div>
-							</v-col>
-						</v-row>
 					</v-container>
+				</template>
+				<template v-else-if="header.editor === 'imagesUploader'">
+					<v-row>
+						<v-col cols="12" sm="6" md="4" lg="2" v-for="img of images" :key="img.id">
+							<div class="text-center">
+								<image-uploader @input="addImage($event, activeItem)" />
+							</div>
+						</v-col>
+						<v-col cols="12" sm="6" md="4" lg="2">
+							<v-card height="75" hover @click="addImageSlot" outlined>
+								<v-row style="height:100%" align="center" justify="center">
+									<v-icon>add</v-icon>
+								</v-row>
+							</v-card>
+						</v-col>
+					</v-row>
 				</template>
 			</template>
 		</item-editor>
@@ -38,6 +47,7 @@ export default {
 	},
 	data() {
 		return {
+			images: [{ id: '' }],
 			createGql,
 		};
 	},
@@ -47,6 +57,18 @@ export default {
 		}
 	},
 	methods: {
+		addImageSlot() {
+			this.images.push({
+				id: this.images.length,
+			});
+		},
+		addImage(image_id, activeItem) {
+			let images = activeItem['images'] || {
+				data: [],
+			};
+			images.data.push({ type: 'preview', image_id });
+			activeItem['images'] = images;
+		},
 		addThumbnail(image_id, activeItem) {
 			let images = activeItem['images'] || {
 				data: [],

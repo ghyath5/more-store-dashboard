@@ -15,13 +15,7 @@
 		<!-- </template> -->
 
 		<v-list-item two-line>
-			<v-list-item-avatar color="white">
-				<v-img src="https://cdn.vuetifyjs.com/images/logos/v.png" height="34" contain />
-			</v-list-item-avatar>
-
-			<v-list-item-title class="title">
-				More for less
-			</v-list-item-title>
+			<v-img src="/logo.png" height="34" width="70" contain />
 		</v-list-item>
 
 		<v-divider class="mx-3 mb-3" />

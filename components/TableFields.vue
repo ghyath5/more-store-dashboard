@@ -20,31 +20,72 @@
 				<template v-else-if="column.viewer === 'date'">
 					<span>{{ $moment(parentProps.item[column.value]).fromNow() }}</span>
 				</template>
+				<template v-else-if="column.viewer === 'checkbox'">
+					<v-checkbox :input-value="parentProps.item[column.value]" readonly></v-checkbox>
+				</template>
+				<template v-else-if="column.viewer === 'boolean'">
+					<v-icon v-if="parentProps.item[column.value]" color="primary">mdi-check-outline</v-icon>
+				</template>
 				<template v-else-if="column.viewer === 'actions'">
 					<div class="d-flex">
-						<v-icon
-							color="blue"
+						<slot
 							v-if="
 								$has_permission(`update_${model.permission}`) ||
 									$has_permission(`manage_${model.permission}`)
 							"
-							class="pointer"
-							:size="18"
+							name="edit-btn"
+							:item="parentProps.item"
 						>
-							mdi-square-edit-outline
-						</v-icon>
-						<v-icon
-							color="error"
-							v-if="
-								$has_permission(`delete_${model.permission}`) ||
-									$has_permission(`manage_${model.permission}`)
-							"
-							@click="$emit('deleteItem', parentProps.item)"
-							class="pointer"
-							:size="18"
-						>
-							mdi-delete
-						</v-icon>
+							<v-icon color="blue" class="pointer" :size="18">
+								mdi-square-edit-outline
+							</v-icon>
+						</slot>
+						<v-dialog v-model="deleteDialog.active" width="450">
+							<template v-slot:activator="{ on }">
+								<v-icon
+									v-on="on"
+									color="error"
+									v-if="
+										$has_permission(`delete_${model.permission}`) ||
+											$has_permission(`manage_${model.permission}`)
+									"
+									class="pointer"
+									:size="18"
+								>
+									mdi-delete
+								</v-icon>
+							</template>
+
+							<v-card>
+								<v-card-title class="headline grey lighten-2" primary-title>
+									Confirm
+								</v-card-title>
+								<v-card-text>
+									<slot name="delete-dialog-content">
+										Do you want to delete this permanently?
+									</slot>
+								</v-card-text>
+
+								<v-divider></v-divider>
+
+								<v-card-actions>
+									<v-btn color="primary" text @click="deleteDialog.active = false">
+										Cancel
+									</v-btn>
+									<v-spacer></v-spacer>
+									<v-btn
+										color="error"
+										text
+										@click="
+											$emit('deleteItem', parentProps.item);
+											deleteDialog.active = false;
+										"
+									>
+										Delete
+									</v-btn>
+								</v-card-actions>
+							</v-card>
+						</v-dialog>
 					</div>
 				</template>
 				<template v-else-if="column.viewer === 'icon' && column.defaultIcon">
@@ -57,6 +98,13 @@
 <script>
 export default {
 	name: 'TableFields',
+	data() {
+		return {
+			deleteDialog: {
+				active: false,
+			},
+		};
+	},
 	props: {
 		model: {
 			type: Object,

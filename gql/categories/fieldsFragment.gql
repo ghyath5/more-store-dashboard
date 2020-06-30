@@ -7,9 +7,5 @@ fragment CategoryFiels on categories {
         ...ImageFields   
     }
     name
-    position
-    # products{
-
-    # }
-    
+    position    
 }

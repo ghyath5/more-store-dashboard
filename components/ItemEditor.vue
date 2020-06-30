@@ -7,7 +7,7 @@
 						<div :key="header.id">
 							<slot name="editorField" :header="header" :activeItem.sync="activeItem">
 								<template v-if="header.editor === 'imageUploader'">
-									<image-uploader v-model="activeItem[header.connectKey]" />
+									<image-uploader v-model="activeItem[header.value]" />
 								</template>
 								<template v-if="header.editor === 'textEditor'">
 									<v-text-field
@@ -31,10 +31,13 @@
 										:label="header.text"
 									></v-text-field>
 								</template>
+								<template v-else-if="header.editor === 'checkboxEditor'">
+									<v-checkbox v-model="activeItem[header.value]" :label="header.text"></v-checkbox>
+								</template>
 								<template v-else-if="header.editor === 'autocomplete'">
 									<auto-complete
 										:label="header.text"
-										v-model="activeItem[header.value]"
+										v-model="activeItem[mode === 'create' ? header.value : header.objectValue]"
 										:queryGql="header.settings.queryGql"
 										:itemValue="header.settings.itemValue"
 										:itemText="header.settings.itemText"
@@ -42,6 +45,7 @@
 										:searchModel="header.settings.model"
 										:multiple="header.settings.multiple"
 										:limit="header.settings.limit"
+										:initialOrderBy="header.settings.orderBy"
 									></auto-complete>
 								</template>
 							</slot>
@@ -60,6 +64,12 @@
 <script>
 export default {
 	props: {
+		pk: {
+			type: String,
+			default() {
+				return 'id';
+			},
+		},
 		mode: {
 			type: String,
 			default() {
@@ -104,6 +114,9 @@ export default {
 			loading: false,
 		};
 	},
+	created() {
+		this.activeItem = this.item ? this.item : {};
+	},
 	methods: {
 		action() {
 			if (this.customAction) {
@@ -131,7 +144,9 @@ export default {
 					}
 					object[header.settings.model] = { data };
 				} else if (header.connectKey) {
-					object[header.connectKey] = this.activeItem[header.connectKey];
+					object[header.connectKey] = this.activeItem[header.value]
+						? this.activeItem[header.value][header.connectValue]
+						: null;
 				} else {
 					object[header.value] = this.activeItem[header.value];
 				}
@@ -150,17 +165,33 @@ export default {
 				});
 		},
 		update() {
+			let pk = this.activeItem[this.pk];
+			let _set = {};
+			for (const header of this.headers) {
+				if (header.connectKey) {
+					_set[header.connectKey] = this.activeItem[header.value]
+						? this.activeItem[header.value][header.connectValue]
+						: null;
+				} else if (header.editor === 'autocomplete') {
+					_set[header.value] = this.activeItem[header.objectValue];
+				} else {
+					_set[header.value] = this.activeItem[header.value];
+				}
+			}
 			this.loading = true;
 			this.$apollo
 				.mutate({
-					mutation: this.createGql,
+					mutation: this.updateGql,
 					variables: {
-						object: this.activeItem,
+						pk_columns: {
+							[this.pk]: pk,
+						},
+						_set,
 					},
 				})
 				.then(({ data }) => {
 					this.loading = false;
-					this.$emit('itemCreated', data);
+					this.$emit('itemUpdated', data);
 				});
 		},
 	},

@@ -5,11 +5,12 @@
 			ref="pond"
 			label-idle="Drop image here..."
 			:allow-multiple="multiple"
-			accepted-file-types="image/jpeg, image/png"
+			accepted-file-types="image/jpeg, image/png, image/jpg"
 			:server="server"
-			:files="files"
+			:files="currentFiles"
 			@init="handleFilePondInit"
 			@processfile="processFile"
+			@removefile="removeFile"
 		/>
 	</div>
 </template>
@@ -51,6 +52,19 @@ export default {
 		},
 	},
 	computed: {
+		currentFiles() {
+			if (this.value && this.value.objectId && !this.uploaded) {
+				return [
+					{
+						source: this.value.objectId,
+						options: {
+							type: 'local',
+						},
+					},
+				];
+			}
+			return null;
+		},
 		serverUrl() {
 			return `${this.$store.state.apiUrl}/admin`;
 		},
@@ -64,19 +78,34 @@ export default {
 						authorization: `Bearer ${this.$store.state.token}`,
 					},
 				},
+				fetch: null,
+				revert: null,
+				load: '/image/',
 			};
 		},
+		//
 	},
 	methods: {
+		removeFile(e) {
+			if (this.value) {
+				// this.$apollo.mutate({
+				// mutation: deleteFilesByObjectIdsGql,
+				// variables: {
+				// 	objectIds: [this.value.objectId]
+				// }
+				// })
+			}
+			this.$emit('input', null);
+		},
 		processFile() {
+			this.uploaded = true;
 			const file = this.$refs.pond.getFile();
 			if (file && file.serverId) {
-				this.$emit('input', JSON.parse(this.$refs.pond.getFile().serverId).id);
+				this.$emit('input', JSON.parse(this.$refs.pond.getFile().serverId));
 			}
 		},
 		handleFilePondInit: function() {
 			console.log('FilePond has initialized');
-
 			// FilePond instance methods are available on `this.$refs.pond`
 		},
 	},
@@ -85,7 +114,7 @@ export default {
 			headers: {
 				authorization: `Bearer ${this.$store.state.token}`,
 			},
-			files: [],
+			uploaded: false,
 		};
 	},
 };

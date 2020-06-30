@@ -2,24 +2,39 @@
 	<v-container>
 		<item-editor
 			mode="update"
-			:createGql="createGql"
+			:updateGql="updateGql"
 			:headers="$store.state.categoryHeaders.filter(e => !e.notEditable)"
 			@itemUpdated="updated"
+			:item="item"
 		></item-editor>
 	</v-container>
 </template>
 <script>
 import ItemEditor from '~/components/ItemEditor';
-import categoriesGql from '~/gql/categories/all.gql';
-import createGql from '~/gql/categories/create.gql';
+import categoryGql from '~/gql/categories/one.gql';
+import updateGql from '~/gql/categories/update.gql';
 export default {
 	components: {
 		ItemEditor,
 	},
+	async asyncData({ store, app, params, query, redirect }) {
+		let response = await app.apolloProvider.defaultClient.query({
+			query: categoryGql,
+			variables: {
+				id: params.id,
+			},
+		});
+		if (!response || !response.data || !response.data.categories_by_pk) {
+			redirect('/categories');
+		}
+		return {
+			item: response.data.categories_by_pk,
+		};
+	},
 	data() {
 		return {
-			createGql,
-			categoriesGql,
+			updateGql,
+			// categoriesGql,
 		};
 	},
 	middleware({ store, redirect }) {

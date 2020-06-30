@@ -1,7 +1,7 @@
 <template>
 	<v-row align="center" justify="center">
 		<v-col cols="12" sm="8" md="4">
-			<v-card class="elevation-12">
+			<v-card :loading="loading" class="elevation-12">
 				<v-card-text>
 					<v-form>
 						<v-text-field
@@ -30,17 +30,20 @@
 </template>
 <script>
 import LoginGql from '~/gql/auth/login.gql';
+import MeGql from '~/gql/users/all.gql';
 export default {
 	layout: 'auth',
 	data() {
 		return {
-			email: 'admin@admin.admin',
+			email: 'ghyath@admin.admin',
 			password: 'ghghgh',
+			loading: false,
 		};
 	},
 	methods: {
 		async login() {
 			const authClient = this.$apollo.provider.clients.auth;
+			this.loading = true;
 			let { data } = await authClient
 				.mutate({
 					mutation: LoginGql,
@@ -59,6 +62,21 @@ export default {
 				token: data.adminLogin.token,
 				isLoggedIn: true,
 			});
+			let userRes = await this.$apollo
+				.query({
+					fetchPolicy: 'network-only',
+					query: MeGql,
+					variables: {
+						where: {
+							id: { _eq: data.adminLogin.user_id },
+						},
+					},
+				})
+				.catch(async e => {
+					console.log(e);
+				});
+			this.loading = false;
+			this.$store.commit('setUser', userRes.data.users[0]);
 			this.$router.push('/');
 		},
 	},

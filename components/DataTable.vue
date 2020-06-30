@@ -1,80 +1,102 @@
 <template>
 	<div>
-		<slot name="aboveTable">
-			<slot
-				name="createBtn"
-				v-if="$has_permission(`create_${model.permission}`) || $has_permission(`manage_${model.permission}`)"
-			>
-				<v-btn class="mb-2" @click="$router.push(`/${model.name}/create`)" small color="info">Create</v-btn>
-			</slot>
-			<slot name="reloadBtn">
-				<v-btn @click="fetchData" class="mb-2 float-right" small>
-					Reload Data
-					<v-icon small>mdi-refresh</v-icon>
-				</v-btn>
-			</slot>
-		</slot>
-		<div style="clear:both"></div>
-		<v-data-table
-			ref="dataTable"
-			:dark="dark"
-			fixed-header
-			:hide-default-footer="hideFooter"
-			:hide-default-header="hideHeader"
-			v-model="selected"
-			:headers="headers.filter(h => !h.notViewable)"
-			:single-select="singleSelect"
-			:server-items-length="itemsCount"
-			:sort-by.sync="queryVariables.sortBy"
-			:sort-desc.sync="queryVariables.sortDesc"
-			:items-per-page.sync="itemPerPage"
-			:page.sync="page"
-			:items="items"
-			:loading="!!loading"
-			:show-select="showSelect"
-			item-key="name"
-			:expanded.sync="expanded"
-			:height="height"
-			class="elevation-1 customDataTable"
-		>
-			<template v-slot:expanded-item="props">
-				<td class="pt-1 pb-2" style="z-index:1;position:relative" :colspan="headers.length">
-					<data-table
-						class="ml-6"
-						:headers="headers"
-						:queryGql="queryGql"
-						:deleteGql="deleteGql"
-						:initialWhere="{
-							parent_id: { _eq: props.item.id },
-						}"
-						:height="null"
-						dark
-						:hideFooter="props.item[model.nestedDataKey].length <= itemPerPage"
-						:model="model"
+		<v-layout justify-center align-center column>
+			<v-flex xs12>
+				<slot name="aboveTable">
+					<slot
+						name="createBtn"
+						v-if="
+							$has_permission(`create_${model.permission}`) ||
+								$has_permission(`manage_${model.permission}`)
+						"
 					>
-						<template v-slot:aboveTable>
-							<div></div>
-						</template>
-						<template v-slot:table-field="{ props, column }">
-							<span
-								v-if="column.viewer === 'icon' && props.item[model.nestedDataKey].length"
-								@click="props.expand(!props.isExpanded)"
+						<v-btn class="mb-2" @click="$router.push(`/${model.name}/create`)" small color="info">
+							Create
+						</v-btn>
+					</slot>
+					<slot name="reloadBtn">
+						<v-btn @click="fetchData" class="mb-2 float-right" small>
+							Reload Data
+							<v-icon small>mdi-refresh</v-icon>
+						</v-btn>
+					</slot>
+				</slot>
+				<div style="clear:both"></div>
+				<v-data-table
+					ref="dataTable"
+					:dark="dark"
+					fixed-header
+					:hide-default-footer="hideFooter"
+					:hide-default-header="hideHeader"
+					v-model="selected"
+					:headers="headers.filter(h => !h.notViewable)"
+					:single-select="singleSelect"
+					:server-items-length="itemsCount"
+					:sort-by.sync="queryVariables.sortBy"
+					:sort-desc.sync="queryVariables.sortDesc"
+					:items-per-page.sync="itemPerPage"
+					:page.sync="page"
+					:items="items"
+					:loading="!!loading"
+					:show-select="showSelect"
+					item-key="name"
+					:expanded.sync="expanded"
+					:height="height"
+					class="elevation-1 customDataTable"
+				>
+					<template v-slot:expanded-item="props">
+						<td class="pt-1 pb-2" style="z-index:1;position:relative" :colspan="headers.length">
+							<data-table
+								class="ml-6"
+								:headers="headers"
+								:queryGql="queryGql"
+								:deleteGql="deleteGql"
+								:initialWhere="{
+									parent_id: { _eq: props.item.id },
+								}"
+								:height="null"
+								dark
+								:hideFooter="props.item[model.nestedDataKey].length <= itemPerPage"
+								:model="model"
 							>
-								<v-icon v-if="!props.isExpanded">keyboard_arrow_right</v-icon>
-								<v-icon v-if="props.isExpanded">keyboard_arrow_down</v-icon>
-							</span>
-						</template>
-					</data-table>
-				</td>
-			</template>
-			<template v-slot:item="props">
-				<table-fields @deleteItem="deleteItem" :model="model" :parentProps="props">
-					<template v-slot:table-field="fieldProps">
-						<slot :props="fieldProps.props" :column="fieldProps.column" name="table-field"></slot>
+								<template v-slot:aboveTable>
+									<div></div>
+								</template>
+								<template v-slot:table-field="{ props, column }">
+									<span
+										v-if="column.viewer === 'icon' && props.item[model.nestedDataKey].length"
+										@click="props.expand(!props.isExpanded)"
+									>
+										<v-icon v-if="!props.isExpanded">keyboard_arrow_right</v-icon>
+										<v-icon v-if="props.isExpanded">keyboard_arrow_down</v-icon>
+									</span>
+								</template>
+								<template v-slot:table-field="fieldProps">
+									<slot
+										:props="fieldProps.props"
+										:column="fieldProps.column"
+										name="table-field"
+									></slot>
+								</template>
+								<template v-slot:edit-btn="{ item }">
+									<slot :item="item" name="edit-btn"></slot>
+								</template>
+							</data-table>
+						</td>
 					</template>
-				</table-fields>
-			</template>
-		</v-data-table>
+					<template v-slot:item="props">
+						<table-fields @deleteItem="deleteItem" :model="model" :parentProps="props">
+							<template v-slot:table-field="fieldProps">
+								<slot :props="fieldProps.props" :column="fieldProps.column" name="table-field"></slot>
+							</template>
+							<template v-slot:edit-btn="{ item }">
+								<slot :item="item" name="edit-btn"></slot>
+							</template>
+						</table-fields>
+					</template>
+				</v-data-table>
+			</v-flex>
+		</v-layout>
 	</div>
 </template>
 <script>
@@ -308,4 +330,8 @@ export default {
 	},
 };
 </script>
-<style></style>
+<style scoped>
+* >>> table thead th {
+	white-space: nowrap !important;
+}
+</style>

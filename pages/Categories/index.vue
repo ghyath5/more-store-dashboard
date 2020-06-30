@@ -23,6 +23,13 @@
 					<v-icon v-if="props.isExpanded">keyboard_arrow_down</v-icon>
 				</span>
 			</template>
+			<template v-slot:edit-btn="{ item }">
+				<nuxt-link style="text-decoration:none" :to="`/categories/${item.id}/update`">
+					<v-icon color="blue" class="pointer" :size="18">
+						mdi-square-edit-outline
+					</v-icon>
+				</nuxt-link>
+			</template>
 		</data-table>
 	</v-container>
 </template>

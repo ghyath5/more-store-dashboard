@@ -189,23 +189,14 @@
 					</v-tabs-items>
 				</material-card>
 			</v-col>
-			<v-col cols="12" class="editor">
-				<div class="editor-label">CKEditor</div>
-				<editor :value="editorText"></editor>
-			</v-col>
 		</v-row>
 	</v-container>
 </template>
 
 <script>
-import Editor from '../components/helper/Editor.vue';
-
 export default {
-	components: { Editor },
 	data() {
 		return {
-			editorText:
-				'<h2>Material Dashboard</h2><blockquote><p>made by Rekryt (vk.com/krupkin.sergey)<br>sep 2019</p></blockquote><p>&nbsp;</p><p>Special thanks to:<br>https://nuxtjs.org<br>https://vuetifyjs.com<br>https://www.creative-tim.com</p>',
 			emailsSubscriptionChart: {
 				data: {
 					labels: ['Ja', 'Fe', 'Ma', 'Ap', 'Mai', 'Ju', 'Jul', 'Au', 'Se', 'Oc', 'No', 'De'],
@@ -308,26 +299,26 @@ export default {
 			overviewData: [
 				{
 					color: 'red',
-					icon: 'mdi-bug',
-					title: 'Users',
+					icon: 'mdi-account-group-outline',
+					title: 'Clients',
 					value: '23',
 				},
 				{
 					color: 'green',
-					icon: 'mdi-bug',
+					icon: 'card_travel',
 					title: 'Orders',
 					value: '23',
 				},
 				{
 					color: 'black',
-					icon: 'mdi-bug',
+					icon: 'mdi-storefront',
 					title: 'Products',
 					value: '234',
 				},
 				{
 					color: 'orange',
-					icon: 'mdi-bug',
-					title: 'Users',
+					icon: 'attach_money',
+					title: 'Earning',
 					value: '23',
 				},
 			],

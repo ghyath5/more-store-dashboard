@@ -13,7 +13,7 @@
 			sort-by="name"
 			height="410"
 		>
-			<template v-slot:group.header="{ group, items }">
+			<template v-slot:group.header="{ group }">
 				<td :key="column.id" v-for="column of headers" class="pt-5">
 					<template v-if="column.value === 'name'">
 						<div class="text-capitalize grey--text text-left">

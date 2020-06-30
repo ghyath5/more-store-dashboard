@@ -9,7 +9,8 @@ export const state = () => ({
 			viewer: 'imageViewer',
 			editor: 'imageUploader',
 			connectKey: 'image_id',
-			width: 120, //in px
+			connectValue: 'id',
+			width: 100, //in px
 			sortable: false,
 		},
 		{
@@ -37,6 +38,7 @@ export const state = () => ({
 			id: 190,
 			text: 'Parent',
 			value: 'parent_id',
+			objectValue: 'parent_category',
 			editor: 'autocomplete',
 			notViewable: true,
 			settings: {
@@ -44,6 +46,9 @@ export const state = () => ({
 				itemValue: 'id',
 				itemText: 'name',
 				model: 'categories',
+				orderBy: {
+					parent_id: 'asc_nulls_first',
+				},
 				searchOptions: {
 					key: 'name',
 					op: '_ilike',
@@ -224,6 +229,7 @@ export const state = () => ({
 			value: 'description',
 			viewer: 'text',
 			editor: 'textareaEditor',
+			rules: [v => !!v || 'Description is required'],
 		},
 		{
 			id: 300,
@@ -256,6 +262,21 @@ export const state = () => ({
 			viewer: 'text',
 			editor: 'numberEditor',
 			defaultValue: 1,
+		},
+		{
+			id: 400,
+			text: 'Featured',
+			value: 'featured',
+			viewer: 'boolean',
+			editor: 'checkboxEditor',
+			defaultValue: 1,
+		},
+		{
+			id: 450,
+			text: 'Images',
+			value: 'images',
+			editor: 'imagesUploader',
+			notViewable: true,
 		},
 		{
 			id: 800,
