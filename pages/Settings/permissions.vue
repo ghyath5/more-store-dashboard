@@ -11,7 +11,7 @@
 			ref="permissions-table"
 			group-by="permission_group_name"
 			sort-by="name"
-			height="410"
+			height="490"
 		>
 			<template v-slot:group.header="{ group }">
 				<td :key="column.id" v-for="column of headers" class="pt-5">
