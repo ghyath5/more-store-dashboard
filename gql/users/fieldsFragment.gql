@@ -2,6 +2,7 @@ fragment usersFields on users{
     id
     name
     email
+    mobile_number
     roles{
         role{
             name
