@@ -42,7 +42,7 @@
 					</v-card>
 				</v-menu>
 
-				<v-btn to="/user-profile" icon>
+				<v-btn to="/me" icon>
 					<v-icon color="tertiary">
 						mdi-account
 					</v-icon>
