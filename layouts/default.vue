@@ -5,8 +5,8 @@
 		<core-view />
 		<!-- <core-footer /> -->
 		<v-snackbar
-			v-if="$store.state.snack.active"
-			:value="true"
+			v-if="snackActive"
+			v-model="snackActive"
 			:color="$store.state.snack.color"
 			right
 			top
@@ -23,6 +23,16 @@ export default {
 	data: () => ({
 		drawer: null,
 	}),
+	computed: {
+		snackActive: {
+			get() {
+				return this.$store.state.snack.active;
+			},
+			set(value) {
+				this.$store.commit('setSnack', { active: false });
+			},
+		},
+	},
 	components: {
 		CoreDrawer: () => import('@/components/core/Drawer'),
 		// CoreFooter: () => import('@/components/core/Footer'),
