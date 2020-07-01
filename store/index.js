@@ -252,7 +252,6 @@ export const state = () => ({
 			value: 'final_price',
 			viewer: 'text',
 			editor: 'numberEditor',
-			sortable: false,
 			notEditable: true,
 		},
 		{
