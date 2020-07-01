@@ -1,0 +1,7 @@
+{
+    "files.watcherExclude": {
+        "**/.git/**": true,
+        "**/.nuxt/**": true,
+        "**/.vercel//**": true
+    }
+}
