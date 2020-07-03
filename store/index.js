@@ -203,22 +203,22 @@ export const state = () => ({
 		},
 		{
 			id: 100,
-			text: 'Name',
-			value: 'name',
+			text: 'Sku',
+			value: 'sku',
 			viewer: 'text',
 			editor: 'textEditor',
-			rules: [v => !!v || 'Name is required'],
+			rules: [v => !!v || 'Sku is required'],
 			settings: {
 				// fieldWidth:70 //in %
 			},
 		},
 		{
 			id: 150,
-			text: 'Sku',
-			value: 'sku',
+			text: 'Name',
+			value: 'name',
 			viewer: 'text',
 			editor: 'textEditor',
-			rules: [v => !!v || 'Sku is required'],
+			rules: [v => !!v || 'Name is required'],
 			settings: {
 				// fieldWidth:70 //in %
 			},
@@ -238,6 +238,9 @@ export const state = () => ({
 			viewer: 'text',
 			editor: 'numberEditor',
 			rules: [v => !!v || 'Price is required'],
+			editorSettings: {
+				width: 50,
+			},
 		},
 		{
 			id: 320,
@@ -245,6 +248,11 @@ export const state = () => ({
 			value: 'discount_percentage',
 			viewer: 'text',
 			editor: 'numberEditor',
+			suffix: '%',
+			inputClasses: '',
+			editorSettings: {
+				width: 50,
+			},
 		},
 		{
 			id: 340,
@@ -261,6 +269,9 @@ export const state = () => ({
 			viewer: 'text',
 			editor: 'numberEditor',
 			defaultValue: 1,
+			editorSettings: {
+				width: 50,
+			},
 		},
 		{
 			id: 400,

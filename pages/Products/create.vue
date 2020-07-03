@@ -62,22 +62,22 @@ export default {
 				id: this.images.length,
 			});
 		},
-		addImage(image_id, activeItem) {
+		addImage({ id }, activeItem) {
 			let images = activeItem['images'] || {
 				data: [],
 			};
-			images.data.push({ type: 'preview', image_id });
+			images.data.push({ type: 'preview', image_id: id });
 			activeItem['images'] = images;
 		},
-		addThumbnail(image_id, activeItem) {
+		addThumbnail({ id }, activeItem) {
 			let images = activeItem['images'] || {
 				data: [],
 			};
 			if (images.data.length && images.data.find(img => img.type === 'thumbnail')) {
 				let thumbnail = images.data.find(img => img.type === 'thumbnail');
-				thumbnail.image_id = image_id;
+				thumbnail.image_id = id;
 			} else {
-				let thumbnail = { type: 'thumbnail', image_id };
+				let thumbnail = { type: 'thumbnail', image_id: id };
 				images.data.push(thumbnail);
 			}
 			activeItem['images'] = images;

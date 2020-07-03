@@ -25,6 +25,7 @@
 								</template>
 								<template v-if="header.editor === 'numberEditor'">
 									<v-text-field
+										:suffix="header.suffix"
 										:rules="header.rules"
 										type="number"
 										v-model.number="activeItem[header.value]"
@@ -120,7 +121,7 @@ export default {
 	methods: {
 		action() {
 			if (this.customAction) {
-				this.$emit('action', this.activeItem);
+				this.$emit('action', { item: this.activeItem, headers: this.headers });
 				return;
 			}
 			this[this.mode]();
@@ -151,6 +152,8 @@ export default {
 					object[header.value] = this.activeItem[header.value];
 				}
 			}
+			console.log(object);
+
 			this.loading = true;
 			this.$apollo
 				.mutate({
@@ -162,6 +165,9 @@ export default {
 				.then(({ data }) => {
 					this.loading = false;
 					this.$emit('itemCreated', data);
+				})
+				.catch(e => {
+					this.loading = false;
 				});
 		},
 		update() {

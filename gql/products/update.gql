@@ -1,0 +1,6 @@
+#import "./fieldsFragment.gql"
+mutation updateProduct ($pk_columns:products_pk_columns_input!, $_set:products_set_input){
+    update_products_by_pk(pk_columns:$pk_columns, _set:$_set){
+        ...Fields
+    }
+}

@@ -41,7 +41,6 @@
 					:show-select="showSelect"
 					item-key="name"
 					:expanded.sync="expanded"
-					:height="height"
 					class="elevation-1 customDataTable"
 				>
 					<template v-slot:expanded-item="props">
@@ -333,5 +332,8 @@ export default {
 <style scoped>
 * >>> table thead th {
 	white-space: nowrap !important;
+}
+* >>> .v-data-table__wrapper {
+	max-height: 460px !important;
 }
 </style>

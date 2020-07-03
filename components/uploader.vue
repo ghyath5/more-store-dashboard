@@ -95,7 +95,8 @@ export default {
 				// }
 				// })
 			}
-			this.$emit('input', null);
+			this.$emit('remove', { ...this.value });
+			// this.$emit('input', null);
 		},
 		processFile() {
 			this.uploaded = true;

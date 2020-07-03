@@ -3,7 +3,12 @@
 		<td :key="column.id" v-for="column in parentProps.headers">
 			<slot :props="parentProps" :column="column" name="table-field">
 				<template v-if="column.viewer === 'text'">
-					<span>{{ parentProps.item[column.value] }}</span>
+					<span style="cursor:pointer" v-if="parentProps.item[column.value].length >= 30">
+						{{ parentProps.item[column.value].substring(0, 30) }}...
+					</span>
+					<span v-else>
+						{{ parentProps.item[column.value] }}
+					</span>
 				</template>
 				<template v-else-if="column.viewer === 'imageViewer'">
 					<template v-if="!column.many">
@@ -36,7 +41,12 @@
 							name="edit-btn"
 							:item="parentProps.item"
 						>
-							<v-icon color="blue" class="pointer" :size="18">
+							<v-icon
+								@click="$router.push(`/${model.name}/${parentProps.item.id}/update`)"
+								color="blue"
+								class="pointer"
+								:size="18"
+							>
 								mdi-square-edit-outline
 							</v-icon>
 						</slot>

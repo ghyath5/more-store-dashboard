@@ -1,5 +1,5 @@
 <template>
-	<v-container>
+	<v-container fluid>
 		<data-table
 			:headers="$store.state.categoryHeaders"
 			:queryGql="categoriesGql"
