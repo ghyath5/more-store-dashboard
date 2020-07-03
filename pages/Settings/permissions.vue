@@ -12,6 +12,7 @@
 			group-by="permission_group_name"
 			sort-by="name"
 			height="490"
+			:key="permissionsKey"
 		>
 			<template v-slot:group.header="{ group }">
 				<td :key="column.id" v-for="column of headers" class="pt-5">
@@ -42,7 +43,7 @@
 						</template>
 						<template v-else>
 							<v-checkbox
-								:disabled="column.value === 'admin'"
+								:disabled="column.permissions.includes(item.name) && column.value === 'admin'"
 								@change="setRolePermission(item.name, column.value, $event)"
 								:input-value="column.permissions.includes(item.name)"
 								class="mx-2"
@@ -72,6 +73,7 @@ export default {
 				offset: (this.queryVariables.page - 1) * this.queryVariables.itemPerPage,
 			};
 			this.$apollo.queries.allPermissions.refetch(variables);
+			this.$apollo.queries.allRoles.refetch();
 		},
 		setAllPermission(permissions, role_name, checked) {
 			for (let permission of permissions) {
@@ -133,6 +135,7 @@ export default {
 				itemPerPage: 10,
 				page: 1,
 			},
+			permissionsKey: 1,
 			changed: false,
 			loading: 0,
 			headers: [],
@@ -151,9 +154,6 @@ export default {
 						place: 'asc',
 					},
 				};
-			},
-			update(data) {
-				// return data
 			},
 			result({ data, loading, networkStatus }) {
 				this.headers = [
@@ -198,6 +198,7 @@ export default {
 			result({ data, loading, networkStatus }) {
 				this.permissions = data.permissions;
 				this.permissionsCount = data.permissions_aggregate.aggregate.count;
+				this.permissionsKey++;
 			},
 			error(error) {
 				console.error("We've got an error!", error);
