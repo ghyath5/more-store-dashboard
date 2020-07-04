@@ -42,10 +42,12 @@
 					item-key="name"
 					:expanded.sync="expanded"
 					class="elevation-1 customDataTable"
+					:class="{ child: child }"
 				>
 					<template v-slot:expanded-item="props">
 						<td class="pt-1 pb-2" style="z-index:1;position:relative" :colspan="headers.length">
 							<data-table
+								child
 								class="ml-6"
 								:headers="headers"
 								:queryGql="queryGql"
@@ -80,6 +82,9 @@
 								<template v-slot:edit-btn="{ item }">
 									<slot :item="item" name="edit-btn"></slot>
 								</template>
+								<template v-slot:delete-btn="{ item }">
+									<slot :item="item" name="delete-btn"></slot>
+								</template>
 							</data-table>
 						</td>
 					</template>
@@ -90,6 +95,9 @@
 							</template>
 							<template v-slot:edit-btn="{ item }">
 								<slot :item="item" name="edit-btn"></slot>
+							</template>
+							<template v-slot:delete-btn="{ item }">
+								<slot :item="item" name="delete-btn"></slot>
 							</template>
 						</table-fields>
 					</template>
@@ -108,9 +116,9 @@ export default {
 		// },
 		sortDirection() {
 			if (Array.isArray(this.queryVariables.sortDesc)) {
-				return this.queryVariables.sortDesc[0] ? 'desc' : 'asc';
+				return this.queryVariables.sortDesc[0] ? 'desc_nulls_last' : 'asc_nulls_last';
 			}
-			return this.queryVariables.sortDesc ? 'desc' : 'asc';
+			return this.queryVariables.sortDesc ? 'desc_nulls_last' : 'asc_nulls_last';
 		},
 		sortBy() {
 			if (Array.isArray(this.queryVariables.sortBy)) {
@@ -205,6 +213,12 @@ export default {
 				return false;
 			},
 		},
+		child: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 	},
 	data() {
 		return {
@@ -237,15 +251,26 @@ export default {
 				return this.queryGql;
 			},
 			// Reactive parameters
+			debounce: 500,
 			variables() {
+				let searchKey = !this.child ? this.model.searchKey || 'name' : null;
 				// Use vue reactive properties here
+				console.log(searchKey);
+
 				return {
 					limit: this.itemPerPage,
 					offset: (this.page - 1) * this.itemPerPage,
 					order_by: {
 						[this.sortBy]: this.sortDirection,
 					},
-					where: this.initialWhere,
+					where: {
+						...(searchKey && {
+							[searchKey]: {
+								_ilike: `%${this.$store.state.search}%`,
+							},
+						}),
+						...this.initialWhere,
+					},
 				};
 			},
 			// Variables: deep object watch
@@ -288,11 +313,11 @@ export default {
 				!this.$has_permission(`manage_${this.model.permission}`)
 			)
 				return;
-
+			let pk = this.model.pk || 'id';
 			const mutationOptions = {
 				mutation: this.deleteGql,
 				variables: {
-					id: item.id,
+					[pk]: item[pk],
 				},
 				update: (store, { data }) => {
 					try {
@@ -310,7 +335,7 @@ export default {
 						// Read the cache
 						const storeData = store.readQuery(query);
 						const index = storeData[this.model.name].findIndex(
-							i => i.id === data['delete_' + this.model.name + '_by_pk'].id
+							i => i[pk] === data['delete_' + this.model.name + '_by_pk'][pk]
 						);
 						if (index !== -1) {
 							storeData[this.model.name].splice(index, 1);
@@ -333,7 +358,7 @@ export default {
 * >>> table thead th {
 	white-space: nowrap !important;
 }
-* >>> .v-data-table__wrapper {
+* >>> div:not(.child) .v-data-table__wrapper {
 	max-height: 460px !important;
 }
 </style>
