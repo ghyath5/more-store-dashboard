@@ -3,12 +3,29 @@
 		<td :key="column.id" v-for="column in parentProps.headers">
 			<slot :props="parentProps" :column="column" name="table-field">
 				<template v-if="column.viewer === 'text'">
-					<span style="cursor:pointer" v-if="parentProps.item[column.value].length >= 30">
+					<span
+						style="cursor:pointer"
+						v-if="parentProps.item[column.value] && parentProps.item[column.value].length >= 30"
+					>
 						{{ parentProps.item[column.value].substring(0, 30) }}...
 					</span>
 					<span v-else>
 						{{ parentProps.item[column.value] }}
 					</span>
+				</template>
+				<template v-if="column.viewer === 'chipTags'">
+					<div v-if="chipName(parentProps.item[column.value], column.viewSettings.objectName).length">
+						<v-chip
+							outlined
+							v-for="val of chipName(parentProps.item[column.value], column.viewSettings.objectName)"
+							:key="val[column.viewSettings.viewText]"
+							class="ma-1"
+							small
+						>
+							<span class="text-capitalize">{{ val[column.viewSettings.viewText] }}</span>
+						</v-chip>
+					</div>
+					<span class="secondary--text" v-else>{{ column.viewSettings.noMsg }}</span>
 				</template>
 				<template v-else-if="column.viewer === 'imageViewer'">
 					<template v-if="!column.many">
@@ -50,52 +67,52 @@
 								mdi-square-edit-outline
 							</v-icon>
 						</slot>
-						<v-dialog v-model="deleteDialog.active" width="450">
-							<template v-slot:activator="{ on }">
-								<v-icon
-									v-on="on"
-									color="error"
-									v-if="
-										$has_permission(`delete_${model.permission}`) ||
-											$has_permission(`manage_${model.permission}`)
-									"
-									class="pointer"
-									:size="18"
-								>
-									mdi-delete
-								</v-icon>
-							</template>
+						<slot
+							v-if="
+								$has_permission(`delete_${model.permission}`) ||
+									$has_permission(`manage_${model.permission}`)
+							"
+							name="delete-btn"
+							:item="parentProps.item"
+						>
+							<v-dialog v-model="deleteDialog.active" width="450">
+								<template v-slot:activator="{ on }">
+									<v-icon v-on="on" color="error" class="pointer" :size="18">
+										mdi-delete
+									</v-icon>
+								</template>
 
-							<v-card>
-								<v-card-title class="headline grey lighten-2" primary-title>
-									Confirm
-								</v-card-title>
-								<v-card-text>
-									<slot name="delete-dialog-content">
-										Do you want to delete this permanently?
-									</slot>
-								</v-card-text>
+								<v-card>
+									<v-card-title class="headline grey lighten-2" primary-title>
+										Confirm
+									</v-card-title>
+									<v-card-text>
+										<slot name="delete-dialog-content">
+											Do you want to delete this permanently?
+										</slot>
+									</v-card-text>
 
-								<v-divider></v-divider>
+									<v-divider></v-divider>
 
-								<v-card-actions>
-									<v-btn color="primary" text @click="deleteDialog.active = false">
-										Cancel
-									</v-btn>
-									<v-spacer></v-spacer>
-									<v-btn
-										color="error"
-										text
-										@click="
-											$emit('deleteItem', parentProps.item);
-											deleteDialog.active = false;
-										"
-									>
-										Delete
-									</v-btn>
-								</v-card-actions>
-							</v-card>
-						</v-dialog>
+									<v-card-actions>
+										<v-btn color="primary" text @click="deleteDialog.active = false">
+											Cancel
+										</v-btn>
+										<v-spacer></v-spacer>
+										<v-btn
+											color="error"
+											text
+											@click="
+												$emit('deleteItem', parentProps.item);
+												deleteDialog.active = false;
+											"
+										>
+											Delete
+										</v-btn>
+									</v-card-actions>
+								</v-card>
+							</v-dialog>
+						</slot>
 					</div>
 				</template>
 				<template v-else-if="column.viewer === 'icon' && column.defaultIcon">
@@ -127,6 +144,11 @@ export default {
 			default() {
 				return {};
 			},
+		},
+	},
+	methods: {
+		chipName(values, value) {
+			return values.map(one => one[value]);
 		},
 	},
 };
