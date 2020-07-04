@@ -120,6 +120,12 @@ export default {
 				return 10;
 			},
 		},
+		settings: {
+			type: Object,
+			default() {
+				return null;
+			},
+		},
 	},
 	data: () => ({
 		items: [],
@@ -134,10 +140,21 @@ export default {
 		},
 	},
 	created() {
-		this.selected = this.value;
-		if (this.selected) {
-			this.items = [this.value];
+		let copiedValue = this.value;
+		if (Array.isArray(this.value)) {
+			copiedValue = this.value.map(v => {
+				let value = v[this.settings.object];
+				return {
+					[this.itemValue]: value[this.itemValue],
+					[this.itemText]: value[this.itemText],
+				};
+			});
 		}
+		this.selected = copiedValue;
+		if (this.selected) {
+			this.items = Array.isArray(copiedValue) ? copiedValue : [copiedValue];
+		}
+
 		this.getItemsDebounced = debounce(function() {
 			this.getItems();
 		}, 400);
