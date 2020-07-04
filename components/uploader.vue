@@ -94,8 +94,10 @@ export default {
 				// 	objectIds: [this.value.objectId]
 				// }
 				// })
+				this.$emit('remove', { ...this.value });
+				return;
 			}
-			this.$emit('remove', { ...this.value });
+			this.$emit('remove', { ...this.file });
 			// this.$emit('input', null);
 		},
 		processFile() {
@@ -103,6 +105,7 @@ export default {
 			const file = this.$refs.pond.getFile();
 			if (file && file.serverId) {
 				this.$emit('input', JSON.parse(this.$refs.pond.getFile().serverId));
+				this.file = JSON.parse(this.$refs.pond.getFile().serverId);
 			}
 		},
 		handleFilePondInit: function() {
@@ -112,6 +115,7 @@ export default {
 	},
 	data() {
 		return {
+			file: null,
 			headers: {
 				authorization: `Bearer ${this.$store.state.token}`,
 			},

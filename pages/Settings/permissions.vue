@@ -142,6 +142,7 @@ export default {
 			permissions: [],
 			permissionsCount: 0,
 			roles_permissions: {},
+			allRoles: [],
 		};
 	},
 	apollo: {
@@ -150,11 +151,17 @@ export default {
 			fetchPolicy: 'network-only',
 			variables() {
 				return {
+					where: {
+						name: {
+							_nin: ['client', 'driver'],
+						},
+					},
 					order_by: {
 						place: 'asc',
 					},
 				};
 			},
+			manual: true,
 			result({ data, loading, networkStatus }) {
 				this.headers = [
 					{
@@ -190,8 +197,14 @@ export default {
 					order_by: {
 						id: 'asc',
 					},
+					where: {
+						name: {
+							_ilike: `%${this.$store.state.search}%`,
+						},
+					},
 				};
 			},
+			debounce: 500,
 			update(data) {
 				return data;
 			},

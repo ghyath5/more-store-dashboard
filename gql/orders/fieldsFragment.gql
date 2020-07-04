@@ -1,0 +1,24 @@
+#import "../users/fieldsFragment.gql"
+#import "../addresses/fieldsFragment.gql"
+fragment orderFields on orders {
+    id
+    assigned_driver{
+        driver{
+          ...usersFields
+        }
+    }
+    status
+    notes
+    address{
+      ...addressFields
+    }
+    client{
+      ...usersFields
+    }
+    options{
+      deletable
+      modifiable
+    }
+    created_at
+    updated_at    
+}

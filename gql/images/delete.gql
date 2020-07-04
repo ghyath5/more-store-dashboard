@@ -1,0 +1,5 @@
+mutation delete_images($where: images_bool_exp!){
+    delete_images(where:$where){
+        affected_rows
+    }
+}

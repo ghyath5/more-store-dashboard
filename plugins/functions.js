@@ -4,6 +4,9 @@ export default ({ app, req, res, store }, inject) => {
 		if (!store.state || !store.state.permissions.length || !store.state.permissions.includes(pname)) return false;
 		return true;
 	});
+	inject('remove_headers', (headers, removeCols) => {
+		return headers.filter(header => !removeCols.includes(header.value));
+	});
 	inject('GET_COOKIE', cname => {
 		if (process.browser) {
 			return Cookies.get(cname);

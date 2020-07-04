@@ -8,11 +8,18 @@
 				name: 'roles',
 				permission: 'roles',
 				aggregate: 'roles_aggregate',
+				pk: 'name',
 			}"
-			defaultSortBy="created_at"
+			defaultSortBy="place"
 		>
 			<template v-slot:createBtn>
 				<v-btn class="mb-2" @click="$router.push(`/settings/roles/create`)" small color="info">Create</v-btn>
+			</template>
+			<template v-slot:edit-btn="{ item }">
+				<div v-if="['client', 'admin', 'driver'].includes(item.name)"></div>
+			</template>
+			<template v-slot:delete-btn="{ item }">
+				<div v-if="['client', 'admin', 'driver'].includes(item.name)"></div>
 			</template>
 		</data-table>
 	</v-container>

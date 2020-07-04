@@ -1,5 +1,5 @@
-mutation delete_role($id:uuid!){
-  delete_roles_by_pk(id:$id){
-    affected_rows
+mutation delete_role($name:String!){
+  delete_roles_by_pk(name:$name){
+    name
   }
 }

@@ -1,0 +1,14 @@
+fragment addressFields on user_address {
+    building
+    map
+    place
+    phone_number
+    title
+    street
+    city{
+        name
+    }
+    region{
+        name
+    }
+}

@@ -11,7 +11,13 @@
 
 		<v-toolbar-items>
 			<v-row align="center" class="mx-0">
-				<v-text-field class="mr-4 purple-input" color="purple" label="Search..." hide-details />
+				<v-text-field
+					class="mr-4 purple-input"
+					color="purple"
+					label="Search..."
+					v-model="search"
+					hide-details
+				/>
 
 				<v-btn icon to="/">
 					<v-icon color="tertiary">
@@ -74,7 +80,16 @@ export default {
 		// 	this.title = val.name;
 		// },
 	},
-
+	computed: {
+		search: {
+			get() {
+				return this.$store.state.search;
+			},
+			set(v) {
+				this.$store.commit('setSearch', v);
+			},
+		},
+	},
 	mounted() {
 		// this.onResponsiveInverted();
 		// window.addEventListener('resize', this.onResponsiveInverted);

@@ -1,4 +1,5 @@
 #import "../commonFieldsFragment.gql"
+#import "../categories/fieldsFragment.gql"
 fragment Fields on products {
     id
     created_at
@@ -7,6 +8,11 @@ fragment Fields on products {
     sku
     description
     featured
+    categories{
+      category{
+        ...CategoryFiels
+      }
+    }
     images{
       type
       image{

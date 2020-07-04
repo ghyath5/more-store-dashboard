@@ -3,6 +3,9 @@ fragment usersFields on users{
     name
     email
     mobile_number
+    assigned_orders{
+      __typename
+    }
     roles{
         role{
             name

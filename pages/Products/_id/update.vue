@@ -19,7 +19,7 @@
 									Thumbnail
 									<image-uploader
 										:value="itemImages.find(img => img.type === 'thumbnail').image"
-										@remove="removeImage"
+										@remove="removeImage($event, 'thumbnail')"
 										@input="addThumbnail($event, activeItem)"
 									/>
 								</div>
@@ -45,7 +45,7 @@
 					<v-row>
 						<v-col cols="12" sm="6" md="4" lg="2" v-for="img of images" :key="img.id">
 							<div class="text-center">
-								<image-uploader @input="addImage($event, activeItem)" />
+								<image-uploader @remove="removeImage" @input="addImage($event, activeItem)" />
 							</div>
 						</v-col>
 						<v-col cols="12" sm="6" md="4" lg="2">
@@ -65,6 +65,8 @@
 import ItemEditor from '~/components/ItemEditor';
 import productGql from '~/gql/products/one.gql';
 import updateGql from '~/gql/products/update.gql';
+import deleteImagesGql from '~/gql/images/delete.gql';
+import gql from 'graphql-tag';
 export default {
 	components: {
 		ItemEditor,
@@ -103,17 +105,39 @@ export default {
 		}
 	},
 	methods: {
-		removeImage(image) {
-			this.itemImages = this.itemImages.filter(img => img.image.id !== image.id || img.type === 'thumbnail');
-			console.log(this.itemImages);
-
+		async delete_images() {
+			await this.$apollo.mutate({
+				mutation: deleteImagesGql,
+				variables: {
+					where: {
+						id: { _in: this.removedImages },
+					},
+				},
+			});
+		},
+		removeImage(image, type) {
+			this.itemImages =
+				type !== 'thumbnail' ? this.itemImages.filter(img => img.image.id !== image.id) : this.itemImages;
+			this.dbImages = this.dbImages && this.dbImages.filter(img => img.image_id !== image.id);
 			this.removedImages.push(image.id);
 		},
-		updateAction({ item }) {
+		async updateAction({ item }) {
 			delete item['images'];
-			console.log(this.removedImages);
-			console.log(this.dbImages);
-			return;
+			if (this.dbImages && this.dbImages.length) {
+				await this.$apollo.mutate({
+					mutation: gql`
+						mutation insert_images($images: [product_image_insert_input!]!) {
+							insert_product_image(objects: $images) {
+								affected_rows
+							}
+						}
+					`,
+					variables: {
+						images: this.dbImages,
+					},
+				});
+			}
+			await this.delete_images();
 			this.$refs.editor.update();
 		},
 		addImageSlot() {

@@ -86,52 +86,62 @@ export default {
 			default: false,
 		},
 	},
-	data: () => ({
-		links: [
-			{
-				to: '/',
-				icon: 'mdi-view-dashboard',
-				text: 'Dashboard',
-			},
-			{
-				to: '/products',
-				icon: 'mdi-storefront',
-				text: 'Products',
-			},
-			{
-				to: '/categories',
-				icon: 'mdi-tab',
-				text: 'Categories',
-			},
-			// {
-			// 	to: '/table-list',
-			// 	icon: 'mdi-clipboard-outline',
-			// 	text: 'Table List',
-			// },
-			{
-				icon: 'mdi-folder-open',
-				text: 'Settings',
-				model: false,
-				children: [
-					{
-						icon: 'mdi-account-supervisor',
-						text: 'Users',
-						to: '/settings/users',
-					},
-					{ icon: 'mdi-security', text: 'Permission', to: '/settings/permissions' },
-					{ icon: 'mdi-sitemap', text: 'Roles', to: '/settings/roles' },
-				],
-			},
-			// {
-			// 	to: '/notifications',
-			// 	icon: 'mdi-bell',
-			// 	text: 'Notifications',
-			// },
-		],
-	}),
+	data: () => ({}),
 
 	computed: {
 		...mapState('app', ['image', 'color']),
+		links() {
+			let links = [
+				{
+					to: '/',
+					icon: 'mdi-view-dashboard',
+					text: 'Dashboard',
+				},
+				this.$has_permission('read_products') && {
+					to: '/products',
+					icon: 'mdi-storefront',
+					text: 'Products',
+				},
+				this.$has_permission('read_orders') && {
+					to: '/orders',
+					icon: 'mdi-storefront',
+					text: 'Orders',
+				},
+				this.$has_permission('read_categories') && {
+					to: '/categories',
+					icon: 'mdi-tab',
+					text: 'Categories',
+				},
+				// {
+				// 	to: '/table-list',
+				// 	icon: 'mdi-clipboard-outline',
+				// 	text: 'Table List',
+				// },
+				{
+					icon: 'mdi-folder-open',
+					text: 'Settings',
+					model: false,
+					children: [
+						this.$has_permission('read_users') && {
+							icon: 'mdi-account-supervisor',
+							text: 'Users',
+							to: '/settings/users',
+						},
+						this.$has_permission('manage_roles') && {
+							icon: 'mdi-security',
+							text: 'Permission',
+							to: '/settings/permissions',
+						},
+						this.$has_permission('manage_roles') && {
+							icon: 'mdi-sitemap',
+							text: 'Roles',
+							to: '/settings/roles',
+						},
+					].filter(e => e),
+				},
+			];
+			return links.filter(e => e);
+		},
 		inputValue: {
 			get() {
 				return this.$store.state.app.drawer;
@@ -141,7 +151,9 @@ export default {
 			},
 		},
 	},
-
+	mounted() {
+		console.log(this.links);
+	},
 	methods: {
 		...mapMutations('app', ['setDrawer', 'toggleDrawer']),
 	},
