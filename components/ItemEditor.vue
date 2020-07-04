@@ -47,6 +47,7 @@
 										:multiple="header.settings.multiple"
 										:limit="header.settings.limit"
 										:initialOrderBy="header.settings.orderBy"
+										:settings="header.autocompleteSettings"
 									></auto-complete>
 								</template>
 							</slot>
@@ -121,6 +122,7 @@ export default {
 	methods: {
 		action() {
 			if (this.customAction) {
+				this.loading = true;
 				this.$emit('action', { item: this.activeItem, headers: this.headers });
 				return;
 			}
