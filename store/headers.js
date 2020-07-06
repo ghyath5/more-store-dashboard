@@ -1,6 +1,6 @@
 import categoriesGql from '~/gql/categories/all.gql';
 import permissionsGql from '~/gql/roles/permissions.gql';
-import orderStatusesGql from '~/gql/roles/permissions.gql';
+// import orderStatusesGql from '~/gql/roles/permissions.gql';
 export default {
 	categoryHeaders: [
 		{
@@ -372,28 +372,63 @@ export default {
 	orderHeaders: [
 		{
 			id: 1,
-			text: 'Status',
-			value: 'status',
+			text: 'Order notes',
+			value: 'notes',
 			viewer: 'text',
-			objectValue: 'status',
-			editor: 'autocomplete',
-			settings: {
-				queryGql: orderStatusesGql,
-				itemValue: 'status',
-				itemText: 'status',
-				model: 'order_statuses',
-				searchOptions: {
-					key: 'status',
-					op: '_ilike',
-				},
-			},
+		},
+		{
+			id: 20,
+			text: 'Delivery Option',
+			value: 'way',
+			viewer: 'text',
+		},
+		{
+			id: 100,
+			text: 'Status',
+			value: 'order_status',
+			viewer: 'text',
+			width: 140,
 		},
 		{
 			id: 200,
 			text: 'Driver',
-			value: 'driver',
+			value: 'assigned_driver',
 			viewer: 'text',
 			sortable: false,
+		},
+		{
+			id: 205,
+			text: 'Client',
+			value: 'client.name',
+			viewer: 'text',
+			sortable: false,
+		},
+		{
+			id: 210,
+			text: 'Order total cost',
+			value: 'total_cost',
+			viewer: 'function',
+			function: ({ selected_products, delivery_way }, column, store) => {
+				let cost =
+					selected_products.reduce((prev, curr) => {
+						prev = prev + curr.calculated_quantity_times_cost;
+						return prev;
+					}, 0) + delivery_way.cost;
+				return cost + ' ' + store.state.currency.text;
+			},
+			sortable: false,
+		},
+		{
+			id: 250,
+			text: 'Created at',
+			value: 'created_at',
+			viewer: 'date',
+		},
+		{
+			id: 290,
+			text: 'Last update at',
+			value: 'updated_at',
+			viewer: 'date',
 		},
 	],
 };

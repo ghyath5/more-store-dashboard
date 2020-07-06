@@ -24,7 +24,7 @@
 		"lodash": "^4.17.15",
 		"nuxt": "^2.11.0",
 		"vue-filepond": "^6.0.2",
-		"vuetify": "^2.2.14"
+		"vuetify": "^2.3.3"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.10.2",

@@ -3,7 +3,13 @@ fragment usersFields on users{
     name
     email
     mobile_number
-    assigned_orders{
+    active_orders_assigned:assigned_orders(where:{
+       order:{
+        order_status:{
+          value:{_neq:"completed"}
+        }
+      }
+    }){
       __typename
     }
     roles{

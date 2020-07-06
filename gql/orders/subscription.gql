@@ -1,0 +1,14 @@
+#import "./fieldsFragment.gql"
+subscription orders($limit:Int,$offset:Int,$where:orders_bool_exp,$order_by:[orders_order_by!]){
+    orders(limit:$limit, offset:$offset, where:$where,order_by:$order_by){
+        ...orderFields
+    }
+}
+
+# subscription aggregate($where: orders_bool_exp){
+#     orders_aggregate( where:$where){
+#         aggregate{
+#             count
+#         }
+#     }
+# }

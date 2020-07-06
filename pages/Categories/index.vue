@@ -12,6 +12,7 @@
 				permission: 'categories',
 				aggregate: 'categories_aggregate',
 				nestedDataKey: 'sub_categories',
+				searchKeys: ['name'],
 			}"
 		>
 			<template v-slot:table-field="{ props, column }">

@@ -15,6 +15,9 @@ export const state = () => ({
 	apiUrl: process.env.BASE_SERVER_URL || 'https://more-store-server.herokuapp.com',
 	imagePath: process.env.GET_IMAGE_PATH || '/admin/image',
 	search: '',
+	currency: {
+		text: 'AED',
+	},
 });
 
 export const mutations = {

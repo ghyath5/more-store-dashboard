@@ -8,7 +8,7 @@
 		floating
 		mobile-breakpoint="991"
 		persistent
-		width="260"
+		width="280"
 	>
 		<!-- <template v-slot:img="attrs"> -->
 		<!-- <v-img v-bind="attrs" gradient="to top, rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)" /> -->
@@ -45,6 +45,7 @@
 							</v-list-item-action>
 							<v-list-item-content>
 								<v-list-item-title>{{ child.text }}</v-list-item-title>
+								<v-list-item-subtitle>{{ child.subtitle }}</v-list-item-subtitle>
 							</v-list-item-content>
 						</v-list-item>
 					</template>
@@ -102,15 +103,34 @@ export default {
 					icon: 'mdi-storefront',
 					text: 'Products',
 				},
-				this.$has_permission('read_orders') && {
-					to: '/orders',
-					icon: 'mdi-storefront',
-					text: 'Orders',
-				},
 				this.$has_permission('read_categories') && {
 					to: '/categories',
 					icon: 'mdi-tab',
 					text: 'Categories',
+				},
+				this.$has_permission('read_orders') && {
+					// to: '/orders',
+					icon: 'mdi-package-variant-closed',
+					text: 'Orders',
+					model: false,
+					children: [
+						{
+							icon: 'view_list',
+							text: 'All orders',
+							to: '/orders',
+						},
+						{
+							icon: 'mdi-package-variant',
+							text: 'Non-assigned orders',
+							to: '/orders?status=not-assigned',
+							subtitle: 'Orders those ',
+						},
+						{
+							icon: 'mdi-truck-check-outline',
+							text: 'Delivered orders',
+							to: '/orders?status=delivered',
+						},
+					].filter(e => e),
 				},
 				// {
 				// 	to: '/table-list',
@@ -150,9 +170,6 @@ export default {
 				this.setDrawer(val);
 			},
 		},
-	},
-	mounted() {
-		console.log(this.links);
 	},
 	methods: {
 		...mapMutations('app', ['setDrawer', 'toggleDrawer']),

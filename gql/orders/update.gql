@@ -1,6 +1,6 @@
 #import "./fieldsFragment.gql"
-mutation updateCategrory ($pk_columns:categories_pk_columns_input!, $_set:categories_set_input){
-    update_categories_by_pk(pk_columns:$pk_columns, _set:$_set){
-        ...CategoryFiels
+mutation updateOrder ($pk_columns: orders_pk_columns_input!, $_set:orders_set_input){
+    update_orders_by_pk(pk_columns:$pk_columns, _set:$_set){
+        ...orderFields
     }
 }

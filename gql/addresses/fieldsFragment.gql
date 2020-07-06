@@ -1,14 +1,15 @@
 fragment addressFields on user_address {
-    building
+    property_number
     map
     place
     phone_number
-    title
-    street
+    name
+    landmark
+    building_name
     city{
         name
     }
-    region{
+    area{
         name
     }
 }

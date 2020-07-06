@@ -33,6 +33,11 @@ export default {
 			},
 		},
 	},
+	watch: {
+		$route(val) {
+			this.$store.commit('setSearch', '');
+		},
+	},
 	components: {
 		CoreDrawer: () => import('@/components/core/Drawer'),
 		// CoreFooter: () => import('@/components/core/Footer'),

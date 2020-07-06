@@ -8,6 +8,7 @@
 				name: 'products',
 				permission: 'products',
 				aggregate: 'products_aggregate',
+				searchKeys: ['sku', 'name', 'description'],
 			}"
 		>
 			<template v-slot:createBtn>

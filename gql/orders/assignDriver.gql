@@ -1,0 +1,5 @@
+mutation assign_driver($object:assigned_drivers_insert_input!, $on_conflict:assigned_drivers_on_conflict){
+    insert_assigned_drivers_one(object:$object,on_conflict:$on_conflict){
+        __typename
+    }
+}

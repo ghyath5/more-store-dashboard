@@ -2,18 +2,33 @@
 #import "../addresses/fieldsFragment.gql"
 fragment orderFields on orders {
     id
+    track_id
     assigned_driver{
         driver{
-          ...usersFields
+          name
+          id
         }
     }
+    order_status{
+      value
+      status
+    }
     status
+    way
+    delivery_way{
+      cost
+    }
     notes
     address{
       ...addressFields
     }
     client{
-      ...usersFields
+      name
+      id
+    }
+    selected_products{
+      quantity
+      calculated_quantity_times_cost
     }
     options{
       deletable
