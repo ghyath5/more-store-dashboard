@@ -1,29 +1,30 @@
 <template>
-	<v-app-bar short fixed clipped-left id="core-app-bar" app color="white" flat height="50">
-		<v-row dense align="center">
-			<v-col style="max-width:240px" xl="2" sm="2" lg="2" md="2" class="hidden-sm-and-down">
+	<v-app-bar fixed clipped-left id="core-app-bar" app color="white" flat height="52">
+		<v-row dense align="center" justify-sm="space-between" class="mx-0 px-0">
+			<v-col sm="2" md="2" style="max-width:240px" xl="2" lg="2" class="hidden-sm-and-down">
 				<v-img class="ma-auto" src="/logo.png" height="50" width="80" contain />
 			</v-col>
-			<v-col md="8" sm="10">
-				<v-row dense align="center">
-					<v-col sm="1">
+			<v-col sm="5" md="6" class="py-0 px-3 text-left">
+				<v-row dense align="center" class="mx-0">
+					<v-col style="max-width:50px">
 						<v-btn light icon @click.stop="onClick">
-								<v-icon>mdi-view-list</v-icon>
+							<v-icon>mdi-view-list</v-icon>
 						</v-btn>
 					</v-col>
-					<v-col sm="5">
+					<v-col md="6" class="py-0 hidden-sm-and-down">
 						<v-text-field
 							class="search-box"
 							label="Search"
 							v-model="search"
 							hide-details
 							rounded
+							height="28"
 							dense
 							filled
 							single-line
 						>
 							<template v-slot:prepend-inner>
-								<div style="margin-top:-5px">
+								<div style="margin-top:-4px">
 									<v-icon size="20" color="#ababab">
 										search
 									</v-icon>
@@ -31,46 +32,16 @@
 							</template>
 						</v-text-field>
 					</v-col>
+					<v-col sm="8" md="4" class="text-right">
+						<div class="text-h6 mb-0" style="height:22px">
+							{{ time }}
+							<span style="font-size:12px;">{{ localTime }}</span>
+						</div>
+						<div style="font-size:12px" class="blue--text">{{ date }}</div>
+					</v-col>
 				</v-row>
 			</v-col>
-		</v-row>
-		<!-- <v-row dense justify="left"  align="center">
-			<v-col sm="10" class="text-center">
-				
-			</v-col>
-		</v-row> -->
-		<!-- <v-spacer /> -->
-
-		<!-- <v-toolbar-items>
-			<v-row dense align="center" >
-				<v-btn v-if="responsive" light icon @click.stop="onClick">
-						<v-icon>mdi-view-list</v-icon>
-				</v-btn>
-				<v-col sm="10">
-					<v-text-field
-						class="search-box"
-						label="Search"
-						v-model="search"
-						hide-details
-						rounded
-						dense
-						filled
-						single-line
-					>
-						<template v-slot:prepend-inner>
-							<div style="margin-top:-5px">
-								<v-icon size="20" color="#ababab">
-									search
-								</v-icon>
-							</div>
-						</template>
-					</v-text-field>
-				</v-col>
-			</v-row>
-		</v-toolbar-items> -->
-		<!-- <v-spacer /> -->
-		<v-toolbar-items>
-			<v-row align="center" class="mx-0">
+			<v-col sm="5" md="4" class="mx-0 text-right">
 				<v-menu bottom left offset-y transition="slide-y-transition">
 					<template v-slot:activator="{ attrs, on }">
 						<v-btn small class="toolbar-items mr-4" icon v-bind="attrs" v-on="on">
@@ -94,30 +65,40 @@
 					</v-card>
 				</v-menu>
 
-				<v-menu bottom left offset-y >
+				<v-menu bottom left offset-y>
 					<template v-slot:activator="{ on }">
-						<v-btn class="pl-1 pt-0" elevation x-small rounded outlined  v-on="on">
+						<v-btn class="pl-1 pt-0" elevation small rounded outlined v-on="on">
 							<v-icon size="19">mdi-chevron-down</v-icon>
-							{{$store.state.me.name}}
+							{{ $store.state.me.name }}
 						</v-btn>
 					</template>
 					<v-card>
 						<v-list dense>
-							<v-hover
-								v-slot:default="{ hover }"
-							>
-							<v-list-item dense class="pointer account-list" :class="{'secondary':hover}" v-for="accountList in accountLists" :key="accountList.text">
-								<nuxt-link style="text-decoration:none" :to="accountList.to">
-									<v-list-item-title :class="{'white--text':hover}" v-text="accountList.text" />
-								</nuxt-link>
-							</v-list-item>
+							<v-hover v-slot:default="{ hover }">
+								<v-list-item
+									dense
+									class="pointer account-list"
+									:class="{ secondary: hover }"
+									v-for="accountList in accountLists"
+									:key="accountList.text"
+								>
+									<nuxt-link style="text-decoration:none" :to="accountList.to">
+										<v-list-item-title
+											:class="{ 'white--text': hover }"
+											v-text="accountList.text"
+										/>
+									</nuxt-link>
+								</v-list-item>
 							</v-hover>
 							<v-divider />
-							<v-hover
-								v-slot:default="{ hover }"
-							>
-								<v-list-item @click="$LOGOUT()" dense class="pointer account-list" :class="{'secondary':hover}">
-										<v-list-item-title :class="{'white--text':hover}">Logout</v-list-item-title>
+							<v-hover v-slot:default="{ hover }">
+								<v-list-item
+									@click="$LOGOUT()"
+									dense
+									class="pointer account-list"
+									:class="{ secondary: hover }"
+								>
+									<v-list-item-title :class="{ 'white--text': hover }">Logout</v-list-item-title>
 								</v-list-item>
 							</v-hover>
 						</v-list>
@@ -128,8 +109,8 @@
 						mdi-account-outline
 					</v-icon>
 				</v-btn>
-			</v-row>
-		</v-toolbar-items>
+			</v-col>
+		</v-row>
 	</v-app-bar>
 </template>
 
@@ -139,11 +120,11 @@ import { mapMutations } from 'vuex';
 
 export default {
 	data: () => ({
-		accountLists:[
+		accountLists: [
 			{
-				text:'My account',
-				to:'/me'
-			}
+				text: 'My account',
+				to: '/me',
+			},
 		],
 		notifications: [
 			'Mike, John responded to your email',
@@ -154,45 +135,50 @@ export default {
 		],
 		title: null,
 		responsive: true,
-		monthNames:["January", "February", "March", "April", "May", "June",
-		"July", "August", "September", "October", "November", "December"
-		]
-	}),
+		monthNames: [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December',
+		],
+		days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 
-	watch: {
-		// $route(val) {
-		// 	this.title = val.name;
-		// },
-	},
+		date: '',
+		time: '',
+		localTime: '',
+	}),
 	computed: {
 		search: {
 			get() {
-				return this.$store.state.search;
+				return this.$store.state.pageSearch;
 			},
 			set(v) {
-				this.$store.commit('setSearch', v);
+				this.$store.commit('setPageSearch', v);
 			},
 		},
-		dateWithTime(){
-			let event = new Date();
-
-			let options = {  year: 'numeric', month: 'long', day: 'numeric' };
-
-			return event.toLocaleDateString('en-US', options)
-		}
 	},
-	mounted() {
-		// this.onResponsiveInverted();
-		// window.addEventListener('resize', this.onResponsiveInverted);
+	created() {
+		setInterval(this.getDateTime, 1000);
 	},
-	beforeDestroy() {
-		// window.removeEventListener('resize', this.onResponsiveInverted);
-	},
-
 	methods: {
 		...mapMutations('app', ['setDrawer', 'toggleDrawer']),
 		onClick() {
 			this.setDrawer(!this.$store.state.app.drawer);
+		},
+		getDateTime() {
+			let event = new Date();
+			let options = { year: 'numeric', weekday: 'long', month: 'long', day: 'numeric' };
+			this.date = event.toLocaleDateString('en-US', options);
+			this.time = this.$moment(new Date()).format('hh:mm:ss');
+			this.localTime = this.$moment(new Date()).format('A');
 		},
 		// onResponsiveInverted() {
 		// 	if (window.innerWidth < 991) {
@@ -214,29 +200,22 @@ export default {
 #core-app-bar a {
 	text-decoration: none;
 }
-.search-box{
+.search-box {
 	border: 1px solid #d8d8d8 !important;
 }
 .search-box label {
-	font-size:12px !important;
-	color:#ababab !important
+	font-size: 12px !important;
+	color: #ababab !important;
 }
-.v-text-field--filled.v-input--dense.v-text-field--single-line > .v-input__control > .v-input__slot { 
-	min-height: 26px;
-	background:#f3f4ff8c !important;
-	display: flex !important;
-	align-items: center !important;
-	padding-left:5px !important
+
+.v-text-field--filled.v-input--dense.v-text-field--single-line > .v-input__control > .v-input__slot {
+	background: #f3f4ff8c !important;
 }
+/*
 .v-text-field--filled.v-input--dense .v-label{
 	top:3px !important
-} 
-.account-list:hover{
-	background:#ed1c24 !important
+}  */
+.account-list:hover {
+	background: #ed1c24 !important;
 }
-/* 
- .v-text-field .v-input__control .v-input__slot {
-    min-height: auto !important;
-    
-  } */
 </style>

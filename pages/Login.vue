@@ -5,44 +5,53 @@
 				<v-img src="/logo.png" height="30" width="66" contain />
 			</v-row>
 			<v-card :loading="loading" flat class="pa-5 text-center">
-				<h4 class="mb-3 mt-4">
+				<h3 class="mb-3 mt-4">
 					Login to account
-				</h4>
+				</h3>
 				<p style="font-size:12px">
 					Please enter your email and password to continue
 				</p>
 				<v-card-text>
 					<v-form>
-						<label class="ml-5 primary--text text-left d-block">Email address</label>
-						<v-text-field
-							label="Login"
-							v-model="email"
+						<label class="ml-5 my-1 primary--text text-left d-block">Email address</label>
+						<!-- <v-text-field
+							
 							dense
 							outlined
 							height="25"
 							single-line
-							type="text"
+							
 							rounded
 							flat
-						></v-text-field>
-						<label class="ml-5 primary--text text-left d-block">Password</label>
+						></v-text-field> -->
+						<v-text-field
+							v-model="email"
+							hide-details
+							rounded
+							height="35"
+							type="text"
+							dense
+							outlined
+							single-line
+							flat
+						/>
+						<label class="ml-5 my-1 primary--text text-left d-block">Password</label>
 						<v-text-field
 							id="password"
-							label="Password"
 							v-model="password"
 							type="password"
 							dense
 							outlined
-							height="25"
+							height="35"
 							single-line
 							rounded
 							flat
 						></v-text-field>
 					</v-form>
 				</v-card-text>
-				<v-card-actions >
+				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-col sm="12" >
+					<v-col sm="12">
 						<div class="px-10">
 							<v-btn @click="login" :disabled="loading" block rounded color="secondary">Login</v-btn>
 						</div>
@@ -108,7 +117,10 @@ export default {
 </script>
 
 <style>
-	.v-text-field--filled.v-input--dense.v-text-field--single-line > .v-input__control > .v-input__slot { 
-		min-height: 26px;
-	}
+.v-text-field--filled.v-input--dense.v-text-field--single-line > .v-input__control > .v-input__slot {
+	min-height: 26px;
+}
+.v-text-field--outlined.v-input--dense .v-label {
+	top: 6px !important;
+}
 </style>

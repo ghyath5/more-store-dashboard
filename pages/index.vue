@@ -156,8 +156,8 @@ export default {
 </script>
 
 <style scoped>
-	.overview-card{
-		border-radius:10px;
-		box-shadow: 2px 2px 5px 2px #eceef1 !important
-	}
+.overview-card {
+	border-radius: 10px;
+	box-shadow: 2px 2px 5px 2px #eceef1 !important;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<v-main class="main-view">
-		<div id="core-view">
+		<div id="core-view" class="pa-5 pt-0">
 			<v-fade-transition mode="out-in">
 				<nuxt></nuxt>
 			</v-fade-transition>
@@ -20,7 +20,7 @@ export default {
 };
 </script>
 <style>
-	/* .main-view{
+/* .main-view{
 		background:#f4f6f9;
 	} */
 </style>

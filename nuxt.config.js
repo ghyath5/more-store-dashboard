@@ -30,7 +30,7 @@ module.exports = {
 	},
 	plugins: [
 		'~/plugins/functions.js',
-		'~/plugins/vuetify.js',
+		// '~/plugins/vuetify.js',
 		'~/plugins/base.js',
 		'~/plugins/components.js',
 		'~/plugins/auth.js',
@@ -72,8 +72,22 @@ module.exports = {
 			},
 		},
 	},
-	buildModules: ['@nuxtjs/moment'],
-	moment: {
-		/* module options */
+	buildModules: ['@nuxtjs/moment', '@nuxtjs/vuetify'],
+	vuetify: {
+		customVariables: ['~/assets/variables.scss'],
+		treeShake: true,
+		theme: {
+			dark: false,
+			themes: {
+				light: {
+					primary: '#000',
+					secondary: '#ed1c24',
+				},
+			},
+		},
+		// defaultAssets: false,
+		icons: {
+			iconfont: 'mdi',
+		},
 	},
 };

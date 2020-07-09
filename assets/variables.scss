@@ -1,3 +1,48 @@
 $shadow-key-umbra-opacity: rgba(#1a237e, 0.2);
 $shadow-key-penumbra-opacity: rgba(#1a237e, 0.14);
 $shadow-key-ambient-opacity: rgba(#1a237e, 0.12);
+$body-font-family: Barlow;
+$heading-font-family: Barlow;
+$font-size-root: 13px;
+
+$border-radius-root: 7px;
+
+// Variables must come before the import
+$btn-letter-spacing: 0;
+$btn-font-weight: 400;
+$list-item-title-font-size: 0.929rem;
+$list-item-dense-title-font-size: 0.929rem;
+$list-item-dense-title-font-weight: initial;
+$fab-icon-sizes: (
+  'small': 2
+);
+$btn-sizes: (
+  'default': 31,
+  'large': 54
+);
+
+$headings: (
+  'h1': (
+    'size': 3.3125rem,
+    'line-height': 1.15em
+  ),
+  'h2': (
+    'size': 2.25rem,
+    'line-height': 1.5em
+  ),
+  'h3': (
+    'size': 2rem,
+    'weight': 400,
+    'line-height': 3.125rem,
+    'letter-spacing': normal,
+    'font-family': $heading-font-family,
+    'text-transform': false
+  ),
+);
+
+$text-field-single-line-label-top:4px !important;
+// $text-field-outlined-dense-label-position-y:4px !important;
+$text-field-outlined-fieldset-border:1px solid currentColor !default;
+$text-field-outlined-rounded-slot-padding:0 10px !default;
+$text-field-filled-full-width-outlined-single-line-slot-min-height:22px !default;
+@import '~vuetify/src/styles/styles.sass';

@@ -5,23 +5,24 @@
 		<slot name="aboveTable">
 			<v-row justify="space-between" align="center" dense align-content="center">
 				<v-col>
-					<h4 class="primary--text pt-2 pb-4 px-5">{{$store.state.pageDetails.pageTitle}}</h4>
+					<h3 class="text-h3 primary--text pt-2 pb-4">{{ $store.state.pageDetails.pageTitle }}</h3>
 				</v-col>
-				<v-col class="text-right">
+				<v-col class="text-right pr-3">
 					<slot
 						name="createBtn"
-						v-if="$has_permission(`create_${model.permission}`) || $has_permission(`manage_${model.permission}`)"
+						v-if="
+							$has_permission(`create_${model.permission}`) ||
+								$has_permission(`manage_${model.permission}`)
+						"
 					>
-						<v-btn outlined @click="$router.push(`/${model.name}/create`)" small rounded>
-							Create new {{model.objectName}}
+						<v-btn outlined small @click="$router.push(`/${model.name}/create`)" class="py-2" rounded>
+							Create new {{ model.objectName }}
 						</v-btn>
 					</slot>
 				</v-col>
 			</v-row>
-			
-			
+
 			<!-- <slot name="above-table-content"></slot> -->
-			
 		</slot>
 		<div style="clear:both"></div>
 		<v-data-table
@@ -47,11 +48,12 @@
 			class="customDataTable white"
 			:class="{ 'child grey lighten-2': child }"
 			style="border-radius:10px 10px 0 0"
-		>	
-			<template v-slot:top>
-				<div class="white pa-1" style="border-radius:10px 10px 0 0">
-					<v-row dense justify="space-around">
-						<v-col md="7">
+			mobile-breakpoint="300"
+		>
+			<template v-slot:top v-if="!child">
+				<v-container class="white py-2" style="border-radius:10px 10px 0 0">
+					<!-- <v-row dense justify="space-around">
+						<v-col sm="12" md="5">
 							<v-row dense justify="space-between">
 								<v-col>
 									Page count 
@@ -72,38 +74,150 @@
 							</v-row>
 						</v-col>
 
-						<v-col md="5" class="text-center">
+						<v-col sm="12" md="6" class="text-right">
 							<v-row dense>
-								<v-col>
+								<v-col class="text-right">
 									<slot name="export-btn">
-										<v-btn class="above-table-button" height="32" @click="fetchData" rounded outlined small>
-											<v-icon size="15">mdi-content-save-outline</v-icon>
+										<v-btn class="above-table-button px-1" height="30" @click="fetchData" rounded outlined small>
+											<v-icon size="17">mdi-content-save-outline</v-icon>
 											Export
 										</v-btn>
 									</slot>
 									<slot name="reload-btn">
-										<v-btn class="above-table-button" height="32" @click="fetchData" rounded outlined small>
-											<v-icon size="15">mdi-sync</v-icon>
+										<v-btn class="above-table-button px-1" height="30" @click="fetchData" rounded outlined small>
+											<v-icon size="17">mdi-sync</v-icon>
 											Refresh
 										</v-btn>
 									</slot>
+									<slot name="print-btn">
+										<v-btn class="above-table-button px-1" height="30" @click="fetchData" rounded outlined small>
+											<v-icon size="17">mdi-refresh</v-icon>
+											Print
+										</v-btn>
+									</slot>
 									<slot name="reset-btn">
-										<v-btn class="above-table-button" height="32" @click="fetchData" rounded outlined small>
-											<v-icon size="15">mdi-refresh</v-icon>
+										<v-btn class="above-table-button px-1" height="30" @click="fetchData" rounded outlined small>
+											<v-icon size="17">mdi-refresh</v-icon>
 											Reset
 										</v-btn>
 									</slot>
 									<slot name="columns-btn">
-										<v-btn class="above-table-button" height="32" @click="fetchData" rounded outlined small>
-											<v-icon size="15">mdi-eye-outline</v-icon>
+										<v-btn class="above-table-button px-1" height="30" @click="fetchData" rounded outlined small>
+											<v-icon size="17">mdi-eye-outline</v-icon>
 											Columns
 										</v-btn>
 									</slot>
 								</v-col>
 							</v-row>
 						</v-col>
-					</v-row>
-				</div>
+					</v-row> -->
+
+					<v-layout justify-space-between align-center wrap>
+						<v-flex xs2 d-flex align-center>
+							<span class="pr-3">Show</span>
+							<v-select
+								:items="itemsRows"
+								single-line
+								hide-details
+								dense
+								rounded
+								v-model="itemPerPage"
+								outlined
+								style="max-width:35%"
+								append-icon="keyboard_arrow_down"
+								:menu-props="{ offsetY: true }"
+							></v-select>
+							<span class="pl-3">entries</span>
+						</v-flex>
+						<v-flex md3 xs6>
+							<v-text-field
+								label="Search"
+								v-model="search"
+								hide-details
+								rounded
+								height="30"
+								dense
+								outlined
+								single-line
+							>
+								<template v-slot:prepend-inner>
+									<div style="margin-top:-1px">
+										<v-icon size="20" color="#ababab">
+											search
+										</v-icon>
+									</div>
+								</template>
+							</v-text-field>
+						</v-flex>
+						<v-flex xs4 class="text-right">
+							<slot name="export-btn">
+								<v-btn
+									class="above-table-button px-1"
+									height="30"
+									@click="fetchData"
+									rounded
+									outlined
+									small
+								>
+									<v-icon size="17">mdi-content-save-outline</v-icon>
+									Export
+								</v-btn>
+							</slot>
+							<slot name="reload-btn">
+								<v-btn
+									class="above-table-button px-1"
+									height="30"
+									@click="fetchData"
+									rounded
+									outlined
+									small
+								>
+									<v-icon size="17">mdi-sync</v-icon>
+									Refresh
+								</v-btn>
+							</slot>
+							<slot name="print-btn">
+								<v-btn
+									class="above-table-button px-1"
+									height="30"
+									@click="fetchData"
+									rounded
+									outlined
+									small
+								>
+									<v-icon size="17">mdi-refresh</v-icon>
+									Print
+								</v-btn>
+							</slot>
+							<slot name="reset-btn">
+								<v-btn
+									class="above-table-button px-1"
+									height="30"
+									@click="fetchData"
+									rounded
+									outlined
+									small
+								>
+									<v-icon size="17">mdi-refresh</v-icon>
+									Reset
+								</v-btn>
+							</slot>
+							<slot name="columns-btn">
+								<v-btn
+									class="above-table-button px-1"
+									height="30"
+									@click="fetchData"
+									rounded
+									outlined
+									small
+								>
+									<v-icon size="17">mdi-eye-outline</v-icon>
+									Columns
+								</v-btn>
+							</slot>
+						</v-flex>
+					</v-layout>
+				</v-container>
 			</template>
 			<template v-slot:expanded-item="props">
 				<td class="pt-1 pb-2" style="z-index:1;position:relative" :colspan="headers.length">
@@ -173,6 +287,21 @@
 						</template>
 					</table-fields>
 				</tr>
+			</template>
+
+			<template v-slot:footer="{ props: { pagination } }">
+				<v-pagination
+					style="border-radius:0 0 10px 10px"
+					class="mt-2"
+					color="secondary"
+					v-model="page"
+					circle
+					:length="paginationLength(pagination.itemsLength / itemPerPage)"
+					previous-aria-label="Previous"
+					:total-visible="5"
+					next-aria-label="Next"
+					current-page-aria-label="sdf"
+				></v-pagination>
 			</template>
 		</v-data-table>
 		<!-- </v-flex>
@@ -324,7 +453,7 @@ export default {
 		hideFooter: {
 			type: Boolean,
 			default() {
-				return false;
+				return true;
 			},
 		},
 		headers: {
@@ -348,6 +477,32 @@ export default {
 	},
 	data() {
 		return {
+			itemsRows: [
+				{
+					text: '1',
+					value: 1,
+				},
+				{
+					text: '5',
+					value: 5,
+				},
+				{
+					text: '10',
+					value: 10,
+				},
+				{
+					text: '50',
+					value: 50,
+				},
+				{
+					text: '100',
+					value: 100,
+				},
+				{
+					text: 'All',
+					value: null,
+				},
+			],
 			expanded: [],
 			sortVariables: {
 				sortBy: this.defaultSortBy,
@@ -396,6 +551,9 @@ export default {
 		},
 	},
 	methods: {
+		paginationLength(number) {
+			return Math.ceil(number);
+		},
 		deleteItem(item) {
 			if (
 				!this.$has_permission(`delete_${this.model.permission}`) &&
@@ -467,57 +625,54 @@ export default {
 	white-space: nowrap !important;
 }
 * >>> div:not(.child) .v-data-table__wrapper {
-	max-height: 400px !important;
+	max-height: 340px !important;
 	/* background:transparent */
 }
-* >>> thead tr th:first-of-type, tbody tr td:first-of-type {
+* >>> thead tr th:first-of-type,
+tbody tr td:first-of-type {
 	border-radius: 10px 0 0 10px;
 }
-* >>>  thead tr th:last-of-type, tbody tr td:last-of-type {
-	border-radius: 0 10px 10px 0
+* >>> thead tr th:last-of-type,
+tbody tr td:last-of-type {
+	border-radius: 0 10px 10px 0;
 }
 
-* >>> thead tr th{
-	background:#000 !important;
-	color:white !important
+* >>> thead tr th {
+	background: #000 !important;
+	color: white !important;
 }
-* >>> thead tr th i{
-	color:white !important
+* >>> thead tr th i {
+	color: white !important;
 }
-tbody tr td{
-	border-bottom:1px solid #000 !important;
-	border-top:1px solid #000 !important;
+tbody tr td {
+	border-bottom: 1px solid #000 !important;
+	border-top: 1px solid #000 !important;
 }
-* >>> .customDataTable table{
-	border-collapse:separate; 
-	border-spacing:0 5px; 
+* >>> .customDataTable table {
+	border-collapse: separate;
+	border-spacing: 0 5px;
 }
-tbody tr td:first-of-type{
-	border-left:1px solid #000 !important
+tbody tr td:first-of-type {
+	border-left: 1px solid #000 !important;
 }
-tbody tr td:last-of-type{
-	border-right:1px solid #000 !important
-}
-/* tr:hover ,tr:hover * >>> tr td div button:before {
-	background-color: #0678ec !important;
-	color:white !important
-} */
-.above-table-button{
-	padding:2px
+tbody tr td:last-of-type {
+	border-right: 1px solid #000 !important;
 }
 
-/* .search-box{
-	border: 1px solid #d8d8d8 !important;
+* >>> .v-text-field--outlined.v-input--dense .v-label {
+	top: 5px !important;
 }
-.search-box label {
-	font-size:12px !important;
-	color:#ababab !important
+* >>> .v-select__slot .v-input__append-inner {
+	margin-top: 5px !important;
+	width: 17px !important;
+	font-size: 14px !important;
 }
-.v-text-field--filled.v-input--dense.v-text-field--single-line > .v-input__control > .v-input__slot { 
-	min-height: 26px;
-	background:transparent !important
-}
-.v-text-field--filled.v-input--dense .v-label{
-	top:3px !important
-} */
+</style>
+<style scoped>
+/* /deep/ .v-pagination__item{
+    display: none;
+  }
+  /deep/ .v-pagination__more{
+    display: none;
+  } */
 </style>
