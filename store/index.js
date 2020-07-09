@@ -12,6 +12,9 @@ export const state = () => ({
 		text: '',
 		active: false,
 	},
+	pageDetails:{
+		pageTitle:'Dashboard'
+	},
 	apiUrl: process.env.BASE_SERVER_URL || 'https://more-store-server.herokuapp.com',
 	imagePath: process.env.GET_IMAGE_PATH || '/admin/image',
 	search: '',

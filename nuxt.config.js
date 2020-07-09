@@ -20,6 +20,7 @@ module.exports = {
 			},
 		],
 		link: [
+			{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap' },
 			{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
 			{
 				rel: 'stylesheet',
@@ -32,10 +33,9 @@ module.exports = {
 		'~/plugins/vuetify.js',
 		'~/plugins/base.js',
 		'~/plugins/components.js',
-		{ src: '~/plugins/ckeditor.js', mode: 'client' },
 		'~/plugins/auth.js',
 	],
-	// css: ['~/assets/less/main.less'],
+	css: ['~/assets/less/main.less'],
 	/*
 	 ** Customize the progress bar color
 	 */

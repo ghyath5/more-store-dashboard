@@ -7,7 +7,7 @@
 				:elevation="elevation"
 				class="v-card--material__header d-flex align-center"
 				dark
-				min-height="80"
+				min-height="120"
 			>
 				<slot v-if="!title && !text" name="header" />
 				<div v-else class="px-3">

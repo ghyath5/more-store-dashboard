@@ -9,6 +9,7 @@
 			}"
 			:model="{
 				name: 'categories',
+				objectName:'Category',
 				permission: 'categories',
 				aggregate: 'categories_aggregate',
 				nestedDataKey: 'sub_categories',
@@ -25,11 +26,9 @@
 				</span>
 			</template>
 			<template v-slot:edit-btn="{ item }">
-				<nuxt-link style="text-decoration:none" :to="`/categories/${item.id}/update`">
-					<v-icon color="blue" class="pointer" :size="18">
-						mdi-square-edit-outline
-					</v-icon>
-				</nuxt-link>
+				<v-btn x-small width="80" color="blue" rounded class="capitalize white--text" :to="`/categories/${item.id}/update`">
+					edit
+				</v-btn>
 			</template>
 		</data-table>
 	</v-container>

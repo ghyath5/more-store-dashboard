@@ -3,21 +3,25 @@
 		<!-- <v-layout justify-center align-center column>
 			<v-flex xs12> -->
 		<slot name="aboveTable">
-			<slot name="above-table-content"></slot>
-			<slot
-				name="createBtn"
-				v-if="$has_permission(`create_${model.permission}`) || $has_permission(`manage_${model.permission}`)"
-			>
-				<v-btn class="mb-2" @click="$router.push(`/${model.name}/create`)" small color="info">
-					Create
-				</v-btn>
-			</slot>
-			<slot name="reload-btn">
-				<v-btn @click="fetchData" class="mb-2 float-right" small>
-					Reload Data
-					<v-icon small>mdi-refresh</v-icon>
-				</v-btn>
-			</slot>
+			<v-row justify="space-between" align="center" dense align-content="center">
+				<v-col>
+					<h4 class="primary--text pt-2 pb-4 px-5">{{$store.state.pageDetails.pageTitle}}</h4>
+				</v-col>
+				<v-col class="text-right">
+					<slot
+						name="createBtn"
+						v-if="$has_permission(`create_${model.permission}`) || $has_permission(`manage_${model.permission}`)"
+					>
+						<v-btn outlined @click="$router.push(`/${model.name}/create`)" small rounded>
+							Create new {{model.objectName}}
+						</v-btn>
+					</slot>
+				</v-col>
+			</v-row>
+			
+			
+			<!-- <slot name="above-table-content"></slot> -->
+			
 		</slot>
 		<div style="clear:both"></div>
 		<v-data-table
@@ -40,9 +44,67 @@
 			:show-select="showSelect"
 			item-key="name"
 			:expanded.sync="expanded"
-			class="elevation-1 customDataTable"
+			class="customDataTable white"
 			:class="{ 'child grey lighten-2': child }"
-		>
+			style="border-radius:10px 10px 0 0"
+		>	
+			<template v-slot:top>
+				<div class="white pa-1" style="border-radius:10px 10px 0 0">
+					<v-row dense justify="space-around">
+						<v-col md="7">
+							<v-row dense justify="space-between">
+								<v-col>
+									Page count 
+								</v-col>
+								<v-col>
+									<v-text-field
+									append-icon="search"
+									label="Search"
+									v-model="search"
+									hide-details
+									height="25"
+									rounded
+									dense
+									filled
+									single-line
+									/>
+								</v-col>
+							</v-row>
+						</v-col>
+
+						<v-col md="5" class="text-center">
+							<v-row dense>
+								<v-col>
+									<slot name="export-btn">
+										<v-btn class="above-table-button" height="32" @click="fetchData" rounded outlined small>
+											<v-icon size="15">mdi-content-save-outline</v-icon>
+											Export
+										</v-btn>
+									</slot>
+									<slot name="reload-btn">
+										<v-btn class="above-table-button" height="32" @click="fetchData" rounded outlined small>
+											<v-icon size="15">mdi-sync</v-icon>
+											Refresh
+										</v-btn>
+									</slot>
+									<slot name="reset-btn">
+										<v-btn class="above-table-button" height="32" @click="fetchData" rounded outlined small>
+											<v-icon size="15">mdi-refresh</v-icon>
+											Reset
+										</v-btn>
+									</slot>
+									<slot name="columns-btn">
+										<v-btn class="above-table-button" height="32" @click="fetchData" rounded outlined small>
+											<v-icon size="15">mdi-eye-outline</v-icon>
+											Columns
+										</v-btn>
+									</slot>
+								</v-col>
+							</v-row>
+						</v-col>
+					</v-row>
+				</div>
+			</template>
 			<template v-slot:expanded-item="props">
 				<td class="pt-1 pb-2" style="z-index:1;position:relative" :colspan="headers.length">
 					<data-table
@@ -169,6 +231,14 @@ export default {
 			}
 
 			return vars;
+		},
+		search: {
+			get() {
+				return this.$store.state.search;
+			},
+			set(v) {
+				this.$store.commit('setSearch', v);
+			},
 		},
 	},
 	props: {
@@ -397,6 +467,57 @@ export default {
 	white-space: nowrap !important;
 }
 * >>> div:not(.child) .v-data-table__wrapper {
-	max-height: 460px !important;
+	max-height: 400px !important;
+	/* background:transparent */
 }
+* >>> thead tr th:first-of-type, tbody tr td:first-of-type {
+	border-radius: 10px 0 0 10px;
+}
+* >>>  thead tr th:last-of-type, tbody tr td:last-of-type {
+	border-radius: 0 10px 10px 0
+}
+
+* >>> thead tr th{
+	background:#000 !important;
+	color:white !important
+}
+* >>> thead tr th i{
+	color:white !important
+}
+tbody tr td{
+	border-bottom:1px solid #000 !important;
+	border-top:1px solid #000 !important;
+}
+* >>> .customDataTable table{
+	border-collapse:separate; 
+	border-spacing:0 5px; 
+}
+tbody tr td:first-of-type{
+	border-left:1px solid #000 !important
+}
+tbody tr td:last-of-type{
+	border-right:1px solid #000 !important
+}
+/* tr:hover ,tr:hover * >>> tr td div button:before {
+	background-color: #0678ec !important;
+	color:white !important
+} */
+.above-table-button{
+	padding:2px
+}
+
+/* .search-box{
+	border: 1px solid #d8d8d8 !important;
+}
+.search-box label {
+	font-size:12px !important;
+	color:#ababab !important
+}
+.v-text-field--filled.v-input--dense.v-text-field--single-line > .v-input__control > .v-input__slot { 
+	min-height: 26px;
+	background:transparent !important
+}
+.v-text-field--filled.v-input--dense .v-label{
+	top:3px !important
+} */
 </style>

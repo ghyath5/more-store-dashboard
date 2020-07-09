@@ -1,28 +1,52 @@
 <template>
 	<v-row align="center" justify="center">
 		<v-col cols="12" sm="8" md="4">
-			<v-card :loading="loading" class="elevation-12">
+			<v-row align="center" justify="center" class="mb-5">
+				<v-img src="/logo.png" height="30" width="66" contain />
+			</v-row>
+			<v-card :loading="loading" flat class="pa-5 text-center">
+				<h4 class="mb-3 mt-4">
+					Login to account
+				</h4>
+				<p style="font-size:12px">
+					Please enter your email and password to continue
+				</p>
 				<v-card-text>
 					<v-form>
+						<label class="ml-5 primary--text text-left d-block">Email address</label>
 						<v-text-field
 							label="Login"
 							v-model="email"
-							prepend-icon="mdi-account"
+							dense
+							outlined
+							height="25"
+							single-line
 							type="text"
+							rounded
+							flat
 						></v-text-field>
-
+						<label class="ml-5 primary--text text-left d-block">Password</label>
 						<v-text-field
 							id="password"
 							label="Password"
 							v-model="password"
-							prepend-icon="mdi-lock"
 							type="password"
+							dense
+							outlined
+							height="25"
+							single-line
+							rounded
+							flat
 						></v-text-field>
 					</v-form>
 				</v-card-text>
-				<v-card-actions>
+				<v-card-actions >
 					<v-spacer></v-spacer>
-					<v-btn @click="login" color="primary">Login</v-btn>
+					<v-col sm="12" >
+						<div class="px-10">
+							<v-btn @click="login" :disabled="loading" block rounded color="secondary">Login</v-btn>
+						</div>
+					</v-col>
 				</v-card-actions>
 			</v-card>
 		</v-col>
@@ -82,3 +106,9 @@ export default {
 	},
 };
 </script>
+
+<style>
+	.v-text-field--filled.v-input--dense.v-text-field--single-line > .v-input__control > .v-input__slot { 
+		min-height: 26px;
+	}
+</style>

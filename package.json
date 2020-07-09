@@ -11,8 +11,6 @@
 		"fix": "eslint --ext .js,.vue --ignore-path .gitignore . --fix"
 	},
 	"dependencies": {
-		"@ckeditor/ckeditor5-build-classic": "^17.0.0",
-		"@ckeditor/ckeditor5-vue": "^1.0.1",
 		"@nuxtjs/apollo": "^4.0.1-rc.1",
 		"core-js": "^2.6.10",
 		"dotenv": "^8.2.0",

@@ -2,13 +2,22 @@
 	<v-container fluid>
 		<v-row justify="center">
 			<v-col v-for="(info, i) in overviewData" :key="i" cols="12" sm="6" lg="3">
-				<material-stats-card :color="info.color" :icon="info.icon" :title="info.title" :value="info.value" />
+				<v-card height="130" flat class="overview-card">
+					<v-card-text>
+						<div class="text-left">
+							<p class="grey--textd font-weight-light mb-5" v-text="info.title" />
+							<h3 class="headline font-weight text--primary">
+								{{ info.value }}
+							</h3>
+						</div>
+					</v-card-text>
+				</v-card>
 			</v-col>
-			<v-col cols="12" lg="10">
+			<!-- <v-col cols="12" lg="10">
 				<material-card color="light-blue" title="Orders" text="Real-time overview">
 					<v-data-table :headers="headers" :items="items" hide-default-footer />
 				</material-card>
-			</v-col>
+			</v-col> -->
 		</v-row>
 	</v-container>
 </template>
@@ -70,27 +79,19 @@ export default {
 		overviewData() {
 			let data = [
 				this.$has_permission('read_users') && {
-					color: 'light-blue lighten-1',
-					icon: 'mdi-account-group-outline',
-					title: 'Clients',
+					title: 'Total Clients',
 					value: this.clients && this.clients.count,
 				},
 				this.$has_permission('read_orders') && {
-					color: 'purple darken-4',
-					icon: 'card_travel',
-					title: 'Orders',
+					title: 'Total Orders',
 					value: '23',
 				},
 				{
-					color: 'blue darken-2',
-					icon: 'mdi-storefront',
-					title: 'Products',
+					title: 'Total Sales',
 					value: this.products && this.products.count,
 				},
 				{
-					color: 'red',
-					icon: 'attach_money',
-					title: 'Earning',
+					title: 'Total Pending',
 					value: '23',
 				},
 			];
@@ -153,3 +154,10 @@ export default {
 	methods: {},
 };
 </script>
+
+<style scoped>
+	.overview-card{
+		border-radius:10px;
+		box-shadow: 2px 2px 5px 2px #eceef1 !important
+	}
+</style>

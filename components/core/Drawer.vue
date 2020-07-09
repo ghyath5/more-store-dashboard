@@ -3,22 +3,23 @@
 		id="app-drawer"
 		v-model="inputValue"
 		app
+		clipped
 		:color="'white'"
 		light
 		floating
 		mobile-breakpoint="991"
 		persistent
-		width="280"
+		width="240"
 	>
 		<!-- <template v-slot:img="attrs"> -->
 		<!-- <v-img v-bind="attrs" gradient="to top, rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)" /> -->
 		<!-- </template> -->
 
-		<v-list-item two-line>
-			<v-img src="/logo.png" height="34" width="70" contain />
-		</v-list-item>
+		<!-- <v-list-item two-line>
+			
+		</v-list-item> -->
 
-		<v-divider class="mx-3 mb-3" />
+		<!-- <v-divider class="mx-3 mb-3" /> -->
 
 		<v-list>
 			<!-- Bug in Vuetify for first child of v-list not receiving proper border-radius -->
