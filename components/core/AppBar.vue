@@ -75,20 +75,23 @@
 					<v-card>
 						<v-list dense>
 							<v-hover v-slot:default="{ hover }">
-								<v-list-item
-									dense
-									class="pointer account-list"
-									:class="{ secondary: hover }"
-									v-for="accountList in accountLists"
-									:key="accountList.text"
-								>
-									<nuxt-link style="text-decoration:none" :to="accountList.to">
-										<v-list-item-title
-											:class="{ 'white--text': hover }"
-											v-text="accountList.text"
-										/>
-									</nuxt-link>
-								</v-list-item>
+								<nuxt-link
+								v-for="accountList in accountLists"
+								:key="accountList.text"
+								 style="text-decoration:none" :to="accountList.to">
+									<v-list-item
+										dense
+										class="pointer account-list"
+										:class="{ secondary: hover }"
+										
+									>
+										
+											<v-list-item-title
+												:class="{ 'white--text': hover }"
+												v-text="accountList.text"
+											/>
+									</v-list-item>
+								</nuxt-link>
 							</v-hover>
 							<v-divider />
 							<v-hover v-slot:default="{ hover }">

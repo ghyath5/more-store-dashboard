@@ -51,7 +51,7 @@
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-col sm="12">
+					<v-col cols="12">
 						<div class="px-10">
 							<v-btn @click="login" :disabled="loading" block rounded color="secondary">Login</v-btn>
 						</div>

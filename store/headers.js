@@ -82,7 +82,7 @@ export default {
 		},
 		{
 			id: 300,
-			text: '#',
+			text: 'Actions',
 			viewer: 'actions',
 			width: 50,
 			sortable: false,

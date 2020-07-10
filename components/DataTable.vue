@@ -4,9 +4,9 @@
 			<v-flex xs12> -->
 		<slot name="aboveTable">
 			<v-row justify="space-between" align="center" dense align-content="center">
-				<v-col>
+				<!-- <v-col>
 					<h3 class="text-h3 primary--text pt-2 pb-4">{{ $store.state.pageDetails.pageTitle }}</h3>
-				</v-col>
+				</v-col> -->
 				<v-col class="text-right pr-3">
 					<slot
 						name="createBtn"
@@ -30,11 +30,11 @@
 			ref="dataTable"
 			:dark="dark"
 			fixed-header
-			:hide-default-footer="hideFooter"
+			hide-default-footer
 			:hide-default-header="hideHeader"
 			v-model="selected"
 			@input="$emit('input', selected)"
-			:headers="headers.filter(h => !h.notViewable)"
+			:headers="activeColumns.filter(h => !h.notViewable)"
 			:single-select="singleSelect"
 			:server-items-length="data.count"
 			:sort-by.sync="sortVariables.sortBy"
@@ -48,71 +48,18 @@
 			:expanded.sync="expanded"
 			class="customDataTable white"
 			:class="{ 'child grey lighten-2': child }"
-			style="border-radius:10px 10px 0 0"
+			style="border-radius:10px"
 			mobile-breakpoint="300"
-		>
+		>	
+			<template v-slot:progress>
+				<v-progress-linear
+				indeterminate
+				color="cyan"
+				active
+				></v-progress-linear>
+			</template>
 			<template v-slot:top v-if="!child">
-				<v-container class="white py-2" style="border-radius:10px 10px 0 0">
-					<!-- <v-row dense justify="space-around">
-						<v-col sm="12" md="5">
-							<v-row dense justify="space-between">
-								<v-col>
-									Page count 
-								</v-col>
-								<v-col>
-									<v-text-field
-									append-icon="search"
-									label="Search"
-									v-model="search"
-									hide-details
-									height="25"
-									rounded
-									dense
-									filled
-									single-line
-									/>
-								</v-col>
-							</v-row>
-						</v-col>
-
-						<v-col sm="12" md="6" class="text-right">
-							<v-row dense>
-								<v-col class="text-right">
-									<slot name="export-btn">
-										<v-btn class="above-table-button px-1" height="30" @click="fetchData" rounded outlined small>
-											<v-icon size="17">mdi-content-save-outline</v-icon>
-											Export
-										</v-btn>
-									</slot>
-									<slot name="reload-btn">
-										<v-btn class="above-table-button px-1" height="30" @click="fetchData" rounded outlined small>
-											<v-icon size="17">mdi-sync</v-icon>
-											Refresh
-										</v-btn>
-									</slot>
-									<slot name="print-btn">
-										<v-btn class="above-table-button px-1" height="30" @click="fetchData" rounded outlined small>
-											<v-icon size="17">mdi-refresh</v-icon>
-											Print
-										</v-btn>
-									</slot>
-									<slot name="reset-btn">
-										<v-btn class="above-table-button px-1" height="30" @click="fetchData" rounded outlined small>
-											<v-icon size="17">mdi-refresh</v-icon>
-											Reset
-										</v-btn>
-									</slot>
-									<slot name="columns-btn">
-										<v-btn class="above-table-button px-1" height="30" @click="fetchData" rounded outlined small>
-											<v-icon size="17">mdi-eye-outline</v-icon>
-											Columns
-										</v-btn>
-									</slot>
-								</v-col>
-							</v-row>
-						</v-col>
-					</v-row> -->
-
+				<v-container class="white pt-2 pb-0" style="border-radius:10px 10px 0 0">
 					<v-layout justify-space-between align-center wrap>
 						<v-flex xs4 md2 d-flex align-center class="mb-1">
 							<span class="pr-3">Show</span>
@@ -208,28 +155,63 @@
 								</v-btn>
 							</slot>
 							<slot name="columns-btn">
-								<v-btn
-									class="above-table-button px-1"
-									height="30"
-									@click="fetchData"
-									rounded
-									outlined
-									small
-								>
-									<v-icon size="17">mdi-eye-outline</v-icon>
-									Columns
-								</v-btn>
+								<v-menu bottom left offset-y max-height="400" :close-on-content-click="false">
+									<template v-slot:activator="{ on }">
+										<v-btn
+											v-on="on"
+											class="above-table-button px-1"
+											height="30"
+											rounded
+											outlined
+											small
+										>
+										<v-icon size="17">mdi-eye-outline</v-icon>
+										Columns
+									</v-btn>
+									</template>
+									<v-card>
+										<v-list dense
+										>
+											<v-list-item-group
+											v-model="activeColumns"
+											multiple
+											mandatory
+											>
+											<v-list-item
+												v-for="col in headers.filter(h=>h.text&&!h.notViewable)"
+												:key="col.id"
+												:value="col"
+											>
+												<template v-slot:default="{ active, toggle }">
+													<v-list-item-action>
+														<v-checkbox
+															:input-value="active"
+															:true-value="col"
+															@click="toggle"
+															color="info"
+														/>
+													</v-list-item-action>
+
+													<v-list-item-title>
+													{{ col.text }}
+													</v-list-item-title>
+												</template>
+											</v-list-item>
+											</v-list-item-group>
+										</v-list>
+									</v-card>
+								</v-menu>
 							</slot>
 						</v-flex>
 					</v-layout>
 				</v-container>
 			</template>
 			<template v-slot:expanded-item="props">
-				<td class="pt-1 pb-2" style="z-index:1;position:relative" :colspan="headers.length">
+				<td class="pt-1 pb-2" style="z-index:1;position:relative" :colspan="activeColumns.length">
 					<data-table
 						child
 						class="ml-6"
-						:headers="headers"
+						:headers="activeColumns"
 						:queryGql="queryGql"
 						:deleteGql="deleteGql"
 						:initialWhere="{
@@ -263,7 +245,7 @@
 					</data-table>
 				</td>
 			</template>
-			<template v-slot:item.data-table-select>s</template>
+			<!-- <template v-slot:item.data-table-select>s</template> -->
 			<template v-slot:item="props">
 				<tr>
 					<td v-if="showSelect">
@@ -294,19 +276,11 @@
 				</tr>
 			</template>
 
-			<template v-slot:footer="{ props: { pagination } }">
-				<v-pagination
-					style="border-radius:0 0 10px 10px"
-					class="mt-2"
-					color="secondary"
-					v-model="page"
-					circle
-					:length="paginationLength(pagination.itemsLength / itemPerPage)"
-					previous-aria-label="Previous"
-					:total-visible="5"
-					next-aria-label="Next"
-					current-page-aria-label="sdf"
-				></v-pagination>
+			<template v-slot:footer="{ props: { pagination } }" v-if="!hideFooter">
+				<paginate 
+				:pagination.sync="pagination"
+				 v-model="page"
+				/>
 			</template>
 		</v-data-table>
 		<!-- </v-flex>
@@ -315,9 +289,13 @@
 </template>
 <script>
 import { json2excel } from 'js2excel';
-import { omit } from 'lodash';
+import { omit, sortBy } from 'lodash';
+import paginate from '~/components/pagination.vue'
 export default {
 	name: 'DataTable',
+	components:{
+		paginate	
+	},
 	computed: {
 		// tableHeight() {
 		// 	let container = document.querySelector('.v-main__wrap') || { clientHeight: 700 };
@@ -373,9 +351,18 @@ export default {
 				return this.$store.state.search;
 			},
 			set(v) {
+				this.page = 1
 				this.$store.commit('setSearch', v);
 			},
 		},
+		activeColumns:{
+			get(){
+				return sortBy(this.selectedColumns,['id'])
+			},
+			set(v){
+				this.selectedColumns = v
+			}
+		}
 	},
 	props: {
 		value: {
@@ -460,7 +447,7 @@ export default {
 		hideFooter: {
 			type: Boolean,
 			default() {
-				return true;
+				return false;
 			},
 		},
 		headers: {
@@ -484,11 +471,9 @@ export default {
 	},
 	data() {
 		return {
+			selectedColumns:this.headers,
+			showColumnsSelect:false,
 			itemsRows: [
-				{
-					text: '1',
-					value: 1,
-				},
 				{
 					text: '5',
 					value: 5,
@@ -585,10 +570,7 @@ export default {
 			this.sortVariables.sortBy = this.defaultSortBy;
 			this.sortVariables.sortDesc = true;
 			this.search = '';
-		},
-		paginationLength(number) {
-			if (number === Infinity) number = 1;
-			return Math.ceil(number);
+			this.activeColumns = this.headers
 		},
 		deleteItem(item) {
 			if (
@@ -657,23 +639,20 @@ export default {
 };
 </script>
 <style scoped>
-* >>> table thead th {
+* >>> .customDataTable table thead th {
 	white-space: nowrap !important;
-}
-* >>> div:not(.child) .v-data-table__wrapper {
-	max-height: 340px !important;
-	/* background:transparent */
+	direction:rtl;
 }
 * >>> thead tr th:first-of-type,
 tbody tr td:first-of-type {
-	border-radius: 10px 0 0 10px;
+	border-radius: 8px 0 0 8px;
 }
 * >>> thead tr th:last-of-type,
 tbody tr td:last-of-type {
-	border-radius: 0 10px 10px 0;
+	border-radius: 0 8px 8px 0;
 }
 
-* >>> thead tr th {
+* >>> thead tr:not(.v-data-table__progress) th {
 	background: #000 !important;
 	color: white !important;
 }
@@ -685,8 +664,9 @@ tbody tr td {
 	border-top: 1px solid #000 !important;
 }
 * >>> .customDataTable table {
-	border-collapse: separate;
-	border-spacing: 0 5px;
+	/* border-collapse: separate; */
+	border-spacing: 0 5px !important;
+	padding:6px !important;
 }
 tbody tr td:first-of-type {
 	border-left: 1px solid #000 !important;

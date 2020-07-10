@@ -36,6 +36,7 @@ export default {
 	watch: {
 		$route(val) {
 			this.$store.commit('setSearch', '');
+			this.$store.commit('setPageDetails', {});
 		},
 	},
 	components: {

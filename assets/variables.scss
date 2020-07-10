@@ -6,7 +6,7 @@ $heading-font-family: Barlow;
 $font-size-root: 13px;
 
 $border-radius-root: 7px;
-
+$btn-text-transform: none !important;
 // Variables must come before the import
 $btn-letter-spacing: 0;
 $btn-font-weight: 400;
@@ -38,6 +38,14 @@ $headings: (
     'font-family': $heading-font-family,
     'text-transform': false
   ),
+);
+
+$btn-font-sizes:(
+  'x-small': .625rem,
+  'small': .85rem,
+  'default': .875rem,
+  'large': .875rem,
+  'x-large': 1rem
 );
 
 $text-field-single-line-label-top:4px !important;

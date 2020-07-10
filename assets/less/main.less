@@ -4,14 +4,23 @@
 .v-btn--outlined .v-btn__content {
     top: -1px;
 }
-button {
+button, a {
     outline: none;
 }
-button:not(.v-btn--icon):hover{
+button:not(.v-btn--icon, .v-icon):hover{
     background:#ed1c24;
     color:white !important
 }
 
 .v-icon{
     transition: 0s !important;
+}
+
+.bordered {
+    border:1px solid #000;
+}
+
+.customDataTable:not(.child) > .v-data-table__wrapper {
+	max-height: 340px !important;
+	/* background:transparent */
 }

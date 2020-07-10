@@ -53,6 +53,9 @@ export const mutations = {
 	setPageSearch: (state, v) => {
 		state.pageSearch = v;
 	},
+	setPageDetails: (state,v)=>{
+		state.pageDetails = v
+	}
 };
 export const actions = {
 	async nuxtServerInit({ commit }, { req, app, redirect, store }) {

@@ -60,7 +60,7 @@ module.exports = {
 				config.devtool = 'source-map';
 			}
 		},
-		transpile: [/^vuetify/],
+		// transpile: [/^vuetify/],
 	},
 	modules: ['@nuxtjs/apollo'],
 	apollo: {

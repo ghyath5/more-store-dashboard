@@ -1,5 +1,5 @@
 <template>
-	<v-container>
+	<v-container fluid>
 		<item-editor
 			:createGql="createGql"
 			:headers="$store.state.categoryHeaders.filter(e => !e.notEditable)"
@@ -36,5 +36,10 @@ export default {
 			this.$router.push('/categories');
 		},
 	},
+	mounted(){
+		this.$store.commit('setPageDetails',{
+			pageTitle:'Create Category'
+		})
+	}
 };
 </script>

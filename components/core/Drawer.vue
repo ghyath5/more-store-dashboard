@@ -99,6 +99,11 @@ export default {
 					icon: 'mdi-view-dashboard',
 					text: 'Dashboard',
 				},
+				{
+					to:'/activity',
+					icon:'',
+					text:'Activity'
+				},
 				this.$has_permission('read_products') && {
 					to: '/products',
 					icon: 'mdi-storefront',

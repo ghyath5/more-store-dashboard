@@ -52,5 +52,10 @@ export default {
 			this.$router.push('/categories');
 		},
 	},
+	mounted(){
+		this.$store.commit('setPageDetails',{
+			pageTitle:'Categories Management'
+		})
+	}
 };
 </script>
