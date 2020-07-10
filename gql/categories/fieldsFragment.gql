@@ -1,11 +1,12 @@
 #import "../commonFieldsFragment.gql"
 fragment CategoryFiels on categories {
+    name
+    position 
     id
+    active
     created_at
     updated_at
     image{
         ...ImageFields   
-    }
-    name
-    position    
+    }  
 }

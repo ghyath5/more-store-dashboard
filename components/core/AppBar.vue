@@ -1,5 +1,5 @@
 <template>
-	<v-app-bar fixed clipped-left id="core-app-bar" app color="white" flat height="52">
+	<v-app-bar fixed clipped-left id="core-app-bar" app color="white" elevation="1" height="52">
 		<v-row dense align="center" justify-sm="space-between" class="mx-0 px-0">
 			<v-col sm="2" md="2" style="max-width:240px" xl="2" lg="2" class="hidden-sm-and-down">
 				<v-img class="ma-auto" src="/logo.png" height="50" width="80" contain />
@@ -44,7 +44,7 @@
 			<v-col sm="5" md="4" class="mx-0 text-right">
 				<v-menu bottom left offset-y transition="slide-y-transition">
 					<template v-slot:activator="{ attrs, on }">
-						<v-btn small class="toolbar-items mr-4" icon v-bind="attrs" v-on="on">
+						<v-btn class="toolbar-items mr-4" icon v-bind="attrs" v-on="on">
 							<v-badge color="error" overlap>
 								<template slot="badge">
 									{{ notifications.length }}
@@ -104,11 +104,9 @@
 						</v-list>
 					</v-card>
 				</v-menu>
-				<v-btn small icon class="mr-5">
-					<v-icon color="tertiary">
-						mdi-account-outline
-					</v-icon>
-				</v-btn>
+				<v-icon color="tertiary">
+					mdi-account-outline
+				</v-icon>
 			</v-col>
 		</v-row>
 	</v-app-bar>

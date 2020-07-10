@@ -16,7 +16,7 @@ export default {
 		},
 		{
 			id: 100,
-			text: 'Name',
+			text: 'Category Name',
 			value: 'name',
 			viewer: 'text',
 			editor: 'textEditor',
@@ -63,6 +63,22 @@ export default {
 			viewer: 'date',
 			width: 180, //in px
 			notEditable: true,
+		},
+		{
+			id: 210,
+			text: 'Display Mode',
+			value: 'active',
+			viewer: 'boolean',
+			settings: {
+				true: {
+					text: 'Active',
+					color: 'green',
+				},
+				false: {
+					text: 'Disabled',
+					color: 'red',
+				},
+			},
 		},
 		{
 			id: 300,

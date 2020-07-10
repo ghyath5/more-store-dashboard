@@ -26,6 +26,7 @@
 		</slot>
 		<div style="clear:both"></div>
 		<v-data-table
+			id="data-table"
 			ref="dataTable"
 			:dark="dark"
 			fixed-header
@@ -113,7 +114,7 @@
 					</v-row> -->
 
 					<v-layout justify-space-between align-center wrap>
-						<v-flex xs2 d-flex align-center>
+						<v-flex xs4 md2 d-flex align-center class="mb-1">
 							<span class="pr-3">Show</span>
 							<v-select
 								:items="itemsRows"
@@ -126,10 +127,14 @@
 								style="max-width:35%"
 								append-icon="keyboard_arrow_down"
 								:menu-props="{ offsetY: true }"
-							></v-select>
+							>
+								<template v-slot:selection="{ item }">
+									<span class="text-caption">{{ item.text }}</span>
+								</template>
+							</v-select>
 							<span class="pl-3">entries</span>
 						</v-flex>
-						<v-flex md3 xs6>
+						<v-flex md3 xs6 class="mb-1 text-right">
 							<v-text-field
 								label="Search"
 								v-model="search"
@@ -149,12 +154,12 @@
 								</template>
 							</v-text-field>
 						</v-flex>
-						<v-flex xs4 class="text-right">
+						<v-flex xs10 md5 justify-end class="text-right">
 							<slot name="export-btn">
 								<v-btn
 									class="above-table-button px-1"
 									height="30"
-									@click="fetchData"
+									@click="exportData"
 									rounded
 									outlined
 									small
@@ -180,12 +185,12 @@
 								<v-btn
 									class="above-table-button px-1"
 									height="30"
-									@click="fetchData"
+									@click="printData"
 									rounded
 									outlined
 									small
 								>
-									<v-icon size="17">mdi-refresh</v-icon>
+									<v-icon size="17" class="material-icons-outlined">print</v-icon>
 									Print
 								</v-btn>
 							</slot>
@@ -193,7 +198,7 @@
 								<v-btn
 									class="above-table-button px-1"
 									height="30"
-									@click="fetchData"
+									@click="resetFilters"
 									rounded
 									outlined
 									small
@@ -309,6 +314,8 @@
 	</div>
 </template>
 <script>
+import { json2excel } from 'js2excel';
+import { omit } from 'lodash';
 export default {
 	name: 'DataTable',
 	computed: {
@@ -551,7 +558,36 @@ export default {
 		},
 	},
 	methods: {
+		printData() {
+			let dataTable = document.querySelector('.customDataTable table');
+			console.log(dataTable);
+
+			window.print();
+		},
+		exportData() {
+			let omitColumns = ['__typename', 'sub_categories', 'parent_category', 'image', 'id'];
+			let data = this.data.items.map(i => {
+				return omit(i, omitColumns);
+			});
+			try {
+				json2excel({
+					data: data,
+					name: this.model.name,
+					formateDate: 'yyyy/mm/dd',
+				});
+			} catch (e) {
+				console.log(e);
+
+				console.error('export error');
+			}
+		},
+		resetFilters() {
+			this.sortVariables.sortBy = this.defaultSortBy;
+			this.sortVariables.sortDesc = true;
+			this.search = '';
+		},
 		paginationLength(number) {
+			if (number === Infinity) number = 1;
 			return Math.ceil(number);
 		},
 		deleteItem(item) {
@@ -664,15 +700,7 @@ tbody tr td:last-of-type {
 }
 * >>> .v-select__slot .v-input__append-inner {
 	margin-top: 5px !important;
-	width: 17px !important;
+	width: 19px !important;
 	font-size: 14px !important;
 }
-</style>
-<style scoped>
-/* /deep/ .v-pagination__item{
-    display: none;
-  }
-  /deep/ .v-pagination__more{
-    display: none;
-  } */
 </style>

@@ -19,6 +19,7 @@
 		"filepond-plugin-image-preview": "^4.6.4",
 		"graphql-tag": "^2.10.3",
 		"js-cookie": "^2.2.1",
+		"js2excel": "^1.0.1",
 		"lodash": "^4.17.15",
 		"nuxt": "^2.11.0",
 		"vue-filepond": "^6.0.2",

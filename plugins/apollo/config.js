@@ -1,4 +1,4 @@
-export default function({ store, app, req }) {
+export default function({ store }) {
 	const token = () => {
 		return store.state.token;
 	};

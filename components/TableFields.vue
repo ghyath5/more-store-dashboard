@@ -18,6 +18,17 @@
 					{{ showItemValue(parentProps.item, column.value) }}
 				</span>
 			</template>
+			<template v-if="column.viewer === 'boolean'">
+				<span
+					v-if="column.settings"
+					:class="`${column.settings[showItemValue(parentProps.item, column.value)].color}--text`"
+				>
+					{{ column.settings[showItemValue(parentProps.item, column.value)].text }}
+				</span>
+				<span v-else>
+					{{ showItemValue(parentProps.item, column.value) }}
+				</span>
+			</template>
 			<template v-if="column.viewer === 'chipTags'">
 				<div v-if="chipName(parentProps.item[column.value], column.viewSettings.objectName).length">
 					<v-chip
@@ -55,9 +66,9 @@
 			<template v-else-if="column.viewer === 'checkbox'">
 				<v-checkbox :input-value="parentProps.item[column.value]" readonly></v-checkbox>
 			</template>
-			<template v-else-if="column.viewer === 'boolean'">
+			<!-- <template v-else-if="column.viewer === 'boolean'">
 				<v-icon v-if="parentProps.item[column.value]" color="primary">mdi-check-outline</v-icon>
-			</template>
+			</template> -->
 			<template v-else-if="column.viewer === 'actions'">
 				<div class="d-flex">
 					<slot
@@ -88,7 +99,7 @@
 						<v-dialog v-model="deleteDialog.active" width="450">
 							<template v-slot:activator="{ on }">
 								<v-icon v-on="on" color="error" class="pointer" :size="18">
-									mdi-delete
+									mdi-trash-can-outline
 								</v-icon>
 							</template>
 
