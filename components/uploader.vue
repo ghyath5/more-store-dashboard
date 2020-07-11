@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div id="file-uploader">
 		<file-pond
 			name="image"
 			ref="pond"
@@ -86,6 +86,9 @@ export default {
 		//
 	},
 	methods: {
+		browse() {
+			this.$refs['pond'].browse();
+		},
 		removeFile(e) {
 			if (this.value) {
 				// this.$apollo.mutate({
@@ -124,3 +127,12 @@ export default {
 	},
 };
 </script>
+
+<style>
+#file-uploader .filepond--drop-label {
+	background: white !important;
+	border: 1px solid;
+	min-height: 200px;
+	border-radius: 8px !important;
+}
+</style>

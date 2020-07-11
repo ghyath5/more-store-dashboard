@@ -1,0 +1,7 @@
+query users($where:users_bool_exp){
+    users_aggregate(where:$where){
+        aggregate{
+            count
+        }
+    }
+}

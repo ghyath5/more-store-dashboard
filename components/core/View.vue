@@ -1,7 +1,17 @@
 <template>
 	<v-main class="main-view">
-		<div id="core-view" class="pa-5 pt-0">
-			<h3 class="text-h3 primary--text pt-2 pb-4 pl-3 float-left" v-if="$store.state.pageDetails.pageTitle">{{ $store.state.pageDetails.pageTitle }}</h3>
+		<div id="core-view" class="pa-5 pt-2">
+			<h3
+				class="text-lg-h5 text-md-h6 font-weight-bold primary--text pt-2 pb-3 pl-3"
+				v-if="$store.state.pageDetails.pageTitle"
+			>
+				{{ $store.state.pageDetails.pageTitle }}
+				<template v-for="(path, i) in $store.state.pageDetails.path">
+					<span :key="i + 'slash'">/</span>
+					<span :key="i + 1" :class="path.color">{{ path.name }}</span>
+				</template>
+			</h3>
+			<!-- <div style="clear:both"></div> -->
 			<v-fade-transition mode="out-in">
 				<nuxt></nuxt>
 			</v-fade-transition>

@@ -20,6 +20,7 @@ fragment usersFields on users{
             }              
         }
     }
+    last_seen
     created_at
     updated_at
 }

@@ -50,10 +50,10 @@ export default {
 			deleteGql,
 		};
 	},
-	mounted(){
-		this.$store.commit('setPageDetails',{
-			pageTitle:'Categories'
-		})
-	}
+	mounted() {
+		this.$store.commit('setPageDetails', {
+			pageTitle: 'Categories',
+		});
+	},
 };
 </script>

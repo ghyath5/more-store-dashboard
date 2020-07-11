@@ -5,7 +5,7 @@
 				<v-img class="ma-auto" src="/logo.png" height="50" width="80" contain />
 			</v-col>
 			<v-col sm="5" md="6" class="py-0 px-3 text-left">
-				<v-row dense align="center" class="mx-0">
+				<v-row dense align="center" class="mx-0" justify="space-between">
 					<v-col style="max-width:50px">
 						<v-btn light icon @click.stop="onClick">
 							<v-icon>mdi-view-list</v-icon>
@@ -32,7 +32,7 @@
 							</template>
 						</v-text-field>
 					</v-col>
-					<v-col sm="8" md="4" class="text-right">
+					<v-col sm="8" md="4">
 						<div class="text-h6 mb-0" style="height:22px">
 							{{ time }}
 							<span style="font-size:12px;">{{ localTime }}</span>
@@ -76,20 +76,16 @@
 						<v-list dense>
 							<v-hover v-slot:default="{ hover }">
 								<nuxt-link
-								v-for="accountList in accountLists"
-								:key="accountList.text"
-								 style="text-decoration:none" :to="accountList.to">
-									<v-list-item
-										dense
-										class="pointer account-list"
-										:class="{ secondary: hover }"
-										
-									>
-										
-											<v-list-item-title
-												:class="{ 'white--text': hover }"
-												v-text="accountList.text"
-											/>
+									v-for="accountList in accountLists"
+									:key="accountList.text"
+									style="text-decoration:none"
+									:to="accountList.to"
+								>
+									<v-list-item dense class="pointer account-list" :class="{ secondary: hover }">
+										<v-list-item-title
+											:class="{ 'white--text': hover }"
+											v-text="accountList.text"
+										/>
 									</v-list-item>
 								</nuxt-link>
 							</v-hover>

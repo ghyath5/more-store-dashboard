@@ -100,9 +100,9 @@ export default {
 					text: 'Dashboard',
 				},
 				{
-					to:'/activity',
-					icon:'',
-					text:'Activity'
+					to: '/activity',
+					icon: '',
+					text: 'Activity',
 				},
 				this.$has_permission('read_products') && {
 					to: '/products',

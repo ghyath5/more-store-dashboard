@@ -36,10 +36,10 @@ export default {
 			this.$router.push('/categories');
 		},
 	},
-	mounted(){
-		this.$store.commit('setPageDetails',{
-			pageTitle:'Create Category'
-		})
-	}
+	mounted() {
+		this.$store.commit('setPageDetails', {
+			pageTitle: 'Create Category',
+		});
+	},
 };
 </script>

@@ -8,5 +8,6 @@ fragment CategoryFiels on categories {
     updated_at
     image{
         ...ImageFields   
-    }  
+    }
+    keywords
 }

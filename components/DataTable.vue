@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div :style="!child ? 'margin-top:-58px' : ''">
 		<!-- <v-layout justify-center align-center column>
 			<v-flex xs12> -->
 		<slot name="aboveTable">
@@ -7,7 +7,7 @@
 				<!-- <v-col>
 					<h3 class="text-h3 primary--text pt-2 pb-4">{{ $store.state.pageDetails.pageTitle }}</h3>
 				</v-col> -->
-				<v-col class="text-right pr-3">
+				<v-col class="text-right pr-3 mb-2">
 					<slot
 						name="createBtn"
 						v-if="
@@ -50,13 +50,9 @@
 			:class="{ 'child grey lighten-2': child }"
 			style="border-radius:10px"
 			mobile-breakpoint="300"
-		>	
+		>
 			<template v-slot:progress>
-				<v-progress-linear
-				indeterminate
-				color="cyan"
-				active
-				></v-progress-linear>
+				<v-progress-linear indeterminate color="cyan" active></v-progress-linear>
 			</template>
 			<template v-slot:top v-if="!child">
 				<v-container class="white pt-2 pb-0" style="border-radius:10px 10px 0 0">
@@ -165,38 +161,33 @@
 											outlined
 											small
 										>
-										<v-icon size="17">mdi-eye-outline</v-icon>
-										Columns
-									</v-btn>
+											<v-icon size="17">mdi-eye-outline</v-icon>
+											Columns
+										</v-btn>
 									</template>
 									<v-card>
-										<v-list dense
-										>
-											<v-list-item-group
-											v-model="activeColumns"
-											multiple
-											mandatory
-											>
-											<v-list-item
-												v-for="col in headers.filter(h=>h.text&&!h.notViewable)"
-												:key="col.id"
-												:value="col"
-											>
-												<template v-slot:default="{ active, toggle }">
-													<v-list-item-action>
-														<v-checkbox
-															:input-value="active"
-															:true-value="col"
-															@click="toggle"
-															color="info"
-														/>
-													</v-list-item-action>
+										<v-list dense>
+											<v-list-item-group v-model="activeColumns" multiple mandatory>
+												<v-list-item
+													v-for="col in headers.filter(h => h.text && !h.notViewable)"
+													:key="col.id"
+													:value="col"
+												>
+													<template v-slot:default="{ active, toggle }">
+														<v-list-item-action>
+															<v-checkbox
+																:input-value="active"
+																:true-value="col"
+																@click="toggle"
+																color="info"
+															/>
+														</v-list-item-action>
 
-													<v-list-item-title>
-													{{ col.text }}
-													</v-list-item-title>
-												</template>
-											</v-list-item>
+														<v-list-item-title>
+															{{ col.text }}
+														</v-list-item-title>
+													</template>
+												</v-list-item>
 											</v-list-item-group>
 										</v-list>
 									</v-card>
@@ -277,10 +268,7 @@
 			</template>
 
 			<template v-slot:footer="{ props: { pagination } }" v-if="!hideFooter">
-				<paginate 
-				:pagination.sync="pagination"
-				 v-model="page"
-				/>
+				<paginate :pagination.sync="pagination" v-model="page" />
 			</template>
 		</v-data-table>
 		<!-- </v-flex>
@@ -290,11 +278,11 @@
 <script>
 import { json2excel } from 'js2excel';
 import { omit, sortBy } from 'lodash';
-import paginate from '~/components/pagination.vue'
+import paginate from '~/components/pagination.vue';
 export default {
 	name: 'DataTable',
-	components:{
-		paginate	
+	components: {
+		paginate,
 	},
 	computed: {
 		// tableHeight() {
@@ -351,18 +339,18 @@ export default {
 				return this.$store.state.search;
 			},
 			set(v) {
-				this.page = 1
+				this.page = 1;
 				this.$store.commit('setSearch', v);
 			},
 		},
-		activeColumns:{
-			get(){
-				return sortBy(this.selectedColumns,['id'])
+		activeColumns: {
+			get() {
+				return sortBy(this.selectedColumns, ['id']);
 			},
-			set(v){
-				this.selectedColumns = v
-			}
-		}
+			set(v) {
+				this.selectedColumns = v;
+			},
+		},
 	},
 	props: {
 		value: {
@@ -471,8 +459,8 @@ export default {
 	},
 	data() {
 		return {
-			selectedColumns:this.headers,
-			showColumnsSelect:false,
+			selectedColumns: this.headers,
+			showColumnsSelect: false,
 			itemsRows: [
 				{
 					text: '5',
@@ -570,7 +558,7 @@ export default {
 			this.sortVariables.sortBy = this.defaultSortBy;
 			this.sortVariables.sortDesc = true;
 			this.search = '';
-			this.activeColumns = this.headers
+			this.activeColumns = this.headers;
 		},
 		deleteItem(item) {
 			if (
@@ -641,7 +629,7 @@ export default {
 <style scoped>
 * >>> .customDataTable table thead th {
 	white-space: nowrap !important;
-	direction:rtl;
+	direction: rtl;
 }
 * >>> thead tr th:first-of-type,
 tbody tr td:first-of-type {
@@ -666,7 +654,7 @@ tbody tr td {
 * >>> .customDataTable table {
 	/* border-collapse: separate; */
 	border-spacing: 0 5px !important;
-	padding:6px !important;
+	padding: 6px !important;
 }
 tbody tr td:first-of-type {
 	border-left: 1px solid #000 !important;

@@ -81,6 +81,12 @@ export default {
 			},
 		},
 		{
+			id: 220,
+			text: 'Keywords',
+			value: 'keywords',
+			notViewable: true,
+		},
+		{
 			id: 300,
 			text: 'Actions',
 			viewer: 'actions',

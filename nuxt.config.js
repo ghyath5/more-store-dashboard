@@ -83,6 +83,8 @@ module.exports = {
 				light: {
 					primary: '#000',
 					secondary: '#ed1c24',
+					blue: '#0678EC',
+					green: '#04BD5F',
 				},
 			},
 		},
