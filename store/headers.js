@@ -106,7 +106,7 @@ export default {
 	userHeaders: [
 		{
 			id: 100,
-			text: 'Name',
+			text: 'Client Name',
 			value: 'name',
 			viewer: 'text',
 			editor: 'textEditor',
@@ -114,6 +114,13 @@ export default {
 			settings: {
 				// fieldWidth:70 //in %
 			},
+		},
+		{
+			id: 150,
+			text: 'Phone Number',
+			value: 'mobile_number',
+			viewer: 'text',
+			editor: 'textEditor',
 		},
 		{
 			id: 200,
@@ -127,40 +134,29 @@ export default {
 			},
 		},
 		{
-			id: 300,
-			text: 'Roles',
-			value: 'roles',
-			viewer: 'text',
-			editor: 'autocomplete',
-			sortable: false,
-			settings: {
-				queryGql: categoriesGql,
-				itemValue: 'id',
-				itemText: 'name',
-				searchModel: 'categories',
-				searchOptions: {
-					key: 'name',
-					op: '_ilike',
-				},
-			},
-		},
-		{
 			id: 800,
-			text: 'Updated At',
-			value: 'updated_at',
+			text: 'Account Creation',
+			value: 'created_at',
 			viewer: 'date',
 			width: 180, //in px
 			notEditable: true,
 		},
 		{
-			id: 1000,
-			text: '#',
-			viewer: 'actions',
-			value: 'actions',
-			width: 50,
-			sortable: false,
+			id: 900,
+			text: 'Activity',
+			value: 'last_seen',
+			viewer: 'text',
 			notEditable: true,
 		},
+		// {
+		// 	id: 1000,
+		// 	text: '#',
+		// 	viewer: 'actions',
+		// 	value: 'actions',
+		// 	width: 50,
+		// 	sortable: false,
+		// 	notEditable: true,
+		// },
 	],
 	roleHeaders: [
 		{

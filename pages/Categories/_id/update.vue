@@ -10,7 +10,7 @@
 		
 		</item-editor> -->
 		<div class="white rounded-10 py-2 px-8">
-			<v-row align="center" class="pb-8">
+			<v-row class="pb-8">
 				<v-col sm="12" md="7" cols="12">
 					<v-row dense justify="space-between">
 						<v-col class="top-inputs" sm="3" cols="12">
@@ -54,12 +54,19 @@
 					</v-row>
 				</v-col>
 				<v-col sm="12" md="4" offset="1" cols="12" class="mt-4">
-					<div class="ma-auto text-left" style="width: 250px">
-						<image-uploader ref="image-uploader" />
-						<v-btn small @click="$refs['image-uploader'].browse()" outlined rounded>
+					<div class="ma-auto text-left" style="max-width:65% !important;">
+						<image-uploader v-model="editItem.image" ref="image-uploader" />
+						<v-btn
+							small
+							style="font-size:9px;"
+							class="upload-btn"
+							@click="$refs['image-uploader'].browse()"
+							outlined
+							rounded
+						>
 							Upload Image
 						</v-btn>
-						<span style="font-size:10px">
+						<span style="font-size:9px">
 							Insert image in SVG or PNG format
 						</span>
 					</div>
@@ -78,7 +85,6 @@
 <script>
 import ItemEditor from '~/components/ItemEditor';
 import categoryGql from '~/gql/categories/one.gql';
-import updateGql from '~/gql/categories/update.gql';
 export default {
 	components: {
 		ItemEditor,
@@ -123,10 +129,11 @@ export default {
 			let _set = {};
 			for (const header of this.headers) {
 				if (header.value === 'keywords' && this.editItem[header.value]) {
-					let words = this.editItem[header.value].split(',');
+					let words = this.editItem[header.value].toString().split(',');
 					words = words.map(w => w.toLowerCase().trim()).filter(e => e);
 					_set[header.value] = words;
 				} else if (header.value === 'image') {
+					_set[header.connectKey] = this.editItem[header.value].id;
 				} else {
 					_set[header.value] = this.editItem[header.value];
 				}
@@ -177,5 +184,8 @@ export default {
 .top-inputs {
 	min-width: 30% !important;
 	/* flex: 0 0 30%; */
+}
+.upload-btn .v-btn__content {
+	top: 0 !important;
 }
 </style>

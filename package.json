@@ -10,6 +10,12 @@
 		"generate": "nuxt generate",
 		"fix": "eslint --ext .js,.vue --ignore-path .gitignore . --fix"
 	},
+	"config": {
+		"nuxt": {
+			"host": "0.0.0.0",
+			"port": "3000"
+		}
+	},
 	"dependencies": {
 		"@nuxtjs/apollo": "^4.0.1-rc.1",
 		"core-js": "^2.6.10",
@@ -22,6 +28,7 @@
 		"js2excel": "^1.0.1",
 		"lodash": "^4.17.15",
 		"nuxt": "^2.11.0",
+		"vue-core-image-upload": "^2.4.12",
 		"vue-filepond": "^6.0.2",
 		"vuejs-paginate": "^2.1.0",
 		"vuetify": "^2.3.3"

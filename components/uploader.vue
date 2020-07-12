@@ -1,40 +1,33 @@
 <template>
-	<div id="file-uploader">
-		<file-pond
-			name="image"
-			ref="pond"
-			label-idle="Drop image here..."
-			:allow-multiple="multiple"
-			accepted-file-types="image/jpeg, image/png, image/jpg"
-			:server="server"
-			:files="currentFiles"
-			@init="handleFilePondInit"
-			@processfile="processFile"
-			@removefile="removeFile"
+	<div id="file-uploader" class="d-flex bordered rounded-10 mb-2 pa-1" @click="browse">
+		<vue-core-image-upload
+			:class="['uploader-c', { 'd-none': (file && file.objectId) || loading }]"
+			:crop="false"
+			@imageuploaded="imageuploaded"
+			@imageuploading="uploading"
+			@errorhandle="loading = false"
+			:max-file-size="5242880"
+			:url="serverUrl + '/upload/image'"
+			inputAccept="image/jpg,image/jpeg,image/png,image/svg"
+			inputOfFile="image"
+			:headers="headers"
+			credentials
+		></vue-core-image-upload>
+		<div v-if="loading">Uploading ...</div>
+		<image-viewer
+			:minWidth="100"
+			:maxWidth="100"
+			:maxHeight="90"
+			v-else-if="file && file.objectId"
+			v-model="file"
 		/>
 	</div>
 </template>
 <script>
-import vueFilePond from 'vue-filepond';
-
-// Import FilePond styles
-import 'filepond/dist/filepond.min.css';
-
-// Import FilePond plugins
-// Please note that you need to install these plugins separately
-
-// Import image preview plugin styles
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
-
-// Import image preview and file type validation plugins
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-
-// Create component
-const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview);
+import VueCoreImageUpload from 'vue-core-image-upload';
 export default {
 	components: {
-		FilePond,
+		'vue-core-image-upload': VueCoreImageUpload,
 	},
 	name: 'image-uploader',
 	props: {
@@ -51,88 +44,48 @@ export default {
 			},
 		},
 	},
-	computed: {
-		currentFiles() {
-			if (this.value && this.value.objectId && !this.uploaded) {
-				return [
-					{
-						source: this.value.objectId,
-						options: {
-							type: 'local',
-						},
-					},
-				];
-			}
-			return null;
-		},
-		serverUrl() {
-			return `${this.$store.state.apiUrl}/admin`;
-		},
-		server() {
-			return {
-				url: this.serverUrl,
-				process: {
-					url: '/upload/image',
-					method: 'POST',
-					headers: {
-						authorization: `Bearer ${this.$store.state.token}`,
-					},
-				},
-				fetch: null,
-				revert: null,
-				load: '/image/',
-			};
-		},
-		//
+	created() {
+		this.file = { ...this.value };
 	},
 	methods: {
-		browse() {
-			this.$refs['pond'].browse();
+		uploading(e) {
+			console.log(e);
+			this.loading = true;
 		},
-		removeFile(e) {
-			if (this.value) {
-				// this.$apollo.mutate({
-				// mutation: deleteFilesByObjectIdsGql,
-				// variables: {
-				// 	objectIds: [this.value.objectId]
-				// }
-				// })
-				this.$emit('remove', { ...this.value });
+		browse() {
+			document.querySelector('.g-core-image-upload-form input').click();
+		},
+		imageuploaded(res) {
+			if (!res.objectId) {
+				this.loading = false;
 				return;
 			}
-			this.$emit('remove', { ...this.file });
-			// this.$emit('input', null);
+			this.file = res;
+			this.loading = false;
+			this.$emit('input', res);
 		},
-		processFile() {
-			this.uploaded = true;
-			const file = this.$refs.pond.getFile();
-			if (file && file.serverId) {
-				this.$emit('input', JSON.parse(this.$refs.pond.getFile().serverId));
-				this.file = JSON.parse(this.$refs.pond.getFile().serverId);
-			}
-		},
-		handleFilePondInit: function() {
-			console.log('FilePond has initialized');
-			// FilePond instance methods are available on `this.$refs.pond`
+	},
+	computed: {
+		serverUrl() {
+			return `${this.$store.state.apiUrl}/admin`;
 		},
 	},
 	data() {
 		return {
 			file: null,
+			loading: false,
 			headers: {
 				authorization: `Bearer ${this.$store.state.token}`,
 			},
-			uploaded: false,
 		};
 	},
 };
 </script>
 
 <style>
-#file-uploader .filepond--drop-label {
-	background: white !important;
-	border: 1px solid;
+#file-uploader {
+	align-items: center;
+	justify-content: center;
 	min-height: 200px;
-	border-radius: 8px !important;
 }
 </style>

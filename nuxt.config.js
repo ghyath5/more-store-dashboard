@@ -35,6 +35,7 @@ module.exports = {
 		'~/plugins/base.js',
 		'~/plugins/components.js',
 		'~/plugins/auth.js',
+		// {src:'~/plugins/uploader.js', ssr:false }
 	],
 	css: ['~/assets/less/main.less'],
 	/*

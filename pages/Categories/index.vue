@@ -1,5 +1,5 @@
 <template>
-	<v-container fluid>
+	<div style="margin-top:-33px">
 		<data-table
 			:headers="$store.state.categoryHeaders"
 			:queryGql="categoriesGql"
@@ -34,11 +34,11 @@
 					class="capitalize white--text"
 					:to="`/categories/${item.id}/update`"
 				>
-					edit
+					Edit
 				</v-btn>
 			</template>
 		</data-table>
-	</v-container>
+	</div>
 </template>
 <script>
 import categoriesGql from '~/gql/categories/all.gql';

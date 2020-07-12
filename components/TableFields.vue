@@ -60,7 +60,11 @@
 					<template v-slot:activator="{ on }">
 						<span v-on="on">{{ $moment(parentProps.item[column.value]).fromNow() }}</span>
 					</template>
-					<span>{{ parentProps.item[column.value] }}</span>
+					<span>
+						{{ $moment(parentProps.item[column.value]).format('DD-MM-yyyy') }}
+						-
+						{{ $moment(parentProps.item[column.value]).format('hh:mm A') }}
+					</span>
 				</v-tooltip>
 			</template>
 			<template v-else-if="column.viewer === 'checkbox'">

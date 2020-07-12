@@ -1,5 +1,5 @@
 <template>
-	<div :style="!child ? 'margin-top:-58px' : ''">
+	<div>
 		<!-- <v-layout justify-center align-center column>
 			<v-flex xs12> -->
 		<slot name="aboveTable">
@@ -46,7 +46,7 @@
 			:show-select="showSelect"
 			item-key="name"
 			:expanded.sync="expanded"
-			class="customDataTable white"
+			class="elevation-2 customDataTable white"
 			:class="{ 'child grey lighten-2': child }"
 			style="border-radius:10px"
 			mobile-breakpoint="300"
@@ -306,13 +306,21 @@ export default {
 			let vars = {
 				limit: this.itemPerPage,
 				offset: (this.page - 1) * this.itemPerPage,
-				order_by: {
-					[this.sortBy]: this.sortDirection,
-				},
+				order_by: {},
 				where: {
 					...this.initialWhere,
 				},
 			};
+			let splitedOrderBy = this.sortBy.split('.');
+			let orderByObj = {};
+			splitedOrderBy.reduce((ob, curr, i) => {
+				ob[curr] = i + 1 === splitedOrderBy.length ? this.sortDirection : {}; //assigned_driver.driver.name
+				// console.log(ob);
+				orderByObj[curr] = ob[curr];
+				return ob[curr];
+			}, {});
+			let firstOrderByKey = Object.keys(orderByObj)[0];
+			vars.order_by[firstOrderByKey] = orderByObj[firstOrderByKey];
 			if (this.$store.state.search && searchKeys.length) {
 				vars.where._or = [];
 				// let obj = {}
@@ -629,7 +637,6 @@ export default {
 <style scoped>
 * >>> .customDataTable table thead th {
 	white-space: nowrap !important;
-	direction: rtl;
 }
 * >>> thead tr th:first-of-type,
 tbody tr td:first-of-type {
@@ -670,5 +677,10 @@ tbody tr td:last-of-type {
 	margin-top: 5px !important;
 	width: 19px !important;
 	font-size: 14px !important;
+}
+
+* >>> .customDataTable:not(.child) > .v-data-table__wrapper {
+	max-height: 430px !important;
+	/* background:transparent */
 }
 </style>

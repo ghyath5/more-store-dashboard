@@ -1,8 +1,8 @@
 <template>
 	<v-main class="main-view">
-		<div id="core-view" class="pa-5 pt-2">
+		<v-container class="px-5">
 			<h3
-				class="text-lg-h5 text-md-h6 font-weight-bold primary--text pt-2 pb-3 pl-3"
+				class="text-lg-h5 text-md-h6 font-weight-bold primary--text pt-2 pb-0"
 				v-if="$store.state.pageDetails.pageTitle"
 			>
 				{{ $store.state.pageDetails.pageTitle }}
@@ -15,7 +15,7 @@
 			<v-fade-transition mode="out-in">
 				<nuxt></nuxt>
 			</v-fade-transition>
-		</div>
+		</v-container>
 	</v-main>
 </template>
 

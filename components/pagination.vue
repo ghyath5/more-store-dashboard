@@ -7,10 +7,10 @@
 				:click-handler="clickCallback"
 				:itemsLength="paginationLength(pagination.itemsLength / pagination.itemPerPage)"
 				v-model="pagination.page"
-				prev-text="<button class='v-btn v-btn--depressed v-btn--flat v-btn--outlined v-btn--rounded theme--light v-size--small' style='font-size:14px;height: 30px;'>Previous</button>"
-				next-text="<button class='v-btn v-btn--depressed v-btn--flat v-btn--outlined v-btn--rounded theme--light v-size--small ' style='font-size:14px;height: 30px;'>Next</button>"
+				prev-text="<button class='v-btn v-btn--depressed v-btn--flat v-btn--outlined v-btn--rounded theme--light v-size--small' style='font-size:12px;padding-bottom: 1px;'>Previous</button>"
+				next-text="<button class='v-btn v-btn--depressed v-btn--flat v-btn--outlined v-btn--rounded theme--light v-size--small ' style='font-size:12px; padding-bottom: 1px;'>Next</button>"
 				container-class="pr-5 custom-pagination v-pagination--circle theme--light"
-				page-link-class="v-pagination__item v-btn bordered"
+				page-link-class="v-pagination__item mr-2 v-btn--rounded v-btn bordered v-size--small customize-pagination-btns"
 				active-class="v-pagination__item--active secondary"
 				no-li-surround
 				:margin-pages="1"
@@ -84,8 +84,10 @@ export default {
 </script>
 
 <style>
-.custom-pagination {
-	/* justify-content: flex-end; */
+.customize-pagination-btns {
+	height: 28px !important;
+	width: 29px !important;
+	min-width: 29px !important;
 }
 .pagination-container {
 	border-top: 3px solid #f4f6f9;
