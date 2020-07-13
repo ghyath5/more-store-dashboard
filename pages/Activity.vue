@@ -1,49 +1,31 @@
 <template>
-	<v-container>
-		<div style="clear:both"></div>
+	<div>
 		<v-row justify="space-around">
 			<v-col cols="12" sm="6" lg="3" :key="card.text" v-for="card in cards">
-				<data-counter :card="card" />
+				<data-counter @dataChanged="dataChanged" :card="card" />
 			</v-col>
 		</v-row>
-	</v-container>
+		<nuxt-child />
+	</div>
 </template>
 <script>
 import dataCounter from '~/components/DataCounter';
 import usersCountsSubGql from '~/gql/counts/users/subscription.gql';
+import ordersCountsSubGql from '~/gql/counts/orders/subscription.gql';
 import usersCountsQueryGql from '~/gql/counts/users/query.gql';
+import ordersCountsQueryGql from '~/gql/counts/orders/query.gql';
 export default {
 	components: {
 		dataCounter,
 	},
 	computed: {
-		overviewData() {
-			let data = [
-				{
-					title: 'Total Clients',
-					value: this.clients && this.clients.count,
-				},
-				{
-					title: 'Total Orders',
-					value: '23',
-				},
-				{
-					title: 'Total Sales',
-					value: this.products && this.products.count,
-				},
-				{
-					title: 'Total Pending',
-					value: '23',
-				},
-			];
-			return data.filter(e => e);
-		},
 		cards() {
 			return [
 				{
 					text: 'Total Sale',
 					color: 'primary',
 					textColor: 'green',
+
 					subText: '',
 					query: usersCountsQueryGql,
 					subscription: usersCountsSubGql,
@@ -57,18 +39,21 @@ export default {
 					subText: '',
 					color: 'blue',
 					textColor: 'yellow',
-					query: usersCountsQueryGql,
-					subscription: usersCountsSubGql,
+					query: ordersCountsQueryGql,
+					subscription: ordersCountsSubGql,
 					gqlVars: {},
 					model: {
 						name: 'orders',
 					},
 				},
 				{
+					id: 'active-clients',
 					text: 'Active Clients',
 					color: 'green',
 					textColor: 'primary',
 					subText: 'Now',
+					to: '/activity/active-clients?active',
+					sectionTitle: 'Clients Management',
 					query: usersCountsQueryGql,
 					subscription: usersCountsSubGql,
 					gqlVars: {
@@ -92,10 +77,13 @@ export default {
 					},
 				},
 				{
+					id: 'non-active-clients',
 					text: 'Non Active Clients',
 					color: 'secondary',
 					textColor: 'primary',
-					subText: '',
+					subText: this.subTextNonActive,
+					to: '/activity/active-clients?non-active',
+					sectionTitle: 'Clients Management',
 					query: usersCountsQueryGql,
 					subscription: usersCountsSubGql,
 					gqlVars: {
@@ -121,11 +109,26 @@ export default {
 			];
 		},
 	},
+	watch: {
+		$route(val) {
+			this.$store.commit('setPageDetails', {
+				pageTitle: 'Activity',
+			});
+		},
+	},
 	data() {
-		return {};
+		return {
+			subTextNonActive: 0,
+		};
 	},
 	created() {},
-	methods: {},
+	methods: {
+		dataChanged({ data, cardId }) {
+			if (cardId === 'active-clients') {
+				this.subTextNonActive = data;
+			}
+		},
+	},
 	mounted() {
 		this.$store.commit('setPageDetails', {
 			pageTitle: 'Activity',

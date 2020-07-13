@@ -3,19 +3,18 @@
 		<!-- <v-layout justify-center align-center column>
 			<v-flex xs12> -->
 		<slot name="aboveTable">
-			<v-row justify="space-between" align="center" dense align-content="center">
+			<v-row no-gutters class="pa-0 ma-0" justify="space-between" align="center" dense align-content="center">
 				<!-- <v-col>
 					<h3 class="text-h3 primary--text pt-2 pb-4">{{ $store.state.pageDetails.pageTitle }}</h3>
 				</v-col> -->
-				<v-col class="text-right pr-3 mb-2">
-					<slot
-						name="createBtn"
-						v-if="
-							$has_permission(`create_${model.permission}`) ||
-								$has_permission(`manage_${model.permission}`)
-						"
-					>
-						<v-btn outlined small @click="$router.push(`/${model.name}/create`)" class="py-2" rounded>
+				<v-col
+					class="text-right pr-3 mb-4"
+					v-if="
+						$has_permission(`create_${model.permission}`) || $has_permission(`manage_${model.permission}`)
+					"
+				>
+					<slot name="createBtn">
+						<v-btn outlined dense small @click="$router.push(`/${model.name}/create`)" rounded>
 							Create new {{ model.objectName }}
 						</v-btn>
 					</slot>
@@ -24,7 +23,7 @@
 
 			<!-- <slot name="above-table-content"></slot> -->
 		</slot>
-		<div style="clear:both"></div>
+		<!-- <div style="clear:both"></div> -->
 		<v-data-table
 			id="data-table"
 			ref="dataTable"
@@ -267,7 +266,7 @@
 				</tr>
 			</template>
 
-			<template v-slot:footer="{ props: { pagination } }" v-if="!hideFooter">
+			<template v-slot:footer="{ props: { pagination } }" v-if="!hideFooter && data.count">
 				<paginate :pagination.sync="pagination" v-model="page" />
 			</template>
 		</v-data-table>
@@ -467,6 +466,7 @@ export default {
 	},
 	data() {
 		return {
+			dataSub: false,
 			selectedColumns: this.headers,
 			showColumnsSelect: false,
 			itemsRows: [
@@ -529,6 +529,11 @@ export default {
 					items: data[this.model.name],
 					count: data[this.model.aggregate].aggregate.count,
 				};
+			},
+			result() {
+				if (this.subscriptionGql && !this.dataSub) {
+					this.subscribeToMore();
+				}
 			},
 			error(error) {
 				console.error("We've got an error!", error);
@@ -613,25 +618,20 @@ export default {
 			this.$apollo.queries.data.refetch();
 		},
 		subscribeToMore() {
-			this.$apollo.queries.data.subscribeToMore({
+			if (this.dataSub) {
+				this.dataSub.unsubscribe();
+			}
+			this.dataSub = this.$apollo.queries.data.subscribeToMore({
 				document: this.subscriptionGql,
-				variables() {
-					return this.queryVariables;
-				},
-				updateQuery(previousResult, { subscriptionData }) {
-					if (!subscriptionData[this.model.name]) return;
-					previousResult[this.model.name] = subscriptionData[this.model.name];
+				variables: this.queryVariables,
+				updateQuery: (previousResult, { subscriptionData: { data } }) => {
+					if (!data[this.model.name]) return;
+					this.data.items = data[this.model.name];
 				},
 			});
 		},
 	},
-	mounted() {
-		this.$nextTick(() => {
-			if (this.subscriptionGql) {
-				this.subscribeToMore();
-			}
-		});
-	},
+	mounted() {},
 };
 </script>
 <style scoped>
@@ -681,6 +681,5 @@ tbody tr td:last-of-type {
 
 * >>> .customDataTable:not(.child) > .v-data-table__wrapper {
 	max-height: 430px !important;
-	/* background:transparent */
 }
 </style>

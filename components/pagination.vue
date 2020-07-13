@@ -10,10 +10,9 @@
 				prev-text="<button class='v-btn v-btn--depressed v-btn--flat v-btn--outlined v-btn--rounded theme--light v-size--small' style='font-size:12px;padding-bottom: 1px;'>Previous</button>"
 				next-text="<button class='v-btn v-btn--depressed v-btn--flat v-btn--outlined v-btn--rounded theme--light v-size--small ' style='font-size:12px; padding-bottom: 1px;'>Next</button>"
 				container-class="pr-5 custom-pagination v-pagination--circle theme--light"
-				page-link-class="v-pagination__item mr-2 v-btn--rounded v-btn bordered v-size--small customize-pagination-btns"
+				page-link-class="v-pagination__item mx-1 v-btn--rounded v-btn bordered v-size--small customize-pagination-btns"
 				active-class="v-pagination__item--active secondary"
 				no-li-surround
-				:margin-pages="1"
 			>
 				<span slot="breakViewContent">
 					<!-- <v-menu offset-y :rounded="false">

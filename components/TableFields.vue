@@ -184,7 +184,7 @@ export default {
 			let splitedValue = value.split('.');
 			let obj = {};
 			let val = splitedValue.reduce((ob, curr, i) => {
-				let tempItem = ob[curr] ? ob[curr] : {};
+				let tempItem = ob[curr] !== null && ob[curr] !== undefined ? ob[curr] : {};
 				return tempItem;
 			}, item);
 			return typeof val === 'object' && !Object.keys(val).length ? null : val;

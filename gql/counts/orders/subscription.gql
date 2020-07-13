@@ -1,0 +1,7 @@
+subscription aggregate($where: orders_bool_exp){
+    orders_aggregate( where:$where){
+        aggregate{
+            count
+        }
+    }
+}

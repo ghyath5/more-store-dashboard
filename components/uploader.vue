@@ -15,9 +15,9 @@
 		></vue-core-image-upload>
 		<div v-if="loading">Uploading ...</div>
 		<image-viewer
-			:minWidth="100"
-			:maxWidth="100"
-			:maxHeight="90"
+			:minWidth="150"
+			:maxWidth="150"
+			:maxHeight="150"
 			v-else-if="file && file.objectId"
 			v-model="file"
 		/>
@@ -86,6 +86,6 @@ export default {
 #file-uploader {
 	align-items: center;
 	justify-content: center;
-	min-height: 200px;
+	min-height: 250px;
 }
 </style>

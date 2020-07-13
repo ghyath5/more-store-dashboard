@@ -1,6 +1,6 @@
 <template>
 	<v-main class="main-view">
-		<v-container class="px-5">
+		<v-container class="px-8">
 			<h3
 				class="text-lg-h5 text-md-h6 font-weight-bold primary--text pt-2 pb-0"
 				v-if="$store.state.pageDetails.pageTitle"

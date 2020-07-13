@@ -1,5 +1,5 @@
 <template>
-	<div style="margin-top:-33px">
+	<div style="margin-top:-28px">
 		<data-table
 			:headers="$store.state.categoryHeaders"
 			:queryGql="categoriesGql"
@@ -32,7 +32,7 @@
 					color="blue"
 					rounded
 					class="capitalize white--text"
-					:to="`/categories/${item.id}/update`"
+					:to="`/categories/${item.id}/update?returned`"
 				>
 					Edit
 				</v-btn>
@@ -50,6 +50,13 @@ export default {
 			deleteGql,
 		};
 	},
+	// fetch({store}){
+	// 	store.commit('setPageDetails', {
+	// 		pageTitle: 'Categories',
+	// 	});
+	// 	console.log(store);
+
+	// },
 	mounted() {
 		this.$store.commit('setPageDetails', {
 			pageTitle: 'Categories',
