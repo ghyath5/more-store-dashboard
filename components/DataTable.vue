@@ -56,7 +56,7 @@
 			<template v-slot:top v-if="!child">
 				<v-container class="white pt-2 pb-0" style="border-radius:10px 10px 0 0">
 					<v-layout justify-space-between align-center wrap>
-						<v-flex xs4 md2 d-flex align-center class="mb-1">
+						<v-flex xs4 :md2="showTableBtns" :md4="!showTableBtns" d-flex align-center class="mb-1">
 							<span class="pr-3">Show</span>
 							<v-select
 								:items="itemsRows"
@@ -76,7 +76,7 @@
 							</v-select>
 							<span class="pl-3">entries</span>
 						</v-flex>
-						<v-flex md3 xs6 class="mb-1 text-right">
+						<v-flex xs6 :md3="showTableBtns" :md4="!showTableBtns" class="mb-1 text-right">
 							<v-text-field
 								label="Search"
 								v-model="search"
@@ -96,7 +96,7 @@
 								</template>
 							</v-text-field>
 						</v-flex>
-						<v-flex xs10 md5 justify-end class="text-right">
+						<v-flex xs10 md5 justify-end class="text-right" v-if="showTableBtns">
 							<slot name="export-btn">
 								<v-btn
 									class="above-table-button px-1"
@@ -461,6 +461,12 @@ export default {
 			type: Boolean,
 			default() {
 				return false;
+			},
+		},
+		showTableBtns: {
+			type: Boolean,
+			default() {
+				return true;
 			},
 		},
 	},

@@ -23,7 +23,7 @@
 						},
 					},
 					{
-						online_users: {
+						users_view: {
 							online: { _eq: $route.query && $route.query.hasOwnProperty('non-active') ? false : true },
 						},
 					},
@@ -36,7 +36,7 @@
 			</template>
 			<template v-slot:table-field="{ props: { item }, column }">
 				<template v-if="column.value === 'last_seen'">
-					<span class="green--text" v-if="item && item.online_users && item.online_users.online">
+					<span class="green--text" v-if="item && item.users_view && item.users_view.online">
 						<v-icon size="12" color="green">fiber_manual_record</v-icon>
 						Active
 					</span>

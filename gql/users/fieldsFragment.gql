@@ -12,7 +12,7 @@ fragment usersFields on users{
     }){
       __typename
     }
-    online_users{
+    users_view{
       online
     }
     roles{

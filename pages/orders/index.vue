@@ -108,6 +108,7 @@
 						v-model="selected"
 						:headers="driverColumns"
 						:queryGql="usersGql"
+						:showTableBtns="false"
 						:model="{
 							name: 'users',
 							permission: 'users',

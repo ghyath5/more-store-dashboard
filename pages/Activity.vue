@@ -41,7 +41,13 @@ export default {
 					textColor: 'yellow',
 					query: ordersCountsQueryGql,
 					subscription: ordersCountsSubGql,
-					gqlVars: {},
+					gqlVars: {
+						where: {
+							options: {
+								today_order: { _eq: true },
+							},
+						},
+					},
 					model: {
 						name: 'orders',
 					},
@@ -65,7 +71,7 @@ export default {
 									},
 								},
 								{
-									online_users: {
+									users_view: {
 										online: { _eq: true },
 									},
 								},
@@ -95,7 +101,7 @@ export default {
 									},
 								},
 								{
-									online_users: {
+									users_view: {
 										online: { _neq: true },
 									},
 								},
