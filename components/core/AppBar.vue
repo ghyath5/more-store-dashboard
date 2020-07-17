@@ -1,37 +1,40 @@
 <template>
 	<v-app-bar fixed clipped-left id="core-app-bar" app color="white" elevation="1" height="52">
-		<v-row dense align="center" justify-sm="space-between" class="mx-0 px-0">
+		<v-row dense align="center" justify-sm="space-between" justify-lg="start" class="mx-0 px-0">
 			<v-col sm="2" md="2" style="max-width:240px" xl="2" lg="2" class="hidden-sm-and-down">
 				<v-img class="ma-auto" src="/logo.png" height="50" width="80" contain />
 			</v-col>
 			<v-col sm="5" md="6" class="py-0 px-3 text-left">
 				<v-row dense align="center" class="mx-0" justify="space-between">
-					<v-col style="max-width:50px">
+					<!-- <v-col style="max-width:50px">
+						
+					</v-col>-->
+					<v-row dense no-gutters align="center">
 						<v-btn light icon @click.stop="onClick">
-							<v-icon>mdi-view-list</v-icon>
+						<v-icon>mdi-view-list</v-icon>
 						</v-btn>
-					</v-col>
-					<v-col md="6" class="py-0 hidden-sm-and-down">
-						<v-text-field
-							class="search-box"
-							label="Search"
-							v-model="search"
-							hide-details
-							rounded
-							height="28"
-							dense
-							filled
-							single-line
-						>
-							<template v-slot:prepend-inner>
-								<div style="margin-top:-4px">
-									<v-icon size="20" color="#ababab">
-										search
-									</v-icon>
-								</div>
-							</template>
-						</v-text-field>
-					</v-col>
+						<v-col md="6" lg="6" xl="5" class="py-0 hidden-sm-and-down">
+							<v-text-field
+								class="search-box"
+								label="Search"
+								v-model="search"
+								hide-details
+								rounded
+								height="28"
+								dense
+								filled
+								single-line
+							>
+								<template v-slot:prepend-inner>
+									<div style="margin-top:-4px">
+										<v-icon size="20" color="#ababab">
+											search
+										</v-icon>
+									</div>
+								</template>
+							</v-text-field>
+						</v-col> 
+					</v-row>
 					<v-col sm="8" md="4">
 						<div class="text-h6 mb-0" style="height:22px">
 							{{ time }}
@@ -41,7 +44,7 @@
 					</v-col>
 				</v-row>
 			</v-col>
-			<v-col sm="5" md="4" class="mx-0 text-right">
+			<v-col sm="5" md="4" lg="4" class="mx-0 text-right">
 				<v-menu bottom left offset-y transition="slide-y-transition">
 					<template v-slot:activator="{ attrs, on }">
 						<v-btn class="toolbar-items mr-4" icon v-bind="attrs" v-on="on">

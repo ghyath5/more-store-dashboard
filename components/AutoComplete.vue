@@ -1,48 +1,33 @@
 <template>
-	<v-autocomplete
-		v-model="selected"
-		:search-input.sync="search"
-		:items="items"
-		color="blue"
-		:label="label"
-		:item-text="itemText"
-		:item-value="itemValue"
-		:multiple="multiple"
-		clearable
-		@click="getItems"
-		:return-object="returnObject"
-		:loading="searchLoading"
-		@change="selectItem"
-	>
-		<!-- <template v-slot:selection="data">
-        <v-chip
-            v-bind="data.attrs"
-            :input-value="data.selected"
-            close
-            @click="data.select"
-            @click:close="remove(data.item)"
-        >
-            <v-avatar left>
-            <v-img :src="data.item.avatar"></v-img>
-            </v-avatar>
-            {{ data.item.name }}
-        </v-chip>
-        </template> -->
-		<!-- <template v-slot:item="data">
-        <template v-if="typeof data.item !== 'object'">
-            <v-list-item-content v-text="data.item"></v-list-item-content>
-        </template>
-        <template v-else>
-            <v-list-item-avatar>
-            <img :src="data.item.avatar">
-            </v-list-item-avatar>
-            <v-list-item-content>
-            <v-list-item-title v-html="data.item.name"></v-list-item-title>
-            <v-list-item-subtitle v-html="data.item.group"></v-list-item-subtitle>
-            </v-list-item-content>
-        </template>
-        </template> -->
-	</v-autocomplete>
+	<div>
+		<label>{{label}}</label>
+		<v-autocomplete
+			v-model="selected"
+			:search-input.sync="search"
+			:items="items"
+			height="33"
+			class="auto-complete"
+			outlined
+			dense
+			color="blue"
+			:item-text="itemText"
+			:item-value="itemValue"
+			:multiple="multiple"
+			clearable
+			@click="getItems"
+			:return-object="returnObject"
+			:loading="searchLoading"
+			@change="selectItem"
+			hide-details
+			:no-data-text="searchLoading?'Loading...':'No results found'"
+			:menu-props="{ auto: true }"
+			small-chips
+		>
+		 <template v-slot:selection="{item}">
+			 <!-- <span style="white-space:nowrap" class="text-caption">{{item.name}}</span> -->
+		</template>
+		</v-autocomplete>
+	</div>
 </template>
 <script>
 import { debounce } from 'lodash';
@@ -100,6 +85,12 @@ export default {
 				return {
 					id: 'asc',
 				};
+			},
+		},
+		initialWhere: {
+			type: Object,
+			default() {
+				return {};
 			},
 		},
 		searchModel: {
@@ -181,6 +172,7 @@ export default {
 						limit: this.limit,
 						order_by: this.initialOrderBy,
 						where: {
+							...this.initialWhere,
 							[this.searchOptions.key]: { [this.searchOptions.op]: this.searchValue },
 						},
 					},
@@ -193,3 +185,11 @@ export default {
 	},
 };
 </script>
+<style>
+	.auto-complete .v-input__slot{
+		padding:0 !important
+	}
+	.auto-complete .v-input__append-inner{
+		margin: 0;
+	}
+</style>

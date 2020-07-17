@@ -1,12 +1,16 @@
 <template>
-	<v-card @click="card.to ? $router.push(card.to) : null" height="110" flat class="pointer d" :color="card.color">
-		<v-card-text class="px-3 py-2">
-			<div class="text-left">
-				<p style="font-size:13px" class="white--text mb-3" v-text="card.text" />
-				<h3 class="text-h4 " :class="`${card.textColor}--text`">
+	<v-card @click="card.to ? $router.push(card.to) : null" style="height:9.5vw; max-height:220px; min-height:80px" flat class="pointer rounded-10" :color="card.color">
+		<v-card-text style="min-height:100%" class="py-1 px-3">
+			<div class="text-left card-custom">
+				<div><p class="white--text mb-0 pb-0 size-mo" v-text="card.text" /></div>
+				<div>
+				<h3 class="text-xl-h3 text-lg-h4 size-mo" :class="`${card.textColor}--text`">
 					{{ count }}
 				</h3>
-				<p style="font-size:13px" class="mt-3 white--text" v-if="!loading">{{ subText }}</p>
+				</div>
+				<div>
+				<p class=" white--text size-mo mb-0 pb-0" v-if="!loading">{{ subText }}</p>
+				</div>
 			</div>
 		</v-card-text>
 	</v-card>
@@ -79,3 +83,20 @@ export default {
 	},
 };
 </script>
+<style>
+	.card-custom{
+		display: -webkit-flex;
+		display: flex;
+    	flex-direction: column;
+		height: 9vw;
+		max-height:220px;
+		min-height:80px
+	}
+	.card-custom div{
+		flex: 1;
+		display: -webkit-flex;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
+</style>

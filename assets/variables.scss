@@ -3,7 +3,30 @@ $shadow-key-penumbra-opacity: rgba(#c6c7cf, 0.14);
 $shadow-key-ambient-opacity: rgba(#c6c7cf, 0.12);
 $body-font-family: Barlow;
 $heading-font-family: Barlow;
-$font-size-root: 13px;
+$font-size-root: 14px;
+
+@media only screen   
+and (min-width: 1370px)  
+and (max-width: 1605px)  
+{ 
+  $font-size-root: 18px;
+}
+
+/* For 1024 Resolution */  
+@media only screen   
+and (min-device-width : 768px)   
+and (max-device-width : 1024px)  
+{ 
+  $font-size-root: 13px;
+}
+
+/* For 1366 Resolution */  
+@media only screen   
+and (min-width: 1030px)   
+and (max-width: 1366px)  
+{
+  $font-size-root: 15px;
+}  
 
 $border-radius-root: 7px;
 $btn-text-transform: none !important;

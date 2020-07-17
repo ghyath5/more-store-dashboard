@@ -5,7 +5,7 @@
 			:queryGql="categoriesGql"
 			:deleteGql="deleteGql"
 			:initialWhere="{
-				parent_id: { _is_null: true },
+				main: { _eq: true },
 			}"
 			:model="{
 				name: 'categories',

@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<v-row justify="space-around">
-			<v-col cols="12" sm="6" lg="3" :key="card.text" v-for="card in cards">
+		<v-row justify="center">
+			<v-col :key="card.text" v-for="card in cards">
 				<data-counter @dataChanged="dataChanged" :card="card" />
 			</v-col>
 		</v-row>

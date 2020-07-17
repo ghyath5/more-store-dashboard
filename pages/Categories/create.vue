@@ -18,8 +18,8 @@
 							outlined
 							:menu-props="{ offsetY: true }"
 							:items="[
-								{ text: 'Hide', value: false },
 								{ text: 'Show', value: true },
+								{ text: 'Hide', value: false },
 							]"
 							dense
 							hide-details
@@ -103,6 +103,7 @@ export default {
 					object[header.value] = this.editItem[header.value];
 				}
 			}
+			object.main = true
 			this.loading = true;
 			this.$apollo
 				.mutate({

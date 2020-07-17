@@ -4,6 +4,7 @@ fragment CategoryFiels on categories {
     position 
     id
     active
+    main
     created_at
     updated_at
     image{

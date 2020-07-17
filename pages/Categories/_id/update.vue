@@ -30,6 +30,28 @@
 							</template>
 						</v-select>
 					</v-col>
+					<v-col class="mt-4" cols="12">
+						<v-row dense justify="space-between">
+							<v-col sm="3" cols="12" class="top-inputs">
+								<auto-complete
+									label="Subcategory"
+									v-model="editItem.subcategories"
+									:queryGql="categoriesGql"
+									itemValue="id"
+									itemText="name"
+									:searchOptions="{key: 'name',op: '_ilike'}"
+									searchModel="categories"
+									multiple
+									:limit="25"
+									:initialWhere="{main:{_eq:false}}"
+								></auto-complete>
+							</v-col>
+							<v-col class="top-inputs" sm="3" cols="12">
+								<label>Position</label>
+								<v-text-field outlined dense :min="1" hide-details v-model="editItem.position" type="number" />
+							</v-col>
+						</v-row>
+					</v-col>
 					<v-col cols="12" class="mt-8">
 						<label>Keywords</label>
 						<v-textarea hide-details outlined v-model="editItem.keywords" />
@@ -105,6 +127,7 @@
 </template>
 <script>
 import categoryGql from '~/gql/categories/one.gql';
+import categoriesGql from '~/gql/categories/all.gql';
 import deleteGql from '~/gql/categories/delete.gql';
 import updateGql from '~/gql/categories/update.gql';
 export default {
@@ -125,6 +148,7 @@ export default {
 	},
 	data() {
 		return {
+			categoriesGql,
 			editItem: null,
 			loading: false,
 			deleteDialog: {
@@ -160,6 +184,8 @@ export default {
 					_set[header.value] = this.editItem[header.value];
 				}
 			}
+			console.log(this.editItem);
+			return
 			this.loading = true;
 			this.$apollo
 				.mutate({

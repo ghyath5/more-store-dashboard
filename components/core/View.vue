@@ -1,8 +1,8 @@
 <template>
 	<v-main class="main-view">
-		<v-container class="px-8">
+		<v-container class="px-10">
 			<h3
-				class="text-lg-h5 text-md-h6 font-weight-bold primary--text pt-2 pb-0"
+				class="text-xl-h3 text-md-h5 text-lg-4 font-weight-bold primary--text pt-2 pb-0"
 				v-if="$store.state.pageDetails.pageTitle"
 			>
 				{{ $store.state.pageDetails.pageTitle }}
