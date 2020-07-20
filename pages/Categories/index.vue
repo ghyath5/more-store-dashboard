@@ -31,7 +31,7 @@
 					width="80"
 					color="blue"
 					rounded
-					class="capitalize white--text"
+					class="text-subtitle-2 white--text"
 					:to="`/categories/${item.id}/update?returned`"
 				>
 					Edit

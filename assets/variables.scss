@@ -3,14 +3,7 @@ $shadow-key-penumbra-opacity: rgba(#c6c7cf, 0.14);
 $shadow-key-ambient-opacity: rgba(#c6c7cf, 0.12);
 $body-font-family: Barlow;
 $heading-font-family: Barlow;
-$font-size-root: 14px;
-
-@media only screen   
-and (min-width: 1370px)  
-and (max-width: 1605px)  
-{ 
-  $font-size-root: 18px;
-}
+$font-size-root: 13px;
 
 /* For 1024 Resolution */  
 @media only screen   

@@ -1,0 +1,5 @@
+mutation createSubCategrories ($objects:[category_to_category_insert_input!]!){
+    insert_category_to_category(objects:$objects){
+        affected_rows
+    }
+}

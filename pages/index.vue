@@ -1,81 +1,87 @@
 <template>
-	<v-container fluid>
+	<div class="mt-1">
 		<v-row justify="center">
-			<v-col v-for="(info, i) in overviewData" :key="i" cols="12" sm="6" lg="3">
-				<v-card height="130" flat class="overview-card">
-					<v-card-text>
-						<div class="text-left">
-							<p class="grey--textd font-weight-light mb-5" v-text="info.title" />
-							<h3 class="headline font-weight text--primary">
-								{{ info.value }}
-							</h3>
-						</div>
-					</v-card-text>
-				</v-card>
+			<v-col :key="card.text" v-for="card in cards">
+				<data-counter :card="card">
+					<template v-slot:card-content="{ card, data }">
+						<span v-if="card.id === 'total-sale'">{{ $store.state.currency.text }} 644,000</span>
+					</template>
+				</data-counter>
 			</v-col>
-			<!-- <v-col cols="12" lg="10">
-				<material-card color="light-blue" title="Orders" text="Real-time overview">
-					<v-data-table :headers="headers" :items="items" hide-default-footer />
-				</material-card>
-			</v-col> -->
 		</v-row>
-	</v-container>
+	</div>
 </template>
 
 <script>
 import gql from 'graphql-tag';
+import dataCounter from '~/components/DataCounter';
+
+import usersCountsSubGql from '~/gql/counts/users/subscription.gql';
+import usersCountsQueryGql from '~/gql/counts/users/query.gql';
+
+import ordersCountsSubGql from '~/gql/counts/orders/subscription.gql';
+import ordersCountsQueryGql from '~/gql/counts/orders/query.gql';
 export default {
+	components: {
+		dataCounter,
+	},
 	data() {
-		return {
-			headers: [
-				{
-					sortable: false,
-					text: 'Track ID',
-					value: 'id',
-				},
-				{
-					sortable: false,
-					text: 'Driver Name',
-					value: 'name',
-				},
-				{
-					sortable: false,
-					text: 'Order cost',
-					value: 'salary',
-					align: 'right',
-				},
-				{
-					sortable: false,
-					text: 'Address',
-					value: 'country',
-					align: 'right',
-				},
-				{
-					sortable: false,
-					text: 'City',
-					value: 'city',
-					align: 'right',
-				},
-			],
-			items: [
-				{
-					id: '4431689d-4d0e-45e1-be12-e3a34ce1d352',
-					name: 'Minerva Hooper',
-					country: 'Curaçao',
-					city: 'Sinaai-Waas',
-					salary: '$23,738',
-				},
-				{
-					id: '77316897-4d0e-45e1-b522-e3a34ce1d6f6',
-					name: 'Sage Rodriguez',
-					country: 'Netherlands',
-					city: 'Overland Park',
-					salary: '$56,142',
-				},
-			],
-		};
+		return {};
 	},
 	computed: {
+		cards() {
+			return [
+				{
+					text: 'Total Clients',
+					color: 'white',
+					textColor: 'black',
+					titleColor: 'grey',
+					query: usersCountsQueryGql,
+					subscription: usersCountsSubGql,
+					gqlVars: {},
+					model: {
+						name: 'users',
+					},
+				},
+				{
+					text: 'Total Orders',
+					color: 'white',
+					textColor: 'black',
+					titleColor: 'grey',
+					query: ordersCountsQueryGql,
+					subscription: ordersCountsSubGql,
+					gqlVars: {},
+					model: {
+						name: 'orders',
+					},
+				},
+				{
+					id: 'total-sale',
+					text: 'Total Sales',
+					color: 'white',
+					textColor: 'black',
+					titleColor: 'grey',
+					query: usersCountsQueryGql,
+					subscription: usersCountsSubGql,
+					gqlVars: {},
+					model: {
+						name: 'users',
+					},
+				},
+				{
+					text: 'Total Pending',
+					color: 'white',
+					textColor: 'black',
+					titleColor: 'grey',
+					query: usersCountsQueryGql,
+					subscription: usersCountsSubGql,
+					gqlVars: {},
+					model: {
+						name: 'users',
+					},
+				},
+			];
+		},
 		overviewData() {
 			let data = [
 				this.$has_permission('read_users') && {
@@ -151,7 +157,11 @@ export default {
 			loadingKey: 'loading',
 		},
 	},
-	methods: {},
+	mounted() {
+		this.$store.commit('setPageDetails', {
+			pageTitle: 'Dashboard',
+		});
+	},
 };
 </script>
 

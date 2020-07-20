@@ -1,50 +1,42 @@
 <template>
 	<v-row align="center" justify="center">
-		<v-col cols="12" sm="8" md="4">
-			<v-row align="center" justify="center" class="mb-5">
-				<v-img src="/logo.png" height="30" width="66" contain />
+		<v-col cols="12" sm="8" md="4" xl="3">
+			<v-row align="center" justify="center" class="mb-6">
+				<v-img src="/logo.png" height="40" width="76" contain />
 			</v-row>
 			<v-card :loading="loading" flat class="pa-5 text-center">
-				<h3 class="mb-3 mt-4">
-					Login to account
+				<h3 class="mb-4 mt-4 text-h4 font-weight-bold">
+					Login to Account
 				</h3>
-				<p style="font-size:12px">
+				<p style="font-size:13px" class="mb-8">
 					Please enter your email and password to continue
 				</p>
 				<v-card-text>
 					<v-form>
-						<label class="ml-5 my-1 primary--text text-left d-block">Email address</label>
-						<!-- <v-text-field
-							
-							dense
-							outlined
-							height="25"
-							single-line
-							
-							rounded
-							flat
-						></v-text-field> -->
+						<label class="text-subtitle-1 ml-5 my-2 fon-bold primary--text text-left d-block">
+							Email address
+						</label>
 						<v-text-field
 							v-model="email"
 							hide-details
-							rounded
-							height="35"
+							height="42"
 							type="text"
 							dense
 							outlined
 							single-line
 							flat
 						/>
-						<label class="ml-5 my-1 primary--text text-left d-block">Password</label>
+						<label class="text-subtitle-1 ml-5 my-2 mt-6 font-weig primary--text text-left d-block">
+							Password
+						</label>
 						<v-text-field
 							id="password"
 							v-model="password"
 							type="password"
 							dense
 							outlined
-							height="35"
+							height="42"
 							single-line
-							rounded
 							flat
 						></v-text-field>
 					</v-form>
@@ -53,7 +45,15 @@
 					<v-spacer></v-spacer>
 					<v-col cols="12">
 						<div class="px-10">
-							<v-btn @click="login" :disabled="loading" block rounded color="secondary">Login</v-btn>
+							<v-btn
+								class="text-body-1 rounded-10 pa-6"
+								@click="login"
+								:disabled="loading"
+								block
+								color="secondary"
+							>
+								Login
+							</v-btn>
 						</div>
 					</v-col>
 				</v-card-actions>

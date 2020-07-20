@@ -390,39 +390,42 @@ export default {
 	orderHeaders: [
 		{
 			id: 1,
-			text: 'Order notes',
-			value: 'notes',
-			viewer: 'text',
-		},
-		{
-			id: 20,
-			text: 'Delivery Option',
-			value: 'way',
+			text: 'Order ID',
+			value: 'track_id',
 			viewer: 'text',
 		},
 		{
 			id: 100,
-			text: 'Status',
-			value: 'order_status',
-			viewer: 'text',
-			width: 140,
-		},
-		{
-			id: 200,
-			text: 'Driver',
-			value: 'assigned_driver',
-			viewer: 'text',
-			sortable: false,
-		},
-		{
-			id: 205,
 			text: 'Client',
 			value: 'client.name',
 			viewer: 'text',
 			sortable: false,
 		},
 		{
-			id: 210,
+			id: 200,
+			text: 'Order Status',
+			value: 'order_status',
+			viewer: 'text',
+			width: 140,
+		},
+		{
+			id: 300,
+			text: 'Delivery Fee',
+			value: 'delivery_way',
+			viewer: 'function',
+			function: ({ delivery_way: { cost } }, column, store) => {
+				return cost > 0 ? `${store.state.currency.text} ${cost} (SDD)` : 'Free Delivery';
+			},
+		},
+		{
+			id: 400,
+			text: 'Driver',
+			value: 'assigned_driver',
+			viewer: 'text',
+			sortable: false,
+		},
+		{
+			id: 510,
 			text: 'Order total cost',
 			value: 'total_cost',
 			viewer: 'function',
@@ -437,14 +440,14 @@ export default {
 			sortable: false,
 		},
 		{
-			id: 250,
+			id: 650,
 			text: 'Created at',
 			value: 'created_at',
 			viewer: 'date',
 		},
 		{
-			id: 290,
-			text: 'Last update at',
+			id: 790,
+			text: 'Update at',
 			value: 'updated_at',
 			viewer: 'date',
 		},

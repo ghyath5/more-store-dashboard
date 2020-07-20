@@ -25,7 +25,6 @@ export default {
 					text: 'Total Sale',
 					color: 'primary',
 					textColor: 'green',
-
 					subText: '',
 					query: usersCountsQueryGql,
 					subscription: usersCountsSubGql,
@@ -41,6 +40,7 @@ export default {
 					textColor: 'yellow',
 					query: ordersCountsQueryGql,
 					subscription: ordersCountsSubGql,
+					to: '/activity/today-orders',
 					gqlVars: {
 						where: {
 							options: {

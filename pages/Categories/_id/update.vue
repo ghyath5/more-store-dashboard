@@ -4,22 +4,30 @@
 			<v-col sm="12" md="8" cols="12">
 				<v-row dense justify="space-between">
 					<v-col class="top-inputs" sm="3" cols="12">
-						<label>Category Name</label>
-						<v-text-field outlined dense hide-details v-model="editItem.name" />
+						<label class="text-body-1 font-weight-bold">Category Name</label>
+						<v-text-field height="37" outlined dense hide-details v-model="editItem.name" />
 					</v-col>
 					<v-col class="top-inputs" sm="3" cols="12">
-						<label>Position</label>
-						<v-text-field outlined dense :min="1" hide-details v-model="editItem.position" type="number" />
+						<label class="text-body-1 font-weight-bold">Position</label>
+						<v-text-field
+							height="37"
+							outlined
+							dense
+							:min="1"
+							hide-details
+							v-model="editItem.position"
+							type="number"
+						/>
 					</v-col>
 					<v-col class="top-inputs" sm="3" cols="12">
-						<label>Display Mode</label>
+						<label class="text-body-1 font-weight-bold">Display Mode</label>
 						<v-select
-							class="customized"
+							:height="37"
 							outlined
 							:menu-props="{ offsetY: true }"
 							:items="[
-								{ text: 'Hide', value: false },
 								{ text: 'Show', value: true },
+								{ text: 'Hide', value: false },
 							]"
 							dense
 							hide-details
@@ -32,25 +40,82 @@
 					</v-col>
 					<v-col class="mt-4" cols="12">
 						<v-row dense justify="space-between">
-							<v-col sm="3" cols="12" class="top-inputs">
+							<v-col sm="3" class="top-inputs">
 								<auto-complete
+									:height="37"
 									label="Subcategory"
-									v-model="editItem.subcategories"
+									v-model.sync="editItem.sub_categories"
 									:queryGql="categoriesGql"
 									itemValue="id"
 									itemText="name"
-									:searchOptions="{key: 'name',op: '_ilike'}"
+									:searchOptions="{ key: 'name', op: '_ilike' }"
 									searchModel="categories"
 									multiple
-									:limit="25"
-									:initialWhere="{main:{_eq:false}}"
-								></auto-complete>
+									:limit="30"
+									:initialOrderBy="{
+										updated_at: 'desc',
+									}"
+									:initialWhere="{ main: { _eq: false } }"
+									returnObject
+									:settings="{
+										object: 'child',
+									}"
+								>
+									<template v-slot:select-item="{ item, attrs, on }">
+										<v-list-item :value="item" v-on="on">
+											<v-list-item-action>
+												<v-checkbox
+													:input-value="attrs.inputValue"
+													:true-value="item"
+													append-icon="fiber_manual_record"
+													color="info"
+												/>
+											</v-list-item-action>
+
+											<v-list-item-title>
+												{{ item.name }}
+											</v-list-item-title>
+										</v-list-item>
+									</template>
+								</auto-complete>
 							</v-col>
-							<v-col class="top-inputs" sm="3" cols="12">
-								<label>Position</label>
-								<v-text-field outlined dense :min="1" hide-details v-model="editItem.position" type="number" />
+							<v-col sm="3" class="top-inputs">
+								<label class="text-body-1 font-weight-bold">Create New Subcategory</label>
+								<v-text-field
+									class="mb-3"
+									:height="37"
+									outlined
+									dense
+									hide-details
+									v-model="subcategory.name"
+								/>
+								<v-btn
+									@click="createSubCategory"
+									:loading="createSubLoading"
+									color="blue"
+									class="px-5 text-subtitle-2 white--text"
+									rounded
+								>
+									Create
+								</v-btn>
 							</v-col>
+							<v-col sm="3" class="top-inputs"></v-col>
 						</v-row>
+					</v-col>
+					<v-col class="mt-1" cols="12">
+						<v-chip
+							class="ma-1"
+							color="primary"
+							v-for="sub in editItem.sub_categories"
+							small
+							:key="sub.id"
+							close
+							@click:close="
+								editItem.sub_categories = editItem.sub_categories.filter(s => s.id !== sub.id)
+							"
+						>
+							{{ sub.name }}
+						</v-chip>
 					</v-col>
 					<v-col cols="12" class="mt-8">
 						<label>Keywords</label>
@@ -63,7 +128,7 @@
 					<image-uploader v-model="editItem.image" ref="image-uploader" />
 					<v-btn
 						small
-						style="font-size:9px;"
+						style="font-size:11px;"
 						class="upload-btn"
 						@click="$refs['image-uploader'].browse()"
 						outlined
@@ -71,14 +136,14 @@
 					>
 						Upload Image
 					</v-btn>
-					<span style="font-size:9px">
+					<span style="font-size:11px">
 						Insert image in SVG or PNG format
 					</span>
 				</div>
 			</v-col>
 		</v-row>
 		<v-row align="center" class="py-2 mt-4" style="border-top:2px solid #f4f6f9">
-			<v-col cols="1" class="mr-4">
+			<v-col cols="1" style="max-width:100px; min-width:70px">
 				<v-btn @click="update" :loading="loading" color="blue" class="white--text" rounded>
 					Save Update
 				</v-btn>
@@ -129,6 +194,9 @@
 import categoryGql from '~/gql/categories/one.gql';
 import categoriesGql from '~/gql/categories/all.gql';
 import deleteGql from '~/gql/categories/delete.gql';
+import deleteSubGql from '~/gql/categories/delete_sub.gql';
+import createSubGql from '~/gql/categories/create_sub.gql';
+import createGql from '~/gql/categories/create.gql';
 import updateGql from '~/gql/categories/update.gql';
 export default {
 	async asyncData({ store, app, params, query, redirect }) {
@@ -149,11 +217,15 @@ export default {
 	data() {
 		return {
 			categoriesGql,
-			editItem: null,
+			editItem: {},
 			loading: false,
 			deleteDialog: {
 				active: false,
 			},
+			subcategory: {
+				main: false,
+			},
+			createSubLoading: false,
 		};
 	},
 	middleware({ store, redirect }) {
@@ -171,9 +243,13 @@ export default {
 	},
 	methods: {
 		update() {
+			this.updateSubCategories();
 			let pk = this.editItem.id;
 			let _set = {};
 			for (const header of this.headers) {
+				if (!this.editItem[header.value]) {
+					continue;
+				}
 				if (header.value === 'keywords' && this.editItem[header.value]) {
 					let words = this.editItem[header.value].toString().split(',');
 					words = words.map(w => w.toLowerCase().trim()).filter(e => e);
@@ -184,8 +260,6 @@ export default {
 					_set[header.value] = this.editItem[header.value];
 				}
 			}
-			console.log(this.editItem);
-			return
 			this.loading = true;
 			this.$apollo
 				.mutate({
@@ -232,8 +306,53 @@ export default {
 					this.loading = false;
 				});
 		},
+		createSubCategory() {
+			this.createSubLoading = true;
+			this.$apollo
+				.mutate({
+					mutation: createGql,
+					variables: {
+						object: this.subcategory,
+					},
+				})
+				.then(({ data }) => {
+					this.createSubLoading = false;
+					this.editItem.sub_categories.push(data.insert_categories_one);
+					this.subcategory.name = '';
+				})
+				.catch(e => {
+					console.log(e);
+					this.createSubLoading = false;
+				});
+		},
+		async updateSubCategories() {
+			let ids = this.editItem.sub_categories.map(sub => sub.id);
+			this.loading = true;
+			await this.$apollo.mutate({
+				mutation: deleteSubGql,
+				variables: {
+					where: {
+						_and: [{ parent_id: { _eq: this.editItem.id } }, { child_id: { _nin: ids } }],
+					},
+				},
+			});
+			let subcategories = this.editItem.sub_categories.map(sub => {
+				return {
+					parent_id: this.editItem.id,
+					child_id: sub.id,
+				};
+			});
+			await this.$apollo.mutate({
+				mutation: createSubGql,
+				variables: {
+					objects: subcategories,
+				},
+			});
+			return;
+		},
 	},
 	created() {
+		// this.category.sub_categories = this.category.sub_categories.map(sub=>sub.child)
 		this.editItem = { ...this.category };
 	},
 	mounted() {

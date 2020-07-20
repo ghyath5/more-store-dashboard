@@ -3,10 +3,9 @@ query category($id:uuid!){
     categories_by_pk(id:$id){
         ...CategoryFiels
         sub_categories{
-            ...CategoryFiels
-        }
-        parent_category{
-            ...CategoryFiels
+            child{
+                ...CategoryFiels
+            }
         }
     }
 }

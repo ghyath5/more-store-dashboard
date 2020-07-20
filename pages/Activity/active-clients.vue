@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h3 class="text-lg-h5 text-md-h6 font-weight-bold primary--text pt-2 pb-0">
+		<h3 class="text-xl-h3 text-md-h5 text-lg-4 font-weight-bold primary--text pt-2 pb-0">
 			{{ sectionTitle }}
 		</h3>
 		<data-table
@@ -89,6 +89,6 @@ export default {
 </script>
 <style>
 .clients-table .customDataTable:not(.child) > .v-data-table__wrapper {
-	max-height: 330px !important;
+	max-height: 45vh !important;
 }
 </style>

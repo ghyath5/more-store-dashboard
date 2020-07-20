@@ -14,7 +14,14 @@
 					"
 				>
 					<slot name="createBtn">
-						<v-btn outlined dense small @click="$router.push(`/${model.name}/create`)" rounded>
+						<v-btn
+							class="above-table-button"
+							outlined
+							dense
+							small
+							@click="$router.push(`/${model.name}/create`)"
+							rounded
+						>
 							Create new {{ model.objectName }}
 						</v-btn>
 					</slot>
@@ -46,7 +53,7 @@
 			item-key="name"
 			:expanded.sync="expanded"
 			class="elevation-2 customDataTable white"
-			:class="{ 'child grey lighten-2': child }"
+			:class="{ 'child lighten-2': child }"
 			style="border-radius:10px"
 			mobile-breakpoint="300"
 		>
@@ -54,11 +61,16 @@
 				<v-progress-linear indeterminate color="cyan" active></v-progress-linear>
 			</template>
 			<template v-slot:top v-if="!child">
-				<v-container class="white pt-2 pb-0" style="border-radius:10px 10px 0 0">
-					<v-layout justify-space-between align-center wrap>
+				<v-container
+					class="white py-2"
+					:fluid="$vuetify.breakpoint.lgAndDown"
+					style="border-radius:10px 10px 0 0"
+				>
+					<v-layout nowrap justify-space-between align-center wrap>
 						<v-flex xs4 :md2="showTableBtns" :md4="!showTableBtns" d-flex align-center class="mb-1">
-							<span class="pr-3">Show</span>
+							<span class="pr-3 text-body-1">Show</span>
 							<v-select
+								class="select-data-number"
 								:items="itemsRows"
 								single-line
 								hide-details
@@ -66,7 +78,7 @@
 								rounded
 								v-model="itemPerPage"
 								outlined
-								style="max-width:35%"
+								style="max-width:32%"
 								append-icon="keyboard_arrow_down"
 								:menu-props="{ offsetY: true }"
 							>
@@ -74,9 +86,16 @@
 									<span class="text-caption">{{ item.text }}</span>
 								</template>
 							</v-select>
-							<span class="pl-3">entries</span>
+							<span class="pl-3 text-body-1">entries</span>
 						</v-flex>
-						<v-flex xs6 :md3="showTableBtns" :md4="!showTableBtns" class="mb-1 text-right">
+						<v-flex
+							offset-xl-1
+							xs6
+							:md3="showTableBtns"
+							:md4="!showTableBtns"
+							justify-end
+							class="mb-1 search-column text-right"
+						>
 							<v-text-field
 								label="Search"
 								v-model="search"
@@ -96,56 +115,57 @@
 								</template>
 							</v-text-field>
 						</v-flex>
-						<v-flex xs10 md5 justify-end class="text-right" v-if="showTableBtns">
+						<v-flex xs10 md6 class="text-right" v-if="showTableBtns">
 							<slot name="export-btn">
 								<v-btn
-									class="above-table-button px-1"
+									class="above-table-button text-sm-subtitle-2 text-lg-body-1 py-4 px-xl-2 px-1 mx-1"
 									height="30"
 									@click="exportData"
 									rounded
 									outlined
-									small
+									:large="$vuetify.breakpoint.lgAndUp"
+									:x-small="$vuetify.breakpoint.mdAndDown"
 								>
-									<v-icon size="17">mdi-content-save-outline</v-icon>
+									<v-icon size="23" class="mr-xl-1">mdi-content-save-outline</v-icon>
 									Export
 								</v-btn>
 							</slot>
 							<slot name="reload-btn">
 								<v-btn
-									class="above-table-button px-1"
+									class="above-table-button py-4 px-xl-2 px-1 text-sm-subtitle-2 text-lg-body-1"
 									height="30"
 									@click="fetchData"
 									rounded
 									outlined
-									small
+									:large="$vuetify.breakpoint.lgAndUp"
 								>
-									<v-icon size="17">mdi-sync</v-icon>
+									<v-icon size="23" class="mr-xl-1">mdi-sync</v-icon>
 									Refresh
 								</v-btn>
 							</slot>
 							<slot name="print-btn">
 								<v-btn
-									class="above-table-button px-1"
+									class="above-table-button py-4 px-xl-2 px-1 mx-1 text-sm-subtitle-2 text-lg-body-1"
 									height="30"
 									@click="printData"
 									rounded
 									outlined
-									small
+									:large="$vuetify.breakpoint.lgAndUp"
 								>
-									<v-icon size="17" class="material-icons-outlined">print</v-icon>
+									<v-icon size="23" class="mr-xl-1 material-icons-outlined">print</v-icon>
 									Print
 								</v-btn>
 							</slot>
 							<slot name="reset-btn">
 								<v-btn
-									class="above-table-button px-1"
+									class="above-table-button py-4 px-xl-2 px-1 text-sm-subtitle-2 text-lg-body-1"
 									height="30"
 									@click="resetFilters"
 									rounded
 									outlined
-									small
+									:large="$vuetify.breakpoint.lgAndUp"
 								>
-									<v-icon size="17">mdi-refresh</v-icon>
+									<v-icon size="23" class="mr-xl-1">mdi-refresh</v-icon>
 									Reset
 								</v-btn>
 							</slot>
@@ -154,13 +174,13 @@
 									<template v-slot:activator="{ on }">
 										<v-btn
 											v-on="on"
-											class="above-table-button px-1"
+											class="above-table-button py-4 px-xl-2 px-1 mx-1 text-sm-subtitle-2 text-lg-body-1"
 											height="30"
 											rounded
 											outlined
-											small
+											:large="$vuetify.breakpoint.lgAndUp"
 										>
-											<v-icon size="17">mdi-eye-outline</v-icon>
+											<v-icon size="23" class="mr-xl-1">mdi-eye-outline</v-icon>
 											Columns
 										</v-btn>
 									</template>
@@ -205,7 +225,9 @@
 						:queryGql="queryGql"
 						:deleteGql="deleteGql"
 						:initialWhere="{
-							parent_id: { _eq: props.item.id },
+							parents_categories: {
+								parent_id: { _eq: props.item.id },
+							},
 						}"
 						:height="null"
 						:hideFooter="props.item[model.nestedDataKey].length <= itemPerPage"
@@ -643,6 +665,7 @@ export default {
 <style scoped>
 * >>> .customDataTable table thead th {
 	white-space: nowrap !important;
+	min-height: 55px !important;
 }
 * >>> thead tr th:first-of-type,
 tbody tr td:first-of-type {
@@ -663,11 +686,14 @@ tbody tr td:last-of-type {
 tbody tr td {
 	border-bottom: 1px solid #000 !important;
 	border-top: 1px solid #000 !important;
+	font-size: 1.1rem !important;
+	font-weight: bold !important;
 }
 * >>> .customDataTable table {
 	/* border-collapse: separate; */
-	border-spacing: 0 5px !important;
-	padding: 6px !important;
+	border-spacing: 0 12px !important;
+	padding: 8px !important;
+	padding-top: 0 !important;
 }
 tbody tr td:first-of-type {
 	border-left: 1px solid #000 !important;
@@ -686,6 +712,15 @@ tbody tr td:last-of-type {
 }
 
 * >>> .customDataTable:not(.child) > .v-data-table__wrapper {
-	max-height: 430px !important;
+	max-height: 70vh !important;
+}
+.above-table-button {
+	font-size: 1.1em;
+}
+* >>> .customDataTable thead .v-icon {
+	line-height: 0 !important;
+}
+* >>> .select-data-number .v-select__selections span.text-caption {
+	font-size: 1rem !important;
 }
 </style>

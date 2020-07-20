@@ -1,0 +1,5 @@
+mutation delete_category_to_category ($where:category_to_category_bool_exp!){
+    delete_category_to_category(where:$where){
+       affected_rows
+    }
+}

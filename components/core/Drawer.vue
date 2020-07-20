@@ -9,25 +9,15 @@
 		floating
 		mobile-breakpoint="991"
 		persistent
-		width="240"
+		:width="drawerWidth"
 	>
-		<!-- <template v-slot:img="attrs"> -->
-		<!-- <v-img v-bind="attrs" gradient="to top, rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)" /> -->
-		<!-- </template> -->
-
-		<!-- <v-list-item two-line>
-			
-		</v-list-item> -->
-
-		<!-- <v-divider class="mx-3 mb-3" /> -->
-
 		<v-list>
 			<!-- Bug in Vuetify for first child of v-list not receiving proper border-radius -->
 			<div />
 			<template v-for="(item, i) in links">
 				<v-list-group v-if="item.children" :key="item.text" v-model="item.model" :prepend-icon="item.icon">
 					<template v-slot:activator>
-						<v-list-item-title>
+						<v-list-item-title class="text-xl-h6 pa-5 px-0">
 							{{ item.text }}
 						</v-list-item-title>
 					</template>
@@ -56,24 +46,10 @@
 						<v-icon>{{ item.icon }}</v-icon>
 					</v-list-item-action>
 
-					<v-list-item-title v-text="item.text" />
+					<v-list-item-title class="text-xl-h6 pa-5 px-0" v-text="item.text" />
 				</v-list-item>
 			</template>
 		</v-list>
-
-		<template v-slot:append>
-			<v-list nav>
-				<v-list-item to="#">
-					<v-list-item-action>
-						<v-icon>mdi-package-up</v-icon>
-					</v-list-item-action>
-
-					<v-list-item-title class="font-weight-light">
-						Something else
-					</v-list-item-title>
-				</v-list-item>
-			</v-list>
-		</template>
 	</v-navigation-drawer>
 </template>
 
@@ -175,6 +151,15 @@ export default {
 			set(val) {
 				this.setDrawer(val);
 			},
+		},
+		drawerWidth() {
+			if (this.$vuetify.breakpoint.mdAndDown) {
+				return 220;
+			} else if (this.$vuetify.breakpoint.lgOnly) {
+				return 270;
+			} else {
+				return 330;
+			}
 		},
 	},
 	methods: {
