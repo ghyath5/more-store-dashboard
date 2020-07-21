@@ -18,6 +18,7 @@
 	},
 	"dependencies": {
 		"@nuxtjs/apollo": "^4.0.1-rc.1",
+		"chart.js": "^2.9.3",
 		"core-js": "^2.6.10",
 		"dotenv": "^8.2.0",
 		"filepond": "^4.18.0",
@@ -28,6 +29,7 @@
 		"js2excel": "^1.0.1",
 		"lodash": "^4.17.15",
 		"nuxt": "^2.11.0",
+		"vue-chartjs": "^3.5.0",
 		"vue-core-image-upload": "^2.4.12",
 		"vue-filepond": "^6.0.2",
 		"vuejs-paginate": "^2.1.0",

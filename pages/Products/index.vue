@@ -9,6 +9,7 @@
 			aggregate: 'products_aggregate',
 			searchKeys: ['sku', 'name', 'description'],
 		}"
+		:exportableColumns="[{ name: 'Name', value: 'name' }]"
 	>
 		<template v-slot:createBtn>
 			<span></span>

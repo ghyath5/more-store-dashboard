@@ -44,7 +44,7 @@
 								<auto-complete
 									:height="37"
 									label="Subcategory"
-									v-model.sync="editItem.sub_categories"
+									v-model="editItem.sub_categories"
 									:queryGql="categoriesGql"
 									itemValue="id"
 									itemText="name"
@@ -57,19 +57,16 @@
 									}"
 									:initialWhere="{ main: { _eq: false } }"
 									returnObject
-									:settings="{
-										object: 'child',
-									}"
 								>
 									<template v-slot:select-item="{ item, attrs, on }">
 										<v-list-item :value="item" v-on="on">
 											<v-list-item-action>
-												<v-checkbox
-													:input-value="attrs.inputValue"
-													:true-value="item"
-													append-icon="fiber_manual_record"
-													color="info"
-												/>
+												<v-icon
+													:class="!attrs.inputValue ? 'material-icons-outlined' : ''"
+													color="blue"
+												>
+													fiber_manual_record
+												</v-icon>
 											</v-list-item-action>
 
 											<v-list-item-title>
@@ -281,6 +278,13 @@ export default {
 					this.$router.push('/categories?returned');
 				})
 				.catch(e => {
+					if (e.graphQLErrors[0].message && e.graphQLErrors[0].message.includes('Uniqueness violation')) {
+						this.$store.commit('setSnack', {
+							active: true,
+							color: 'error',
+							text: 'Can not be created, already exist!',
+						});
+					}
 					this.loading = false;
 				});
 		},
@@ -346,13 +350,17 @@ export default {
 				mutation: createSubGql,
 				variables: {
 					objects: subcategories,
+					on_conflict: {
+						constraint: 'category_to_category_pkey',
+						update_columns: ['child_id', 'parent_id'],
+					},
 				},
 			});
 			return;
 		},
 	},
 	created() {
-		// this.category.sub_categories = this.category.sub_categories.map(sub=>sub.child)
+		this.category.sub_categories = this.category.sub_categories.map(sub => sub.child);
 		this.editItem = { ...this.category };
 	},
 	mounted() {

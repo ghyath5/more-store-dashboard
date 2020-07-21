@@ -1,7 +1,7 @@
 <template>
 	<v-app-bar fixed clipped-left id="core-app-bar" app color="white" elevation="1" height="62">
 		<div :style="'min-width:' + drawerWidth + 'px'" class="hidden-sm-and-down">
-			<v-img class="ma-auto" src="/logo.png" height="50" width="80" contain />
+			<v-img class="ma-auto" src="/logo.png" height="50" width="105" contain />
 		</div>
 
 		<v-container class="px-10" :fluid="$vuetify.breakpoint.lgAndDown">
@@ -14,19 +14,19 @@
 							</v-btn>
 							<v-col md="5" lg="6" xl="7" class="py-0 search-column hidden-sm-and-down">
 								<v-text-field
-									class="search-box"
+									class="search-box search-field"
 									label="Search"
 									v-model="search"
 									hide-details
 									rounded
-									height="28"
+									height="35"
 									dense
 									filled
 									single-line
 								>
 									<template v-slot:prepend-inner>
-										<div style="margin-top:-4px">
-											<v-icon size="20" color="#ababab">
+										<div style="margin-top:-2px">
+											<v-icon size="22" color="#ababab">
 												search
 											</v-icon>
 										</div>
@@ -215,21 +215,21 @@ export default {
 	border: 1px solid #d8d8d8 !important;
 }
 .search-box label {
-	font-size: 12px !important;
+	font-size: 14px !important;
 	color: #ababab !important;
 }
 
 .v-text-field--filled.v-input--dense.v-text-field--single-line > .v-input__control > .v-input__slot {
 	background: #f3f4ff8c !important;
 }
-/*
-.v-text-field--filled.v-input--dense .v-label{
-	top:3px !important
-}  */
+
+.v-text-field--filled.v-input--dense .v-label {
+	top: 3px !important;
+}
 .account-list:hover {
 	background: #ed1c24 !important;
 }
-.search-column {
-	transform: scale(1, 1.2) !important;
+.search-field .v-input__control .v-input__slot {
+	align-items: center !important;
 }
 </style>

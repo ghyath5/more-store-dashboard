@@ -44,7 +44,7 @@
 								<auto-complete
 									:height="37"
 									label="Subcategory"
-									v-model.sync="editItem.sub_categories"
+									v-model="editItem.sub_categories"
 									:queryGql="categoriesGql"
 									itemValue="id"
 									itemText="name"
@@ -141,7 +141,14 @@
 		</v-row>
 		<v-row align="center" class="py-2 mt-4" style="border-top:2px solid #f4f6f9">
 			<v-col cols="1" style="max-width:85px; min-width:70px">
-				<v-btn @click="create" :loading="loading" color="blue" class="white--text" rounded>
+				<v-btn
+					:disabled="disableCreate"
+					@click="create"
+					:loading="loading"
+					color="blue"
+					class="white--text"
+					rounded
+				>
 					Create
 				</v-btn>
 			</v-col>
@@ -174,6 +181,9 @@ export default {
 		}
 	},
 	computed: {
+		disableCreate() {
+			return !this.editItem.name;
+		},
 		headers() {
 			return this.$store.state.categoryHeaders.filter(e => !e.notEditable);
 		},
@@ -225,6 +235,13 @@ export default {
 					this.$router.push('/categories?returned');
 				})
 				.catch(e => {
+					if (e.graphQLErrors[0].message && e.graphQLErrors[0].message.includes('Uniqueness violation')) {
+						this.$store.commit('setSnack', {
+							active: true,
+							color: 'error',
+							text: 'Can not be created, already exist!',
+						});
+					}
 					this.loading = false;
 				});
 		},
@@ -243,7 +260,13 @@ export default {
 					this.subcategory.name = '';
 				})
 				.catch(e => {
-					console.log(e);
+					if (e.graphQLErrors[0].message && e.graphQLErrors[0].message.includes('Uniqueness violation')) {
+						this.$store.commit('setSnack', {
+							active: true,
+							color: 'error',
+							text: 'Can not be created, already exist!',
+						});
+					}
 					this.createSubLoading = false;
 				});
 		},

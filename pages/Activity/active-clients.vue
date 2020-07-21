@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<h3 class="text-xl-h3 text-md-h5 text-lg-4 font-weight-bold primary--text pt-2 pb-0">
+		<h3 class="text-xl-h3 mb-3 text-md-h5 text-lg-4 font-weight-bold primary--text pt-2 pb-0">
 			{{ sectionTitle }}
 		</h3>
 		<data-table
-			class="clients-table"
+			class="activity-tables"
 			:headers="$store.state.userHeaders"
 			:queryGql="usersGql"
 			:subscriptionGql="subscriptionGql"
@@ -30,8 +30,8 @@
 				],
 			}"
 		>
-			<template v-slot:createBtn>
-				<span></span>
+			<template v-slot:aboveTable>
+				<span class="d-none"></span>
 				<!-- <v-btn class="mb-2" @click="$router.push(`/settings/users/create`)" small color="info">Create</v-btn> -->
 			</template>
 			<template v-slot:table-field="{ props: { item }, column }">
@@ -87,8 +87,3 @@ export default {
 	methods: {},
 };
 </script>
-<style>
-.clients-table .customDataTable:not(.child) > .v-data-table__wrapper {
-	max-height: 45vh !important;
-}
-</style>

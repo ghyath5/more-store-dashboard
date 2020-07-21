@@ -142,3 +142,8 @@ export default {
 	},
 };
 </script>
+<style>
+.activity-tables .customDataTable:not(.child) > .v-data-table__wrapper {
+	max-height: 45vh !important;
+}
+</style>

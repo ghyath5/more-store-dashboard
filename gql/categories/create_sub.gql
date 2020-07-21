@@ -1,5 +1,5 @@
-mutation createSubCategrories ($objects:[category_to_category_insert_input!]!){
-    insert_category_to_category(objects:$objects){
+mutation createSubCategrories ($objects:[category_to_category_insert_input!]!, $on_conflict:category_to_category_on_conflict){
+    insert_category_to_category(objects:$objects,on_conflict:$on_conflict){
         affected_rows
     }
 }

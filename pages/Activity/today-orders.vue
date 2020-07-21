@@ -1,9 +1,10 @@
 <template>
 	<div>
-		<h3 class="text-xl-h3 text-md-h5 text-lg-4 font-weight-bold primary--text pt-2 pb-0">
+		<h3 class="text-xl-h3 mb-3 text-md-h5 text-lg-4 font-weight-bold primary--text pt-2 pb-0">
 			{{ sectionTitle }}
 		</h3>
 		<data-table
+			class="activity-tables"
 			:headers="$store.state.orderHeaders"
 			:queryGql="ordersGql"
 			:deleteGql="deleteGql"
@@ -13,7 +14,7 @@
 				name: 'orders',
 				permission: 'orders',
 				aggregate: 'orders_aggregate',
-				searchKeys: ['status', 'notes', 'assigned_driver.driver.name', 'client.name', 'way'],
+				searchKeys: ['status', 'notes', 'assigned_driver.driver.name', 'client.name', 'way', 'track_id'],
 			}"
 			:initialWhere="ordersQueryWhere"
 		>
@@ -242,16 +243,12 @@ export default {
 			return this.$route.query && this.$route.query.status ? this.$route.query.status : '';
 		},
 		ordersQueryWhere() {
-			let where = {};
-			if (this.status === 'not-assigned') {
-				where._not = {
-					assigned_driver: {},
-				};
-			} else if (this.status === 'delivered') {
-				where.order_status = {
-					value: { _eq: 'completed' },
-				};
-			}
+			let where = {
+				options: {
+					today_order: { _eq: true },
+				},
+			};
+
 			return where;
 		},
 		sectionTitle() {

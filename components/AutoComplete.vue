@@ -20,9 +20,12 @@
 			@change="selectItem"
 			hide-details
 			:no-data-text="searchLoading ? 'Loading...' : 'No results found'"
-			:menu-props="{ auto: true, height: 300 }"
 			single-line
+			@click:append="getItems"
 		>
+			<template v-slot:selection>
+				<span></span>
+			</template>
 			<template v-slot:item="{ item, attrs, on }">
 				<slot name="select-item" :item="item" :on="on" :attrs="attrs">
 					<v-list-item :value="item">
@@ -145,23 +148,16 @@ export default {
 			if (!this.search) return;
 			this.getItemsDebounced();
 		},
+		value(val) {
+			console.log('updated');
+			this.updateSelected();
+		},
 	},
 	created() {
-		let copiedValue = this.value;
-		if (Array.isArray(this.value)) {
-			copiedValue = this.value.map(v => {
-				let value = v[this.settings.object];
-				return {
-					[this.itemValue]: value[this.itemValue],
-					[this.itemText]: value[this.itemText],
-				};
-			});
-		}
-		this.selected = copiedValue;
+		let copiedValue = this.updateSelected();
 		if (this.selected) {
 			this.items = Array.isArray(copiedValue) ? copiedValue : [copiedValue];
 		}
-
 		this.getItemsDebounced = debounce(function() {
 			this.getItems();
 		}, 400);
@@ -176,6 +172,21 @@ export default {
 		},
 	},
 	methods: {
+		updateSelected() {
+			let copiedValue = this.value;
+			// if (Array.isArray(this.value)) {
+			// 	copiedValue = this.value.map(v => {
+			// 		let value = this.settings ? v[this.settings.object]:v;
+			// 		console.log(v)
+			// 		return {
+			// 			[this.itemValue]: value[this.itemValue],
+			// 			[this.itemText]: value[this.itemText],
+			// 		};
+			// 	});
+			// }
+			this.selected = Array.isArray(this.value) ? copiedValue : [copiedValue];
+			return copiedValue;
+		},
 		selectItem(item) {
 			if (!item) return;
 			this.$emit('input', item);

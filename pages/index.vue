@@ -9,6 +9,64 @@
 				</data-counter>
 			</v-col>
 		</v-row>
+		<chart
+			class="white rounded-10 elevation-4 mt-6"
+			:options="{
+				responsive: true,
+				maintainAspectRatio: false,
+				layout: {
+					padding: {
+						left: 20,
+						right: 20,
+						top: 40,
+						bottom: 0,
+					},
+				},
+				legend: {
+					display: false,
+				},
+				scales: {
+					yAxes: [
+						{
+							ticks: {
+								stepSize: 10,
+								callback: value => value + 'K',
+							},
+							gridLines: {
+								drawBorder: false,
+							},
+						},
+					],
+					xAxes: [
+						{
+							ticks: {
+								stepSize: 10323,
+							},
+							gridLines: {
+								display: false,
+							},
+						},
+					],
+				},
+			}"
+			:chartdata="{
+				labels: [2, 4, 8, 4, 5, 6, 7, 9, 9435, 42, 34],
+				datasets: [
+					{
+						beginAtZero: false,
+						data: [2, 4, 8, 4, 5, 6, 7, 9, 95, 42, 34],
+						fill: false,
+						borderColor: '#4780fe',
+						pointRadius: 3,
+						pointHoverRadius: 3,
+						pointBackgroundColor: '#4780fe',
+						lineTension: 0,
+						spanGaps: true,
+						order: 3,
+					},
+				],
+			}"
+		></chart>
 	</div>
 </template>
 
@@ -21,9 +79,12 @@ import usersCountsQueryGql from '~/gql/counts/users/query.gql';
 
 import ordersCountsSubGql from '~/gql/counts/orders/subscription.gql';
 import ordersCountsQueryGql from '~/gql/counts/orders/query.gql';
+
+import chart from '~/components/material/chart.vue';
 export default {
 	components: {
 		dataCounter,
+		chart,
 	},
 	data() {
 		return {};

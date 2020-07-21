@@ -94,21 +94,22 @@
 							:md3="showTableBtns"
 							:md4="!showTableBtns"
 							justify-end
-							class="mb-1 search-column text-right"
+							class="mb-1 text-right"
 						>
 							<v-text-field
 								label="Search"
+								class="search-field"
 								v-model="search"
 								hide-details
 								rounded
-								height="30"
+								:height="'35'"
 								dense
 								outlined
 								single-line
 							>
 								<template v-slot:prepend-inner>
-									<div style="margin-top:-1px">
-										<v-icon size="20" color="#ababab">
+									<div style="margin-top:0px">
+										<v-icon size="22" color="#ababab">
 											search
 										</v-icon>
 									</div>
@@ -118,8 +119,8 @@
 						<v-flex xs10 md6 class="text-right" v-if="showTableBtns">
 							<slot name="export-btn">
 								<v-btn
-									class="above-table-button text-sm-subtitle-2 text-lg-body-1 py-4 px-xl-2 px-1 mx-1"
-									height="30"
+									class="above-table-button text-sm-subtitle-2 text-lg-body-1 py-1 px-xl-2 px-1 mx-1"
+									:height="$vuetify.breakpoint.mdAndDown ? '29' : '35'"
 									@click="exportData"
 									rounded
 									outlined
@@ -132,8 +133,8 @@
 							</slot>
 							<slot name="reload-btn">
 								<v-btn
-									class="above-table-button py-4 px-xl-2 px-1 text-sm-subtitle-2 text-lg-body-1"
-									height="30"
+									class="above-table-button py-1 px-xl-2 px-1 text-sm-subtitle-2 text-lg-body-1"
+									:height="$vuetify.breakpoint.mdAndDown ? '29' : '35'"
 									@click="fetchData"
 									rounded
 									outlined
@@ -145,8 +146,8 @@
 							</slot>
 							<slot name="print-btn">
 								<v-btn
-									class="above-table-button py-4 px-xl-2 px-1 mx-1 text-sm-subtitle-2 text-lg-body-1"
-									height="30"
+									class="above-table-button py-1 px-xl-2 px-1 mx-1 text-sm-subtitle-2 text-lg-body-1"
+									:height="$vuetify.breakpoint.mdAndDown ? '29' : '35'"
 									@click="printData"
 									rounded
 									outlined
@@ -158,8 +159,8 @@
 							</slot>
 							<slot name="reset-btn">
 								<v-btn
-									class="above-table-button py-4 px-xl-2 px-1 text-sm-subtitle-2 text-lg-body-1"
-									height="30"
+									class="above-table-button py-1 px-xl-2 px-1 text-sm-subtitle-2 text-lg-body-1"
+									:height="$vuetify.breakpoint.mdAndDown ? '29' : '35'"
 									@click="resetFilters"
 									rounded
 									outlined
@@ -174,8 +175,8 @@
 									<template v-slot:activator="{ on }">
 										<v-btn
 											v-on="on"
-											class="above-table-button py-4 px-xl-2 px-1 mx-1 text-sm-subtitle-2 text-lg-body-1"
-											height="30"
+											class="above-table-button py-1 px-xl-2 px-1 mx-1 text-sm-subtitle-2 text-lg-body-1"
+											:height="$vuetify.breakpoint.mdAndDown ? '29' : '35'"
 											rounded
 											outlined
 											:large="$vuetify.breakpoint.lgAndUp"
@@ -382,6 +383,12 @@ export default {
 		},
 	},
 	props: {
+		exportableColumns: {
+			type: Array,
+			default() {
+				return [];
+			},
+		},
 		value: {
 			type: Array,
 			default() {
@@ -573,16 +580,23 @@ export default {
 	},
 	methods: {
 		printData() {
-			let dataTable = document.querySelector('.customDataTable table');
-			console.log(dataTable);
-
-			window.print();
+			try {
+				document.execCommand('print', false, null);
+			} catch (e) {
+				window.print();
+			}
 		},
 		exportData() {
-			let omitColumns = ['__typename', 'sub_categories', 'parent_category', 'image', 'id'];
-			let data = this.data.items.map(i => {
-				return omit(i, omitColumns);
-			});
+			let data = this.data.items;
+			if (this.exportableColumns.length) {
+				this.exportableColumns.map(col => {
+					data = this.data.items.map(item => {
+						return {
+							[col.name]: item[col.value],
+						};
+					});
+				});
+			}
 			try {
 				json2excel({
 					data: data,
@@ -684,11 +698,20 @@ tbody tr td:last-of-type {
 	color: white !important;
 }
 tbody tr td {
-	border-bottom: 1px solid #000 !important;
-	border-top: 1px solid #000 !important;
+	border-collapse: collapse;
 	font-size: 1.1rem !important;
 	font-weight: bold !important;
+	border-top: 1px solid #000 !important;
+	border-bottom: 1px solid #000 !important;
 }
+tbody tr td:first-child {
+	border-left: 1px solid #000 !important;
+}
+
+tbody tr td:last-child {
+	border-right: 1px solid #000 !important;
+}
+
 * >>> .customDataTable table {
 	/* border-collapse: separate; */
 	border-spacing: 0 12px !important;

@@ -34,3 +34,36 @@ thead tr th{
     font-weight: 100;
     font-size: 1.1rem !important;
 }
+
+@media print {
+    body { 
+      overflow: auto;
+      height: auto; 
+    }
+    html body div#__layout {
+        visibility:hidden;
+    }
+    @page {
+        size:A3 landscape !important;
+    }
+    .customDataTable .v-data-table__wrapper{
+        -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
+        color-adjust: exact !important;
+        visibility:visible !important;
+        overflow: auto !important;
+        min-height: 200% !important;
+    }
+    .customDataTable .v-data-table__wrapper {
+        background-color: white;
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 15px;
+        font-size: 14px;
+        line-height: 22px;
+        z-index:999
+    }
+  }

@@ -46,11 +46,12 @@
 					<v-col cols="12">
 						<div class="px-10">
 							<v-btn
-								class="text-body-1 rounded-10 pa-6"
+								class="text-body-1 rounded-10 pa-2"
 								@click="login"
 								:disabled="loading"
 								block
 								color="secondary"
+								height="45"
 							>
 								Login
 							</v-btn>
