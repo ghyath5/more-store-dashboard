@@ -4,69 +4,33 @@
 			<v-col :key="card.text" v-for="card in cards">
 				<data-counter :card="card">
 					<template v-slot:card-content="{ card, data }">
-						<span v-if="card.id === 'total-sale'">{{ $store.state.currency.text }} 644,000</span>
+						<span v-if="card.id === 'total-sale'">{{ $store.state.currency.text }} {{ 739482 | numeral('0,0') }}</span>
 					</template>
 				</data-counter>
 			</v-col>
 		</v-row>
-		<chart
-			class="white rounded-10 elevation-4 mt-6"
-			:options="{
-				responsive: true,
-				maintainAspectRatio: false,
-				layout: {
-					padding: {
-						left: 20,
-						right: 20,
-						top: 40,
-						bottom: 0,
-					},
-				},
-				legend: {
-					display: false,
-				},
-				scales: {
-					yAxes: [
+		<div class="pa-4 mt-4 elevation-2 white rounded-10">
+			<h4 class="px-2 mb-8 font-weight-bold text-h4">Sales Details</h4>
+			<chart
+				:options="options"
+				:chartdata="{
+					labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
+					datasets: [
 						{
-							ticks: {
-								stepSize: 10,
-								callback: value => value + 'K',
-							},
-							gridLines: {
-								drawBorder: false,
-							},
-						},
+							backgroundColor: gradient,
+							beginAtZero: false,
+							data: [
+								32,4,7,7,8,4,54,3,6,8,34,6,7,8,3,24,67,99,63,34,89,23,45,66,78,24,12,33,55,2,77,88,99,100,12,56,79,49,16,33,71,41,92
+							],
+							borderColor: '#4780fe',
+							pointRadius: 3,
+							pointHoverRadius: 5,
+							pointBackgroundColor: '#4780fe',
+						}
 					],
-					xAxes: [
-						{
-							ticks: {
-								stepSize: 10323,
-							},
-							gridLines: {
-								display: false,
-							},
-						},
-					],
-				},
-			}"
-			:chartdata="{
-				labels: [2, 4, 8, 4, 5, 6, 7, 9, 9435, 42, 34],
-				datasets: [
-					{
-						beginAtZero: false,
-						data: [2, 4, 8, 4, 5, 6, 7, 9, 95, 42, 34],
-						fill: false,
-						borderColor: '#4780fe',
-						pointRadius: 3,
-						pointHoverRadius: 3,
-						pointBackgroundColor: '#4780fe',
-						lineTension: 0,
-						spanGaps: true,
-						order: 3,
-					},
-				],
-			}"
-		></chart>
+				}"
+			></chart>
+		</div>
 	</div>
 </template>
 
@@ -90,6 +54,67 @@ export default {
 		return {};
 	},
 	computed: {
+		options(){
+			return {
+				responsive: true,
+				maintainAspectRatio: false,
+				legend: {
+					display: false,
+				},
+				tooltips:{
+					enabled: true,
+					 custom: function(tooltip) {
+						if (!tooltip) return;
+						// disable displaying the color box;
+						tooltip.displayColors = false;
+					},
+					callbacks: {						
+						label: ((tooltipItems, data) => {
+							console.log(tooltipItems)
+							return tooltipItems
+						})
+					},
+					title: function(tooltipItem, data) {
+						return;
+					}
+				},
+				scales: {
+					yAxes: [
+						{
+							ticks: {
+								padding:20,
+								max:100,
+								stepSize: 20,
+								callback: value => (value + '%'),
+							},
+							gridLines: {
+								drawBorder: false,
+								color:'rgb(211 212 215)',
+								lineWidth:0.5
+							},
+							stacked: true
+						},
+					],
+					xAxes: [
+						{
+							gridLines: {
+								drawBorder: false,
+								display: false,
+							},
+						},
+					],
+				},
+				elements: {
+					line: {
+						tension: 0.1,
+						borderWidth:1.5
+					},
+					point:{
+						pointStyle:'point'
+					}
+				},
+			}
+		},
 		cards() {
 			return [
 				{
@@ -164,6 +189,13 @@ export default {
 			];
 			return data.filter(e => e);
 		},
+		gradient(){
+			const ctx = document.createElement('canvas').getContext("2d")
+			const gradient = ctx.createLinearGradient(0, 0, 0, 450);
+			gradient.addColorStop(0, 'rgb(71,128,254,0.5)');   
+			gradient.addColorStop(1, 'rgb(71,128,254,0)');
+			return gradient
+		}
 	},
 	apollo: {
 		clients: {

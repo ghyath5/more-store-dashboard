@@ -228,6 +228,7 @@ export default {
 			viewer: 'text',
 			editor: 'textEditor',
 			rules: [v => !!v || 'Sku is required'],
+			notEditable: true,
 			settings: {
 				// fieldWidth:70 //in %
 			},

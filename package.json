@@ -32,6 +32,7 @@
 		"vue-chartjs": "^3.5.0",
 		"vue-core-image-upload": "^2.4.12",
 		"vue-filepond": "^6.0.2",
+		"vue-numeral-filter": "^2.0.0",
 		"vuejs-paginate": "^2.1.0",
 		"vuetify": "^2.3.3"
 	},

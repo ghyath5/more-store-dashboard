@@ -15,6 +15,13 @@
 				nestedDataKey: 'sub_categories',
 				searchKeys: ['name'],
 			}"
+			:exportableColumns="[
+			{ name: 'Category Name', value: 'name' },
+			{ name: 'Position', value: 'position' },
+			{ name: 'Updated At', value: 'updated_at' },
+			{ name: 'Display Mode', value: 'active' },
+			{ name: 'Keywords', value: 'keywords' },
+			]"
 		>
 			<template v-slot:table-field="{ props, column }">
 				<span

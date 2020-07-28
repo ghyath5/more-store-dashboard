@@ -15,6 +15,10 @@ export default {
 	},
 	mounted() {
 		this.renderChart(this.chartdata, this.options);
+		this.$nextTick(()=>{
+			const ctx = document.getElementById("line-chart");
+			// ctx.height = 400;
+		})
 	},
 };
 </script>

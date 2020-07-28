@@ -589,17 +589,17 @@ export default {
 		exportData() {
 			let data = this.data.items;
 			if (this.exportableColumns.length) {
-				this.exportableColumns.map(col => {
-					data = this.data.items.map(item => {
-						return {
-							[col.name]: item[col.value],
-						};
-					});
-				});
+				data = this.data.items.map(item => {
+					let data = {}
+					for(const col of this.exportableColumns){
+						data[col.name] = item[col.value]
+					}
+					return data
+				})				
 			}
 			try {
 				json2excel({
-					data: data,
+					data,
 					name: this.model.name,
 					formateDate: 'yyyy/mm/dd',
 				});

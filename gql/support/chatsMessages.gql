@@ -1,0 +1,21 @@
+query chats($where:support_chat_bool_exp,$order_by:[support_chat_order_by!],$offset:Int, $limit:Int){
+    support_chat(where:$where,order_by:$order_by, offset:$offset, limit:$limit){
+        client_mobile_number
+        client_name
+        created_at
+        supporter_id
+        status
+        messages{
+            message
+            sender
+            created_at
+            id
+        }
+        id
+    }
+    support_chat_aggregate(where:$where){
+        aggregate{
+            count
+        }
+    }
+}

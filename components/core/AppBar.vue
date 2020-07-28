@@ -127,9 +127,7 @@ export default {
 			},
 		],
 		notifications: [
-			'Mike, John responded to your email',
-			'You have 5 new tasks',
-			"You're now a friend with Andrew",
+			'Notification',
 			'Another Notification',
 			'Another One',
 		],
